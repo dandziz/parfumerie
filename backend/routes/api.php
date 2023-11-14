@@ -25,6 +25,6 @@ Route::controller(AuthController::class)->group(function() {
 
 Route::middleware('auth:api')->controller(AuthController::class)->group(function() {
     Route::get('profile-details', 'getUserDetail');
-    Route::post('logout', 'userLogout');
+    Route::get('logout', 'logout');
 });
 

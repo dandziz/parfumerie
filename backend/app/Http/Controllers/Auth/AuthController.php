@@ -43,6 +43,13 @@ class AuthController extends Controller
         return response()->json(['status' => 200, 'message' => ['Get user successfully!'], 'data' => $user], 200);
     }
 
+    public function logout(): JsonResponse
+    {
+        $user = Auth::guard('api')->user();
+        $user->token()->revoke();
+        return response()->json(['status' => 200, 'message' => ['Logout successfully!']], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
