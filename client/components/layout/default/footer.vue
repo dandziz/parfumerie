@@ -1,0 +1,161 @@
+<template>
+  <footer class="container-fluid bg-success text-white">
+    <div class="container container-footer">
+      <div class="row">
+        <div class="col-md-3 mt-4">
+          <p class="p-14-bold">VỀ PARFUMERIE</p>
+          <a href="index.php" class="text-white link-footer"
+            ><span class="p-14">Trang chủ</span></a
+          >
+          <br />
+          <a
+            href="index.php?controller=NuocHoa&action=GioiThieu"
+            class="text-white link-footer"
+            ><span class="p-14">Giới thiệu</span></a
+          >
+          <br />
+          <a
+            href="index.php?controller=NuocHoa&action=SanPham&all="
+            class="text-white link-footer"
+            ><span class="p-14">Sản phẩm</span></a
+          >
+          <br />
+          <a
+            href="index.php?controller=KhachHang&action=LienHe"
+            class="text-white link-footer"
+            ><span class="p-14">Liên hệ</span></a
+          >
+        </div>
+        <div class="col-md-3 mt-4">
+          <p class="p-14-bold">HƯỚNG DẪN</p>
+          <a href="#" class="text-white link-footer"
+            ><span class="p-14">Hướng dẫn mua hàng</span></a
+          >
+          <br />
+          <a href="#" class="text-white link-footer"
+            ><span class="p-14">Hướng dẫn thanh toán</span></a
+          >
+          <br />
+          <a href="#" class="text-white link-footer"
+            ><span class="p-14">Hướng dẫn giao nhận</span></a
+          >
+          <br />
+          <a href="#" class="text-white link-footer"
+            ><span class="p-14">Điều khoản sử dụng</span></a
+          >
+        </div>
+        <div class="col-md-3 mt-4">
+          <p class="p-14-bold">CHÍNH SÁCH</p>
+          <a href="#" class="text-white link-footer"
+            ><span class="p-14">Chính sách mua hàng</span></a
+          >
+          <br />
+          <a href="#" class="text-white link-footer"
+            ><span class="p-14">Chính sách bảo mật thông tin</span></a
+          >
+          <br />
+          <a href="#" class="text-white link-footer"
+            ><span class="p-14">Chính sách giao hàng</span></a
+          >
+          <br />
+          <a href="#" class="text-white link-footer"
+            ><span class="p-14">Chính sách đổi trả - bảo hành</span></a
+          >
+        </div>
+        <div class="col-md-3 mt-4">
+          <p class="p-14-bold">HỖ TRỢ</p>
+          <a href="#" class="text-white link-footer"
+            ><span class="p-14">Tìm kiếm</span></a
+          >
+          <br />
+          <a
+            href="index.php?controller=KhachHang&action=DangNhap"
+            class="text-white link-footer"
+            ><span class="p-14">Đăng nhập</span></a
+          >
+          <br />
+          <a
+            href="index.php?controller=KhachHang&action=DangKy"
+            class="text-white link-footer"
+            ><span class="p-14">Đăng ký</span></a
+          >
+          <br />
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-3">
+          <p class="p-14-bold">PHƯƠNG THỨC THANH TOÁN</p>
+          <div class="d-flex flex-row">
+            <div style="align-items: center" class="me-3">
+              <span class="material-icons"> account_balance </span>
+              <p class="p-13">Internet Banking</p>
+            </div>
+            <div style="align-items: center">
+              <span class="material-icons"> payments </span>
+              <p class="p-13">Tiền Mặt</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <p class="p-14-bold">KẾT NỐI VỚI CHÚNG TÔI</p>
+            <div class="d-flex align-items-center gap-3">
+            <a href="" style="color: #3b5998"
+              ><Icon name="mdi:facebook" size="30" /></a>
+            <a href="" style="color: #1e88e5"
+              ><Icon name="mdi:instagram" size="30" /></a>
+            <a href="" style="color: #ff0000"
+              ><Icon name="mdi:youtube" size="30" /></a>
+            <a href="" style="color: #ff0000" class="footer-connect"
+              ><img src="~/assets/images/footer/map.png" alt=""
+            /></a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <p class="p-14-bold">ĐĂNG KÝ NHẬN TIN</p>
+          <p class="p-13">
+            Nhận thông tin sản phẩm mới nhất, tin khuyến mãi và nhiều hơn nữa.
+          </p>
+          <form
+            class="row g-3"
+            action="index.php?controller=KhachHang&action=DangKyNhanTin"
+            id="formNhanTin"
+            method="POST"
+            onsubmit="return validateForm_2()"
+          >
+            <div class="col-md-4">
+              <input
+                type="text"
+                name="hoten"
+                class="form-control"
+                id="hoten"
+                placeholder="Họ và tên"
+                required
+              />
+            </div>
+            <div class="col-md-5">
+              <input
+                type="text"
+                name="email"
+                class="form-control"
+                id="guest_email"
+                placeholder="Email của bạn"
+                required
+              />
+              <span class="helpEmail p-12-bold"></span>
+            </div>
+            <div class="col-md-3">
+              <button class="btn btn-submit" name="submit-btn" type="submit">
+                Đăng ký
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="row text-center" style="background-color: #032119">
+      <p class="p-12 mt-2">
+        Parfumerie.vn | Cung cấp bởi <a class="p-12 span-footer" href="">Sapo</a>
+      </p>
+    </div>
+  </footer>
+</template>

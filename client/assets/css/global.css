@@ -1,0 +1,25 @@
+a {
+    color: white;
+}
+
+a:hover {
+    --bs-link-color-rgb: none;
+}
+
+.component-overlay,.start-component-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.start-component-overlay .v-overlay__scrim {
+    background-color: #FFF;
+}
+
+.v-overlay__scrim {
+    background: #dbdbdb !important;
+}
+
+.btn:disabled, .btn.disabled, fieldset:disabled .btn {
+    background-color: #07503d;
+}
