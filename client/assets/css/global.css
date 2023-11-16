@@ -23,3 +23,8 @@ a:hover {
 .btn:disabled, .btn.disabled, fieldset:disabled .btn {
     background-color: #07503d;
 }
+
+.invalid-feedback {
+    display: block;
+    margin-left: 8px;
+}

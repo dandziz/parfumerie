@@ -1,6 +1,7 @@
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default {
+  ssr: false,
   devtools: { enabled: true },
   css: [
     "bootstrap/dist/css/bootstrap.css",
@@ -17,30 +18,26 @@ export default {
     './plugins/bootstrap.ts',
   ],
   modules: [
-    (_options, nuxt) => {
+    (_options: any, nuxt: { hooks: { hook: (arg0: string, arg1: (config: { plugins: Plugin[][]; }) => void) => void; }; }) => {
       nuxt.hooks.hook(
         "vite:extendConfig",
         (config: { plugins: Plugin[][] }) => {
-          config.plugins?.push(vuetify({ autoImport: true }));
+          return config.plugins?.push(vuetify({ autoImport: true }));
         }
       );
     },
-    "nuxt-icon"
+    '@vee-validate/nuxt',
+    "nuxt-icon",
+    '@nuxtjs/i18n'
   ],
-  veeValidate: {
-    autoImports: true,
-    componentNames: {
-      Form: 'VeeForm',
-      Field: 'VeeField',
-      FieldArray: 'VeeFieldArray',
-      ErrorMessage: 'VeeErrorMessage',
-    },
-  },
   vite: {
     vue: {
       template: {
         transformAssetUrls,
       },
     },
+  },
+  i18n: {
+    vueI18n: './configs/i18n'
   }
 };

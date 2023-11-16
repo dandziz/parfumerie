@@ -1,4 +1,4 @@
-import axios from '~/configs/axios'
+import axios from '~/configs/axios.config'
 import type { AxiosError } from 'axios'
 import type {
     ERROR_RESPONSE_FORMATTED,

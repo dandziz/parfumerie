@@ -71,7 +71,7 @@ export default defineComponent({
             </p>
           </div>
           <div>
-            <Form class="row g-3 needs-validation" :validation-schema="schema">
+            <form class="row g-3 needs-validation" :validation-schema="schema">
               <div class="col-md-12">
                 <label for="validationCustom01 p-14-bold" class="form-label"
                   >Email hoặc Số điện thoại<span style="color: red">*</span></label
@@ -107,7 +107,7 @@ export default defineComponent({
                   />
                 </button>
               </div>
-            </Form>
+            </form>
           </div>
           <div>
             <p class="p-14 mt-3">
