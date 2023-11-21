@@ -1,3 +1,5 @@
 {
-    "name": "Tên"
+    "name": "Họ và tên",
+    "email": "Email",
+    "password": "Mật khẩu"
 }

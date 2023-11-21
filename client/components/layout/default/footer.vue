@@ -112,11 +112,11 @@
         </div>
         <div class="col-md-6">
           <p class="p-14-bold">ĐĂNG KÝ NHẬN TIN</p>
-          <p class="p-13">
+          <p class="p-13 register-info">
             Nhận thông tin sản phẩm mới nhất, tin khuyến mãi và nhiều hơn nữa.
           </p>
           <form
-            class="row g-3"
+            class="row register-form g-3"
             action="index.php?controller=KhachHang&action=DangKyNhanTin"
             id="formNhanTin"
             method="POST"
@@ -159,3 +159,14 @@
     </div>
   </footer>
 </template>
+
+<style scoped>
+@media screen and (max-width: 700px) {
+  .register-form {
+    width: 90%;
+  }
+  .register-info {
+    width: 90%;
+  }
+}
+</style>

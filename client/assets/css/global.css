@@ -22,9 +22,45 @@ a:hover {
 
 .btn:disabled, .btn.disabled, fieldset:disabled .btn {
     background-color: #07503d;
+    cursor: not-allowed;
 }
 
 .invalid-feedback {
     display: block;
     margin-left: 8px;
+}
+
+.v-slide-group {
+    position: relative;
+}
+
+.v-slide-group__prev {
+    position: absolute;
+    z-index: 3;
+    height: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+}
+
+.v-slide-group__next {
+    position: absolute;
+    right: 0;
+    z-index: 3;
+    height: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.v-card {
+    padding: 16px !important;
+}
+
+.v-card--variant-elevated {
+    -webkit-box-shadow: 0 0 35px 0 rgba(154,161,171,.15) !important;
+    box-shadow: 0 0 35px 0 rgba(154,161,171,.15) !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }

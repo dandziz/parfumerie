@@ -9,26 +9,22 @@ export default {
     "./assets/css/global.css",
   ],
   env: {
-    BASE_URL: 'https://nuxtjs.org',
+    BASE_URL: "https://nuxtjs.org",
   },
   build: {
     transpile: ["vuetify"],
   },
   plugins: [
-    './plugins/bootstrap.ts',
   ],
   modules: [
-    (_options: any, nuxt: { hooks: { hook: (arg0: string, arg1: (config: { plugins: Plugin[][]; }) => void) => void; }; }) => {
-      nuxt.hooks.hook(
-        "vite:extendConfig",
-        (config: { plugins: Plugin[][] }) => {
-          return config.plugins?.push(vuetify({ autoImport: true }));
-        }
-      );
+    (_options: any, nuxt: { hooks: { hook: (arg0: string, arg1: (config: any) => void) => void; }; }) => {
+      nuxt.hooks.hook("vite:extendConfig", (config) => {
+        config.plugins.push(vuetify({ autoImport: true }))
+      })
     },
-    '@vee-validate/nuxt',
+    "@vee-validate/nuxt",
     "nuxt-icon",
-    '@nuxtjs/i18n'
+    "@nuxtjs/i18n",
   ],
   vite: {
     vue: {
@@ -38,6 +34,6 @@ export default {
     },
   },
   i18n: {
-    vueI18n: './configs/i18n'
-  }
+    vueI18n: "./configs/i18n"
+  },
 };

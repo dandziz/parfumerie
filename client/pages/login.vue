@@ -1,7 +1,9 @@
 <script lang="ts">
 //import { User } from "@/models"
-import AxiosRepository from '~/httpRequest/AxiosRepository'
-import * as yup from 'yup'
+import AxiosRepository from "~/httpRequest/AxiosRepository";
+import * as yup from "yup";
+import { type LOGIN_FIELDS } from "~/types/login"
+import { configure } from "vee-validate";
 
 export default defineComponent({
   setup() {
@@ -9,36 +11,39 @@ export default defineComponent({
       email: yup.string().required().email(),
       password: yup.string().required().min(8),
     });
-    return { schema }
+    configure({
+      validateOnBlur: true,
+      validateOnInput: true,
+    })
+    return { schema };
   },
-  props: {
-
-  },
+  props: {},
   data() {
     return {
       loading: false,
       formData: {
-        email: '',
-        password: '',
-      }
-    }
+        email: "",
+        password: "",
+      },
+    };
   },
   methods: {
-    async onSubmit(): Promise<void> {
-      console.log(yup);
-      const axios = new AxiosRepository()
+    async handleSubmit(values: LOGIN_FIELDS): Promise<void> {
+      console.log(this.$t('password'));
+      console.log(values);
+      const axios = new AxiosRepository();
       try {
         this.loading = true;
-        const reponse = await axios.post('login', JSON.stringify({...this.formData}))
+        const reponse = await axios.post("login", JSON.stringify(values));
         console.log(reponse);
       } catch (e) {
         console.log(e);
       } finally {
         this.loading = false;
       }
-    }
-  }
-})
+    },
+  },
+});
 </script>
 
 <template>
@@ -62,8 +67,8 @@ export default defineComponent({
     </div>
     <div class="container pb-3 border">
       <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4 ms-2 me-2 mt-5 shadow-lg mb-5 bg-white pt-3 pb-3">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4 login-group shadow-lg mb-5 bg-white">
           <div>
             <h5 class="text-center">ĐĂNG NHẬP TÀI KHOẢN</h5>
             <p class="p-14 text-center mt-4">
@@ -71,32 +76,25 @@ export default defineComponent({
             </p>
           </div>
           <div>
-            <form class="row g-3 needs-validation" :validation-schema="schema">
+            <Form
+              class="row g-3"
+              :validation-schema="schema"
+              :initial-values="formData"
+              @submit="handleSubmit"
+            >
               <div class="col-md-12">
-                <label for="validationCustom01 p-14-bold" class="form-label"
-                  >Email hoặc Số điện thoại<span style="color: red">*</span></label
-                >
-                <input v-model="formData.email" type="text" class="form-control" placeholder="Email" required />
-                <div class="invalid-feedback" id="oldPassword-feedback">
-                  Vui lòng nhập tài khoản của bạn!
-                </div>
+                <VTextInput name="email" :label="$t('email')" placeholder="Your email" />
               </div>
               <div class="col-md-12">
-                <label for="validationCustom02 p-14-bold" class="form-label"
-                  >Mật khẩu<span style="color: red">*</span></label
-                >
-                <input
-                  v-model="formData.password"
-                  type="password"
-                  class="form-control"
-                  name="matkhau"
-                  placeholder="Mật khẩu"
-                  required
-                />
-                <div class="invalid-feedback">Vui lòng nhập mật khẩu của bạn!</div>
+                <VTextInput name="password" :label="$t('password')" placeholder="Password" />
               </div>
               <div>
-                <button class="btn btn-submit rounded-0 me-2 d-flex align-items-center gap-2" name="submit" :disabled="loading" type="button" @click="onSubmit">
+                <button
+                  class="btn btn-submit rounded-0 me-2 d-flex align-items-center gap-2"
+                  name="submit"
+                  :disabled="loading"
+                  type="submit"
+                >
                   ĐĂNG NHẬP
                   <VProgressCircular
                     indeterminate
@@ -107,7 +105,7 @@ export default defineComponent({
                   />
                 </button>
               </div>
-            </form>
+            </Form>
           </div>
           <div>
             <p class="p-14 mt-3">
@@ -126,3 +124,22 @@ export default defineComponent({
     </div>
   </main>
 </template>
+
+<style scoped>
+.login-group {
+  margin-top: 2rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+@media screen and (max-width: 992px) {
+  .login-group {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+  }
+}
+
+</style>

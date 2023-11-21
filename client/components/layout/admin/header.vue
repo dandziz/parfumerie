@@ -1,0 +1,63 @@
+<template>
+  <div class="admin-header text-black">
+    <div class="left-header">
+      <Icon name="ic:baseline-menu" class="cursor-pointer" size="24" @click="handleToggleSidebar" />
+    </div>
+    <div class="right-header">
+      <Icon class="me-3 cursor-pointer" size="28" name="material-symbols:notifications-unread-outline-rounded" />
+      <Icon class="me-3 cursor-pointer" size="28" name="material-symbols:language" />
+      <v-menu transition="slide-y-transition">
+        <template v-slot:activator="{ props }">
+          <Icon class="cursor-pointer" v-bind="props" size="28" name="material-symbols:account-circle-full" />
+        </template>
+        <v-list>
+          <v-list-item v-for="(item, i) in items" :key="i">
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+export default defineComponent({
+  data() {
+    return {
+      items: [
+        {
+          title: "Dand"
+        },
+        {
+          title: "Da Ziz"
+        }
+      ]
+    }
+  },
+  methods: {
+    handleToggleSidebar (): void {
+      this.$emit('toggleSidebar')
+    }
+  }
+})
+</script>
+
+<style scoped>
+.admin-header {
+  padding: 0 24px;
+  background-color: #fff;
+  -webkit-box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+  box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+  min-height: 70px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content:space-between;
+}
+.right-header {
+  color: #98a6ad;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+</style>

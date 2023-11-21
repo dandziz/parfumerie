@@ -28,7 +28,8 @@ class LoginPostRequest extends FormRequest
         return [
             "email"=> [
                 "required",
-                "string"
+                "string",
+                "email"
             ],
             "password"=> [
                 "required",
