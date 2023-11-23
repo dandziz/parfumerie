@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Customer\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -16,6 +16,12 @@ class UserController extends Controller
     public function index()
     {
         //
+    }
+
+    public function getUserDetail(): JsonResponse
+    {
+        $user = Auth::guard('api')->user();
+        return response()->json(['status' => true, 'message' => ['Get user successfully!'], 'data' => $user], 200);
     }
 
     /**

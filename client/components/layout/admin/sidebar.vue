@@ -5,16 +5,41 @@
     :expand-on-hover="expand_on_hover"
     :rail="rail"
     width="260"
-    mobile-breakpoint
+    mobile-breakpoint="md"
     @update:model-value="handleDrawerUpdate"
   >
     <div class="p-2 d-flex justify-content-center pt-5 mt-1">
-      <img :class="{'sidebar-logo': !rail, 'sidebar-logo__mini': rail}" src="~/assets/images/sidebar/logo.png" alt="" />
+      <img
+        :class="{ 'sidebar-logo': !rail, 'sidebar-logo__mini': rail }"
+        src="~/assets/images/sidebar/logo.png"
+        alt=""
+      />
     </div>
     <v-divider></v-divider>
 
-    <v-list density="compact" nav>
-      <v-list-item :active="$route.name === item.name" active-class="v-list-item__active" v-for="(item, index) in listItems" :prepend-icon="item.icon" :title="item.title" value="myfiles" :key="index"></v-list-item>
+    <v-list
+      v-for="(items, index) in listItems"
+      :class="{ 'p-3': !expand_on_hover }"
+      density="compact"
+      :key="index"
+      nav
+    >
+      <p v-if="!expand_on_hover" class="text-subtitle-2 text-uppercase">
+        {{ items.title }}
+      </p>
+      <template v-for="(item, ind) in items.children" :key="ind">
+        <v-list-item
+          v-if="!item.children"
+          :active="$route.name === item.name"
+          active-class="v-list-item__active"
+          :prepend-icon="item.icon"
+          :title="item.title"
+          value="myfiles"
+        ></v-list-item>
+        <v-list-group :title="item.title" v-else :prepend-icon="item.icon">
+          <v-list-item>OK</v-list-item>
+        </v-list-group>
+      </template>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -25,17 +50,34 @@ export default defineComponent({
     return {
       listItems: [
         {
-          icon: "mdi-home",
           title: "Dashboard",
-          name: "admin"
+          children: [
+            {
+              icon: "mdi-home",
+              title: "Dashboard",
+              name: "admin",
+            },
+            {
+              icon: "mdi-information",
+              title: "User",
+              name: "User",
+              children: [
+                {
+                  icon: "mdi-information",
+                  title: "List Of Users",
+                  name: "User List",
+                },
+                {
+                  icon: "mdi-information",
+                  title: "Create New User",
+                  name: "Create User",
+                },
+              ],
+            },
+          ],
         },
-        {
-          icon: "mdi-information",
-          title: "About",
-          name: "about"
-        }
-      ]
-    }
+      ],
+    };
   },
   props: {
     expand_on_hover: {
@@ -52,10 +94,10 @@ export default defineComponent({
     },
   },
   methods: {
-    handleDrawerUpdate (): void {
-      this.$emit('handleDrawerUpdate')
-    }
-  }
+    handleDrawerUpdate(): void {
+      this.$emit("handleDrawerUpdate");
+    },
+  },
 });
 </script>
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Customer\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginPostRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -26,7 +26,7 @@ class AuthController extends Controller
         if ($check) {
             $user = Auth::user();
             $token = $user->createToken('example')->accessToken;
-            return response()->json(['status' => 200, 'data' => [
+            return response()->json(['status' => true, 'data' => [
                 'user' => $user,
                 'token' => [
                     'access_token' => $token,
@@ -34,23 +34,17 @@ class AuthController extends Controller
                 ]
             ]], 200);
         } else {
-            return response()->json(['status' => 401, 'message' => [
+            return response()->json(['status' => false, 'message' => [
                 'Invalid credentials!'
             ]], 401);
         }
-    }
-
-    public function getUserDetail(): JsonResponse
-    {
-        $user = Auth::guard('api')->user();
-        return response()->json(['status' => 200, 'message' => ['Get user successfully!'], 'data' => $user], 200);
     }
 
     public function logout(): JsonResponse
     {
         $user = Auth::guard('api')->user();
         $user->token()->revoke();
-        return response()->json(['status' => 200, 'message' => ['Logout successfully!']], 200);
+        return response()->json(['status' => true, 'message' => ['Logout successfully!']], 200);
     }
 
     /**

@@ -1,15 +1,16 @@
 <?php
 
+use App\Http\Controllers\Customer\Auth\AuthController;
+use App\Http\Controllers\Customer\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\AuthController;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| User Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register API routes for your application. These
+| Here is where you can register User routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "api" middleware group. Make something great!
 |
@@ -24,7 +25,10 @@ Route::controller(AuthController::class)->group(function() {
 });
 
 Route::middleware('auth:api')->controller(AuthController::class)->group(function() {
-    Route::get('profile-details', 'getUserDetail');
     Route::get('logout', 'logout');
+});
+
+Route::middleware('auth:api')->controller(UserController::class)->group(function() {
+    Route::get('profile-details', 'getUserDetail');
 });
 

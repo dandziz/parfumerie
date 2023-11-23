@@ -3,7 +3,7 @@
     <label class="form-label"
       >{{ label }}<span style="color: red" v-if="required">*</span></label
     >
-    <Field :name="name" v-slot="{ field, meta, errors }">
+    <Field :name="name || ''" v-slot="{ field }">
       <input
         v-bind="field"
         :type="type"
@@ -12,8 +12,8 @@
       />
     </Field>
 
-    <ErrorMessage :name="name" v-slot="{ message }">
-      <div class="invalid-feedback">{{ formatError(message) }}</div>
+    <ErrorMessage :name="name || ''" v-slot="{ message }">
+      <div class="invalid-feedback">{{ formatError(message || "") }}</div>
     </ErrorMessage>
   </div>
 </template>
