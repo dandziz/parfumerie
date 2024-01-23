@@ -106,7 +106,7 @@
             <a href="" style="color: #ff0000"
               ><Icon name="mdi:youtube" size="30" /></a>
             <a href="" style="color: #ff0000" class="footer-connect"
-              ><img src="~/assets/images/footer/map.png" alt=""
+              ><img src="/images/footer/map.png" alt=""
             /></a>
           </div>
         </div>

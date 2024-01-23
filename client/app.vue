@@ -1,7 +1,9 @@
 <script setup lang="ts">
-let layout = "default";
+import type { MaybeRef } from 'vue';
+
+let layout = ref<MaybeRef>("default");
 const route = useRoute();
-if (route.path.startsWith('/admin'))  layout = "admin";
+if (route.path.startsWith('/admin'))  layout.value = "admin";
 </script>
 
 <template>

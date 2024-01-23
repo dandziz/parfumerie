@@ -89,12 +89,7 @@ export default defineComponent({
                 <VTextInput name="password" :label="$t('password')" placeholder="Password" />
               </div>
               <div>
-                <button
-                  class="btn btn-submit rounded-0 me-2 d-flex align-items-center gap-2"
-                  name="submit"
-                  :disabled="loading"
-                  type="submit"
-                >
+                <EffectButton>
                   ĐĂNG NHẬP
                   <VProgressCircular
                     indeterminate
@@ -103,7 +98,7 @@ export default defineComponent({
                     :size="20"
                     v-if="loading"
                   />
-                </button>
+                </EffectButton>
               </div>
             </Form>
           </div>

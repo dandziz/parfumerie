@@ -1,7 +1,3 @@
-a {
-    color: white;
-}
-
 a:hover {
     --bs-link-color-rgb: none;
 }

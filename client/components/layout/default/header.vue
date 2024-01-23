@@ -1,9 +1,11 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-    <div class="container-fluid">
+    <div class="d-flex">
+      <SearchInput></SearchInput>
+      
       <NuxtLink to="/" class="logo_wrapper d-flex align-items-center justify-content-center">
         <div class="navbar-brand" href="index.php">
-          <img src="~/assets/images/header/logo.png" class="logo" alt="" />
+          <img src="/images/header/logo.png" class="logo" alt="" />
         </div>
       </NuxtLink>
       <button
@@ -19,55 +21,6 @@
       <!-- Sidebar -->
       <LayoutDefaultSidebar />
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form
-          action="index.php"
-          method="GET"
-          class="d-flex d-flex align-items-center input-group mb-0"
-          role="search"
-          style="max-width: 30%"
-        >
-          <input type="text" name="controller" value="NuocHoa" hidden />
-          <input type="text" name="action" value="SanPham" hidden />
-          <input
-            class="form-control"
-            type="search"
-            name="query"
-            placeholder="Tìm kiếm sản phẩm"
-            aria-label="Search"
-          />
-          <button
-            class="btn rounded-0"
-            style="background-color: #ffffff; height: 37.6px; border-color: #dee2e6"
-            name="submit"
-            type="submit"
-          >
-            <Icon name="ic:baseline-search" color="black" size="24" />
-          </button>
-        </form>
-        <div class="navbar-nav ms-auto mb-2 mb-lg-0 text-white">
-          <div class="header-myAccount" style="border-right-style: solid">
-            <p class="p-14-bold mt-3">Xin chào, Khách</p>
-            <p class="p-12-bold mt-3">
-              <NuxtLink to="/login">Đăng nhập</NuxtLink>
-              <span class="p-12"> hoặc </span>
-              <NuxtLink to="/register">Đăng ký</NuxtLink>
-            </p>
-          </div>
-          <div class="ms-3 me-5 header-myFavorites">
-            <a href="index.php?controller=khachhang&action=yeuthich" class="me-4" style="color: white">
-              <Icon name="material-symbols:favorite" size="24" />
-            </a>
-            <a
-              href="index.php?controller=khachhang&action=giohang"
-              style="color: white; position: relative"
-            >
-              <div class="soLuongGioHang"><p class="numberOfCart p-13">0</p></div>
-              <Icon name="material-symbols:shopping-cart-rounded" size="24" />
-            </a>
-          </div>
-        </div>
-      </div>
     </div>
   </nav>
   <ul

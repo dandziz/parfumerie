@@ -16,36 +16,41 @@
       />
     </div>
     <v-divider></v-divider>
+    
+    <v-list v-model:opened="open">
+      <v-list-item prepend-icon="mdi-home-outline" title="Dashboard"></v-list-item>
 
-    <v-list
-      v-for="(items, index) in listItems"
-      :class="{ 'p-3': !expand_on_hover }"
-      density="compact"
-      :key="index"
-      nav
-    >
-      <p v-if="!expand_on_hover" class="text-subtitle-2 text-uppercase">
-        {{ items.title }}
-      </p>
-      <template v-for="(item, ind) in items.children" :key="ind">
-        <v-list-item
-          v-if="!item.children"
-          :active="$route.name === item.name"
-          active-class="v-list-item__active"
-          :prepend-icon="item.icon"
-          :title="item.title"
-          value="myfiles"
-        ></v-list-item>
-        <v-list-group :title="item.title" v-else :prepend-icon="item.icon">
-          <v-list-item>OK</v-list-item>
-        </v-list-group>
-      </template>
+      <v-list-group value="Users">
+        <template v-slot:activator="{ props }">
+          <v-list-item
+            v-bind="props"
+            prepend-icon="mdi-account-circle-outline"
+            title="Users"
+          ></v-list-item>
+        </template>
+
+        <v-list-item prepend-icon="mdi-format-list-bulleted-square" title="User List"></v-list-item>
+        <v-list-item prepend-icon="mdi-account-plus-outline" title="Create New User"></v-list-item>
+      </v-list-group>
+
+      <v-list-group value="Perfumes">
+        <template v-slot:activator="{ props }">
+          <v-list-item
+            v-bind="props"
+            prepend-icon="mdi-account-circle-outline"
+            title="Perfumes"
+          ></v-list-item>
+        </template>
+
+        <v-list-item prepend-icon="mdi-format-list-bulleted-square" title="Perfumes List"></v-list-item>
+        <v-list-item prepend-icon="mdi-account-plus-outline" title="Create New Perfume"></v-list-item>
+      </v-list-group>
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script lang="ts">
-export default defineComponent({
+export default {
   data() {
     return {
       listItems: [
@@ -77,6 +82,17 @@ export default defineComponent({
           ],
         },
       ],
+      open: ["Users"],
+      admins: [
+        ["Management", "mdi-account-multiple-outline"],
+        ["Settings", "mdi-cog-outline"],
+      ],
+      cruds: [
+        ["Create", "mdi-plus-outline"],
+        ["Read", "mdi-file-outline"],
+        ["Update", "mdi-update"],
+        ["Delete", "mdi-delete"],
+      ],
     };
   },
   props: {
@@ -98,7 +114,7 @@ export default defineComponent({
       this.$emit("handleDrawerUpdate");
     },
   },
-});
+};
 </script>
 
 <style scoped>
@@ -121,14 +137,23 @@ export default defineComponent({
 .v-navigation-drawer--is-hovering .sidebar-logo__mini {
   height: 24px;
 }
+
+.v-list-group__items .v-list-item {
+  padding-inline-start: 42px !important;
+}
 </style>
 
 <style>
+.v-list-item {
+  transition: 0.2s ease-in-out;
+}
 .v-list-item-title {
   font-size: 15px !important;
 }
 .v-list-item:hover {
   color: #bccee4;
+  background: #3D4552;
+  cursor: pointer;
 }
 
 .v-list-item__active {

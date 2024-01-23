@@ -67,9 +67,7 @@
             class="btn btn-outline-light rounded-0"
             style="transform: translateX(5px)"
           >
-            <a href="index.php?controller=KhachHang&action=DangKy" class="text-white"
-              >ĐĂNG KÝ</a
-            >
+            ĐĂNG KÝ
           </button>
         </div>
         <div class="d-flex justify-content-center mt-3">
