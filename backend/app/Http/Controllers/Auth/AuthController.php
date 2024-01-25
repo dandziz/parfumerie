@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Customer\Auth;
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginPostRequest;
@@ -36,9 +36,8 @@ class AuthController extends Controller
                 ]
             ]], 200);
         } else {
-            return response()->json(['status' => false, 'message' => [
-                'Invalid credentials!'
-            ]], 401);
+            return response()->json(['status' => false, 'message' => 'Invalid credentials!'
+            ], 401);
         }
     }
 
@@ -46,7 +45,7 @@ class AuthController extends Controller
     {
         $user = Auth::guard('api')->user();
         $user->token()->revoke();
-        return response()->json(['status' => true, 'message' => ['Logout successfully!']], 200);
+        return response()->json(['status' => true, 'message' => 'Logout successfully!'], 200);
     }
 
     /**

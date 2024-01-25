@@ -138,6 +138,8 @@
       <path value="$PROJECT_DIR$/backend/vendor/symfony/polyfill-uuid" />
       <path value="$PROJECT_DIR$/backend/vendor/fruitcake/php-cors" />
       <path value="$PROJECT_DIR$/backend/vendor/spatie/laravel-permission" />
+      <path value="$PROJECT_DIR$/backend/vendor/bensampo/laravel-enum" />
+      <path value="$PROJECT_DIR$/backend/vendor/laminas/laminas-code" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
