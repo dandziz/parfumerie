@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-export default defineComponent({
+export default {
   data() {
     return {
       expand_on_hover: false,
@@ -54,7 +54,7 @@ export default defineComponent({
       this.toggleSidebar()
     },
   },
-});
+};
 </script>
 
 <style scoped>

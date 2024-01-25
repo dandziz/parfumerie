@@ -1,6 +1,7 @@
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
+import { vi } from 'vuetify/locale'
 
 export default defineNuxtPlugin((app) => {
   const vuetify = createVuetify({
@@ -13,6 +14,10 @@ export default defineNuxtPlugin((app) => {
           }
         },
       },
+    },
+    locale: {
+      locale: 'vi',
+      messages: { vi }
     },
   })
   app.vueApp.use(vuetify)

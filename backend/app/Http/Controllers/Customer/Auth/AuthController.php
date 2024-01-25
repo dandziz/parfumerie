@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -25,7 +26,8 @@ class AuthController extends Controller
         $check = Auth::attempt($input);
         if ($check) {
             $user = Auth::user();
-            $token = $user->createToken('example')->accessToken;
+            $token = $user->createToken($user->name)->accessToken;
+            Log::info('User failed to login.', ['id' => $user->id]);
             return response()->json(['status' => true, 'data' => [
                 'user' => $user,
                 'token' => [

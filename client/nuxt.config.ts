@@ -6,7 +6,6 @@ export default {
   devtools: { enabled: true },
   css: [
     "bootstrap/dist/css/bootstrap.css",
-    "./assets/css/header.css",
     "./assets/css/global.css",
   ],
   buildModules: ["@nuxtjs/style-resources"],
@@ -42,24 +41,19 @@ export default {
         transformAssetUrls,
       },
     },
-    css: {
-      preprocessorOptions: {
-        scss: {
-          additionalData: `@use "~/assets/vars/_colors.scss" as *;
-                          @use "~/assets/abstracts/_mixins.scss" as *;
-          `,
-        },
-      },
-    },
   },
   i18n: {
     vueI18n: "./configs/i18n",
   },
   alias: {
     "~assets": "assets",
+    "@types": fileURLToPath(new URL('./types', import.meta.url))
   },
   vuetify: {
     treeShake: true,
     customVariables: ["~/assets/styles/variables/_vuetify.scss"],
+    lang: {
+      current: 'vi',
+    },
   },
 };

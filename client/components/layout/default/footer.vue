@@ -87,11 +87,11 @@
           <p class="p-14-bold">PHƯƠNG THỨC THANH TOÁN</p>
           <div class="d-flex flex-row">
             <div style="align-items: center" class="me-3">
-              <span class="material-icons"> account_balance </span>
+              <Icon name="ic:baseline-account-balance" size="24px" />
               <p class="p-13">Internet Banking</p>
             </div>
             <div style="align-items: center">
-              <span class="material-icons"> payments </span>
+              <Icon name="material-symbols-light:payments-sharp" size="24px" />
               <p class="p-13">Tiền Mặt</p>
             </div>
           </div>
@@ -122,11 +122,11 @@
             method="POST"
             onsubmit="return validateForm_2()"
           >
-            <div class="col-md-4">
+            <div class="col-md-3">
               <input
                 type="text"
                 name="hoten"
-                class="form-control"
+                class="form-control rounded-sm"
                 id="hoten"
                 placeholder="Họ và tên"
                 required
@@ -143,8 +143,8 @@
               />
               <span class="helpEmail p-12-bold"></span>
             </div>
-            <div class="col-md-3">
-              <button class="btn btn-submit" name="submit-btn" type="submit">
+            <div class="col-md-4">
+              <button class="btn btn-submit btn-user-submit" name="submit-btn" type="submit">
                 Đăng ký
               </button>
             </div>
@@ -167,6 +167,11 @@
   }
   .register-info {
     width: 90%;
+  }
+}
+@media screen and (max-width: 992px) {
+  .btn-user-submit {
+    font-size: 14px;
   }
 }
 </style>

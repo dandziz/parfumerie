@@ -11,7 +11,7 @@
     <div class="p-2 d-flex justify-content-center pt-5 mt-1">
       <img
         :class="{ 'sidebar-logo': !rail, 'sidebar-logo__mini': rail }"
-        src="~/assets/images/sidebar/logo.png"
+        src="/images/sidebar/logo.png"
         alt=""
       />
     </div>
