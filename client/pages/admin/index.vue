@@ -6,3 +6,16 @@
     </div>
   </v-card>
 </template>
+
+<script>
+export default {
+  setup () {
+    definePageMeta({ layout: 'admin' })
+    return {}
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>

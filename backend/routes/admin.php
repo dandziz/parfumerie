@@ -12,6 +12,7 @@
 */
 
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\PerfumeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:api', 'manage'])->controller(BrandController::class)->group(function() {
@@ -19,6 +20,13 @@ Route::middleware(['auth:api', 'manage'])->controller(BrandController::class)->g
     Route::post('brands', 'store');
     Route::get('brands/{brand}', 'show');
     Route::put('brands/{brand}', 'update');
+});
+
+Route::middleware(['auth:api', 'manage'])->controller(PerfumeController::class)->group(function() {
+    Route::get('perfumes', 'index');
+    Route::post('perfumes', 'store');
+    Route::get('perfumes/{perfume}', 'show');
+    Route::put('perfumes/{perfume}', 'update');
 });
 
 Route::middleware(['auth:api', 'admin'])->group(function () {

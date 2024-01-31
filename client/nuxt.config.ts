@@ -46,9 +46,10 @@ export default {
     vueI18n: "./configs/i18n",
   },
   alias: {
-    "~assets": "assets",
+    "~assets": fileURLToPath(new URL('./assets', import.meta.url)),
     "@types": fileURLToPath(new URL('./types', import.meta.url)),
-    "@axios": fileURLToPath(new URL('./configs/axios.config.ts', import.meta.url))
+    "@axios": fileURLToPath(new URL('./configs/axios.config.ts', import.meta.url)),
+    "@config": fileURLToPath(new URL('./configs', import.meta.url))
   },
   vuetify: {
     treeShake: true,

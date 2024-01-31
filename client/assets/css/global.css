@@ -20,6 +20,11 @@ body {
     /* -moz-user-select: none; */
     /* -ms-user-select: none; */
     /* user-select: none; */
+    overflow: hidden;
+}
+
+html.frozen {
+    overflow: hidden;
 }
 
 a:hover {

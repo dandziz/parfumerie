@@ -6,15 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StorePerfumeRequest;
 use App\Http\Requests\Admin\UpdatePerfumeRequest;
 use App\Models\Perfume;
+use Illuminate\Http\Request;
 
 class PerfumeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = $request->except(['itemPerPage', 'page']);
+        $perfumes = Perfume::query();
+        return getItems($request, $query, $perfumes);
     }
 
     /**

@@ -1,11 +1,11 @@
 <template>
   <div class="sidebar" :class="{'active': activeSidebar}">
-    <Backdrop v-if="activeSidebar" @clickBackdrop="clickBackdrop" />
+    <Backdrop v-if="activeSidebar" @clickBackdrop="handleClickBackdrop" />
     <Icon
       name="material-symbols-light:close"
       class="sidebar-close"
       size="32px"
-      @click="clickBackdrop"
+      @click="handleClickBackdrop"
     />
     <div class="sidebar-info">
       <div class="sidebar-avatar">
@@ -115,11 +115,6 @@ export default {
       default: false,
     }
   },
-  methods: {
-    clickBackdrop() {
-      this.$emit('unactiveSidebar')
-    }
-  },
   mounted () {
     window.addEventListener('resize', this.handleResize);
   },
@@ -135,6 +130,9 @@ export default {
       if (this.windowWidth >= 992) {
         this.$emit('unactiveSidebar')
       }
+    },
+    handleClickBackdrop() {
+      this.$emit('unactiveSidebar')
     }
   }
 }

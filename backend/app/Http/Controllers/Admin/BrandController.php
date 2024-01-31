@@ -18,18 +18,7 @@ class BrandController extends Controller
     {
         $query = $request->except(['itemPerPage', 'page']);
         $brands = Brand::query();
-        foreach ($query as $key => $item) {
-            $brands->where($key, 'like', '%'.$item.'%');
-        }
-        $itemPerPage = $request->has('itemPerPage') ? (int)$request->get('itemPerPage') : 10;
-        $pageNumber = $request->has('page') ? (int)$request->get('page') : 1;
-        $brands = $brands->paginate($itemPerPage, ['*'], 'page', $pageNumber);
-        return response()->json([
-            "status" => true,
-            "message" => __('success'),
-            "pagination" => convertTypeOfPagination($brands),
-            "data" => $brands->items(),
-        ], 200);
+        return getItems($request, $query, $brands);
     }
 
     /**

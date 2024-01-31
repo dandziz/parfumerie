@@ -1,6 +1,6 @@
 <template>
   <div>
-    <LayoutDefaultSidebar :activeSidebar="activeSidebar" @unactiveSidebar="activeSidebar=false" />
+    <LayoutDefaultSidebar :activeSidebar="activeSidebar" @unactiveSidebar="unactiveSidebar" />
     <nav class="navbar navbar-expand-lg navbar-dark bg-success flex-column">
       <div class="w-100 container-info">
         <div class="container-fluid d-flex justify-content-between">
@@ -23,7 +23,7 @@
               <p class="p-12-bold mt-3">
                 <NuxtLink to="/customer">Đăng nhập</NuxtLink>
                 <span class="p-12"> hoặc </span>
-                <NuxtLink to="/register">Đăng ký</NuxtLink>
+                <NuxtLink to="/admin">Đăng ký</NuxtLink>
               </p>
             </div>
             <div class="ms-3 me-5 header-myFavorites">
@@ -128,6 +128,16 @@ export default {
   },
   computed: {
     ...mapState("brand", ["brands"]),
+  },
+  methods: {
+    unactiveSidebar() {
+      this.activeSidebar = false
+    }
+  },
+  watch: {
+    activeSidebar(newValue, oldValue) {
+      document.documentElement.classList.toggle('frozen')
+    }
   },
 }
 </script>

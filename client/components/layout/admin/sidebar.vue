@@ -16,9 +16,16 @@
       />
     </div>
     <v-divider></v-divider>
-    
+
     <v-list v-model:opened="open">
-      <v-list-item prepend-icon="mdi-home-outline" title="Dashboard"></v-list-item>
+      <div v-for="(item, index) in navigation" :key="index">
+        <v-list-item
+          v-if="!item.hasOwnProperty('children')"
+          prepend-icon="mdi-home-outline"
+          title="Dashboard"
+          :to="item.to"
+        ></v-list-item>
+      </div>
 
       <v-list-group value="Users">
         <template v-slot:activator="{ props }">
@@ -29,8 +36,14 @@
           ></v-list-item>
         </template>
 
-        <v-list-item prepend-icon="mdi-format-list-bulleted-square" title="User List"></v-list-item>
-        <v-list-item prepend-icon="mdi-account-plus-outline" title="Create New User"></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-format-list-bulleted-square"
+          title="User List"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-account-plus-outline"
+          title="Create New User"
+        ></v-list-item>
       </v-list-group>
 
       <v-list-group value="Perfumes">
@@ -42,15 +55,26 @@
           ></v-list-item>
         </template>
 
-        <v-list-item prepend-icon="mdi-format-list-bulleted-square" title="Perfumes List"></v-list-item>
-        <v-list-item prepend-icon="mdi-account-plus-outline" title="Create New Perfume"></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-format-list-bulleted-square"
+          title="Perfumes List"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-account-plus-outline"
+          title="Create New Perfume"
+        ></v-list-item>
       </v-list-group>
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script lang="ts">
+import navigation from "@config/navigation";
 export default {
+  setup() {
+    console.log(navigation);
+    return { navigation };
+  },
   data() {
     return {
       listItems: [
@@ -152,7 +176,7 @@ export default {
 }
 .v-list-item:hover {
   color: #bccee4;
-  background: #3D4552;
+  background: #3d4552;
   cursor: pointer;
 }
 
