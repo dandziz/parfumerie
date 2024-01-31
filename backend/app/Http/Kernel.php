@@ -2,7 +2,10 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Admin;
+use App\Http\Middleware\Manage;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Spatie\Permission\Middleware\RoleMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -66,5 +69,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'verified.api' => \App\Http\Middleware\EnsureApiEmailIsVerified::class,
+        'role' => RoleMiddleware::class,
+        'manage' => Manage::class,
+        'admin' => Admin::class
     ];
 }

@@ -73,8 +73,8 @@
         <div class="content-th shadow">
           <div class="container-fluid bg-cream">
             <ul class="row p-3">
-              <li class="col-md-15">
-                <a></a>
+              <li class="col-md-15" v-for="(item, index) in brands" :key="index">
+                <a>{{ item.name }}</a>
               </li>
             </ul>
           </div>
@@ -119,11 +119,15 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
       activeSidebar: false,
     }
-  }
+  },
+  computed: {
+    ...mapState("brand", ["brands"]),
+  },
 }
 </script>

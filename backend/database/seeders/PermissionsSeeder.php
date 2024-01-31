@@ -18,10 +18,10 @@ class PermissionsSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        Permission::create(['name' => 'add perfumes']);
-        $admin = Role::create(['name' => 'admin']);
-        $manager = Role::create(['name' => 'manager']);
-        $user = Role::create(['name' => 'user']);
+        Permission::create(['name' => 'add perfumes', 'guard_name' => 'api']);
+        $admin = Role::create(['name' => 'admin', 'guard_name' => 'api']);
+        $manager = Role::create(['name' => 'manager', 'guard_name' => 'api']);
+        $user = Role::create(['name' => 'user', 'guard_name' => 'api']);
 
         $adminUser = User::factory()->create([
             'name' => 'Local Admin',
@@ -32,7 +32,7 @@ class PermissionsSeeder extends Seeder
             'status' => 1,
         ]);
 
-        $adminUser->hasRole($admin);
+        $adminUser->assignRole($admin);
 
         $manageUser = User::factory()->create([
             'name' => 'Local Manager',
@@ -43,7 +43,7 @@ class PermissionsSeeder extends Seeder
             'status' => 1,
         ]);
 
-        $manageUser->hasRole($manager);
+        $manageUser->assignRole($manager);
 
         $userNormal = User::factory()->create([
             'name' => 'Dao Duy Dan',
@@ -55,6 +55,6 @@ class PermissionsSeeder extends Seeder
             'status' => 0,
         ]);
 
-        $userNormal->hasRole($user);
+        $userNormal->assignRole($user);
     }
 }

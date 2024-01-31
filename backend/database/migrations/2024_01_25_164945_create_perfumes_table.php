@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('perfumes', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 100);
+            $table->string('code', 100)->unique();
             $table->string('name', 100);
             $table->tinyInteger('gender');
             $table->string('origin');
@@ -30,6 +30,7 @@ return new class extends Migration
             $table->foreign('supplier_id')->references('id')->on('suppliers');
             $table->foreign('brand_id')->references('id')->on('brands');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

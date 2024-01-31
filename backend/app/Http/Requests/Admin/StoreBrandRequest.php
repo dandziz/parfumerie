@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Admin;
 
 use App\Http\Requests\BaseRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -9,7 +9,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 
-class LoginPostRequest extends BaseRequest
+class StoreBrandRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,15 +27,7 @@ class LoginPostRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            "email"=> [
-                "required",
-                "string",
-                "email"
-            ],
-            "password"=> [
-                "required",
-                "string"
-            ],
+            'name' => ['required'],
         ];
     }
 

@@ -1,2 +1,8 @@
-php artisan make:model Flight
-php artisan make:controller Flight
+php artisan make:model Brand -fs --policy
+php artisan make:controller Admin/BrandController
+php artisan make:request Admin/StoreBrandRequest
+php artisan passport:client --personal
+a make:middleware CheckAdmin
+php artisan lang:publish
+
+alias ac=php artisan make:controller $*

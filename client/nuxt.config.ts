@@ -47,7 +47,8 @@ export default {
   },
   alias: {
     "~assets": "assets",
-    "@types": fileURLToPath(new URL('./types', import.meta.url))
+    "@types": fileURLToPath(new URL('./types', import.meta.url)),
+    "@axios": fileURLToPath(new URL('./configs/axios.config.ts', import.meta.url))
   },
   vuetify: {
     treeShake: true,

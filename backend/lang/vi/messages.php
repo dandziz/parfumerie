@@ -1,5 +1,8 @@
 <?php
 return [
-    'welcome' => 'Chào mừng tới ứng dụng của chúng tôi!',
-    'I love programming.' => 'Tôi yêu lập trình.'
+    'success' => 'Thành công!',
+    'brand' => 'thuơng hiệu',
+    'createFailed' => 'Thêm :name thất bại!',
+    'updateFailed' => 'Cập nhật :name thất bại!',
+    'deleteFailed' => 'Xóa :name thất bại!',
 ];

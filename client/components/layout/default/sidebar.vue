@@ -102,7 +102,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
+  data() {
+    return {
+      windowWidth: window.innerWidth,
+    }
+  },
   props: {
     activeSidebar: {
       type: Boolean,
@@ -112,6 +118,23 @@ export default {
   methods: {
     clickBackdrop() {
       this.$emit('unactiveSidebar')
+    }
+  },
+  mounted () {
+    window.addEventListener('resize', this.handleResize);
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+  computed: {
+    ...mapState("brand", ["brands"]),
+  },
+  methods: {
+    handleResize() {
+      this.windowWidth = window.innerWidth;
+      if (this.windowWidth >= 992) {
+        this.$emit('unactiveSidebar')
+      }
     }
   }
 }

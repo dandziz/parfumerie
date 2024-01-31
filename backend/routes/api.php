@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Customer\User\UserController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::controller(HomeController::class)->group(function() {
+    Route::get('brands', 'getAllBrands');
+});
 
 Route::controller(AuthController::class)->group(function() {
     Route::post('login', 'login');

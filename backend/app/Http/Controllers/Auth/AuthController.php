@@ -23,7 +23,7 @@ class AuthController extends Controller
     public function login(LoginPostRequest $request): JsonResponse
     {
         $input = $request->validated();
-        $check = Auth::attempt($input);
+        $check = Auth::guard()->attempt($input);
         if ($check) {
             $user = Auth::user();
             $token = $user->createToken($user->name)->accessToken;
