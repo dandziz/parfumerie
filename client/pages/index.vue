@@ -120,7 +120,7 @@
           <swiper
             :slidesPerView="numberInformations"
             :navigation="true"
-            :spaceBetween="10"
+            :spaceBetween="15"
             :modules="modules"
             class="maleSlider"
           >

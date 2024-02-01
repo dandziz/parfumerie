@@ -9,6 +9,7 @@
       />
       <v-main style="height: 250px; position: relative">
         <LayoutAdminHeader @toggleSidebar="toggleSidebar" />
+        <AdminBreadcrumb></AdminBreadcrumb>
         <div class="p-3 admin-content">
           <slot></slot>
         </div>
@@ -41,6 +42,7 @@ export default {
         if (this.expand_on_hover === false && this.rail === false && this.$vuetify.display.width > 1280) {
           this.expand_on_hover = true
           this.rail = true
+
         } else {
           this.show = false
           this.expand_on_hover = false
@@ -63,5 +65,6 @@ export default {
 }
 .v-main {
   background-color: #fafbfe;
+  height: auto !important;
 }
 </style>

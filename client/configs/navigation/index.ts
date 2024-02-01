@@ -1,22 +1,22 @@
 export default [
   {
     title: 'Dashboard',
-    to: { name: 'index' },
+    to: { name: 'admin' },
     icon: { icon: 'mdi-home-outline' },
   },
   {
     title: 'Quản lý nước hoa',
-    icon: { icon: 'icon-park-solid:perfume' },
+    icon: { icon: 'mdi-bottle-soda-classic-outline' },
     children: [
       {
         title: 'Danh sách nước hoa',
-        to: { name: 'user' },
-        icon: { icon: 'material-symbols:format-list-bulleted-rounded' },
+        to: { name: 'admin-perfume' },
+        icon: { icon: 'mdi-list-box-outline' },
       },
       {
         title: 'Thêm nước hoa',
-        to: { name: 'user-create' },
-        icon: { icon: 'material-symbols:add-circle-outline' },
+        to: { name: 'admin-perfume-create' },
+        icon: { icon: 'mdi-plus-box-outline' },
       },
     ],
   },

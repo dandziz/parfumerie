@@ -7,63 +7,42 @@
     width="260"
     mobile-breakpoint="md"
     @update:model-value="handleDrawerUpdate"
+    @update:rail="handleUpdateRail"
   >
-    <div class="p-2 d-flex justify-content-center pt-5 mt-1">
+    <NuxtLink to="/" class="p-2 d-flex justify-content-center pt-5 mt-1">
       <img
         :class="{ 'sidebar-logo': !rail, 'sidebar-logo__mini': rail }"
         src="/images/sidebar/logo.png"
         alt=""
       />
-    </div>
+    </NuxtLink>
     <v-divider></v-divider>
 
-    <v-list v-model:opened="open">
+    <v-list :opened="opened">
       <div v-for="(item, index) in navigation" :key="index">
         <v-list-item
           v-if="!item.hasOwnProperty('children')"
-          prepend-icon="mdi-home-outline"
-          title="Dashboard"
+          :prepend-icon="item.icon.icon"
+          :title="item.title"
           :to="item.to"
         ></v-list-item>
+        <v-list-group v-else :value="item.title">
+          <template v-slot:activator="{ props }">
+            <v-list-item
+              v-bind="props"
+              :prepend-icon="item.icon.icon"
+              :title="item.title"
+            ></v-list-item>
+          </template>
+          <v-list-item
+            v-for="(child, ind) in item.children"
+            :prepend-icon="child.icon.icon"
+            :title="child.title"
+            :key="ind"
+            :to="child.to"
+          ></v-list-item>
+        </v-list-group>
       </div>
-
-      <v-list-group value="Users">
-        <template v-slot:activator="{ props }">
-          <v-list-item
-            v-bind="props"
-            prepend-icon="mdi-account-circle-outline"
-            title="Users"
-          ></v-list-item>
-        </template>
-
-        <v-list-item
-          prepend-icon="mdi-format-list-bulleted-square"
-          title="User List"
-        ></v-list-item>
-        <v-list-item
-          prepend-icon="mdi-account-plus-outline"
-          title="Create New User"
-        ></v-list-item>
-      </v-list-group>
-
-      <v-list-group value="Perfumes">
-        <template v-slot:activator="{ props }">
-          <v-list-item
-            v-bind="props"
-            prepend-icon="mdi-account-circle-outline"
-            title="Perfumes"
-          ></v-list-item>
-        </template>
-
-        <v-list-item
-          prepend-icon="mdi-format-list-bulleted-square"
-          title="Perfumes List"
-        ></v-list-item>
-        <v-list-item
-          prepend-icon="mdi-account-plus-outline"
-          title="Create New Perfume"
-        ></v-list-item>
-      </v-list-group>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -72,51 +51,12 @@
 import navigation from "@config/navigation";
 export default {
   setup() {
-    console.log(navigation);
     return { navigation };
   },
   data() {
     return {
-      listItems: [
-        {
-          title: "Dashboard",
-          children: [
-            {
-              icon: "mdi-home",
-              title: "Dashboard",
-              name: "admin",
-            },
-            {
-              icon: "mdi-information",
-              title: "User",
-              name: "User",
-              children: [
-                {
-                  icon: "mdi-information",
-                  title: "List Of Users",
-                  name: "User List",
-                },
-                {
-                  icon: "mdi-information",
-                  title: "Create New User",
-                  name: "Create User",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      open: ["Users"],
-      admins: [
-        ["Management", "mdi-account-multiple-outline"],
-        ["Settings", "mdi-cog-outline"],
-      ],
-      cruds: [
-        ["Create", "mdi-plus-outline"],
-        ["Read", "mdi-file-outline"],
-        ["Update", "mdi-update"],
-        ["Delete", "mdi-delete"],
-      ],
+      opened: [],
+      groupOpened: []
     };
   },
   props: {
@@ -137,6 +77,20 @@ export default {
     handleDrawerUpdate(): void {
       this.$emit("handleDrawerUpdate");
     },
+    handleUpdateRail(value: boolean) {
+      if (value) this.opened = []
+    },
+    handleUpdateOpen(value: any) {
+      console.log(value);
+    }
+  },
+  watch: {
+    rail(newValue: boolean) {
+      if (newValue) this.opened = []
+    },
+    groupOpened(newValue: Array<string>) {
+      console.log(newValue);
+    }
   },
 };
 </script>

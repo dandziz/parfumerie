@@ -7,12 +7,15 @@
   </v-card>
 </template>
 
-<script>
+<script setup lang="ts">
+definePageMeta({
+  layout: 'admin'
+})
+</script>
+
+<script lang="ts">
 export default {
-  setup () {
-    definePageMeta({ layout: 'admin' })
-    return {}
-  }
+  
 }
 </script>
 

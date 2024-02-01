@@ -7,6 +7,7 @@ export default {
   css: [
     "bootstrap/dist/css/bootstrap.css",
     "./assets/css/global.css",
+    "nprogress/nprogress.css"
   ],
   buildModules: ["@nuxtjs/style-resources"],
   styleResources: {
@@ -19,6 +20,9 @@ export default {
     transpile: ["vuetify"],
   },
   plugins: [],
+  app: {
+    pageTransition: { name: 'page', mode: 'in-out' },
+  },
   modules: [
     (
       _options: any,

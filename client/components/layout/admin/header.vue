@@ -1,21 +1,41 @@
 <template>
-  <div class="admin-header text-black">
-    <div class="left-header">
-      <Icon name="ic:baseline-menu" class="cursor-pointer" size="24" @click="handleToggleSidebar" />
-    </div>
-    <div class="right-header">
-      <Icon class="me-3 cursor-pointer" size="28" name="material-symbols:notifications-unread-outline-rounded" />
-      <Icon class="me-3 cursor-pointer" size="28" name="material-symbols:language" />
-      <v-menu transition="slide-y-transition">
-        <template v-slot:activator="{ props }">
-          <Icon class="cursor-pointer" v-bind="props" size="28" name="material-symbols:account-circle-full" />
-        </template>
-        <v-list>
-          <v-list-item v-for="(item, i) in items" :key="i">
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+  <div>
+    <div class="admin-header text-black">
+      <div class="left-header">
+        <Icon
+          name="ic:baseline-menu"
+          class="cursor-pointer"
+          size="24"
+          @click="handleToggleSidebar"
+        />
+      </div>
+      <div class="right-header">
+        <Icon
+          class="me-3 cursor-pointer"
+          size="28"
+          name="material-symbols:notifications-unread-outline-rounded"
+        />
+        <Icon
+          class="me-3 cursor-pointer"
+          size="28"
+          name="material-symbols:language"
+        />
+        <v-menu transition="slide-y-transition">
+          <template v-slot:activator="{ props }">
+            <Icon
+              class="cursor-pointer"
+              v-bind="props"
+              size="28"
+              name="material-symbols:account-circle-full"
+            />
+          </template>
+          <v-list>
+            <v-list-item v-for="(item, i) in userItems" :key="i">
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
     </div>
   </div>
 </template>
@@ -24,22 +44,24 @@
 export default defineComponent({
   data() {
     return {
-      items: [
+      userItems: [
         {
-          title: "Dand"
+          title: "Dand",
         },
         {
-          title: "Da Ziz"
-        }
-      ]
-    }
+          title: "Da Ziz",
+        },
+      ],
+    };
   },
   methods: {
-    handleToggleSidebar (): void {
-      this.$emit('toggleSidebar')
-    }
-  }
-})
+    handleToggleSidebar(): void {
+      this.$emit("toggleSidebar");
+    },
+  },
+  computed: {
+  },
+});
 </script>
 
 <style scoped>
@@ -52,7 +74,7 @@ export default defineComponent({
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content:space-between;
+  justify-content: space-between;
 }
 .right-header {
   color: #98a6ad;
