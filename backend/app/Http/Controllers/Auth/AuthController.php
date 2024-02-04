@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -26,17 +27,22 @@ class AuthController extends Controller
         $check = Auth::guard()->attempt($input);
         if ($check) {
             $user = Auth::user();
-            $token = $user->createToken($user->name)->accessToken;
-            Log::info('User failed to login.', ['id' => $user->id]);
-            return response()->json(['status' => true, 'data' => [
-                'user' => $user,
-                'token' => [
-                    'access_token' => $token,
-                    'token_type' => 'Bearer'
-                ]
-            ]], 200);
+            if ($user->email_verified_at != null) {
+                $token = $user->createToken($user->name)->accessToken;
+                return response()->json(['status' => true, 'data' => [
+                    'user' => $user,
+                    'token' => [
+                        'access_token' => $token,
+                        'token_type' => 'Bearer'
+                    ],
+                    'user_ability' => [$user->roles[0]->name, getPermissions($user->roles[0]->permissions)]
+                ]], 200);
+            } else {
+                return response()->json(['status' => false, 'message' => __('messages.emailNotVerified')
+                ], 403);
+            }
         } else {
-            return response()->json(['status' => false, 'message' => 'Invalid credentials!'
+            return response()->json(['status' => false, 'message' => __('messages.invalidCredentials')
             ], 401);
         }
     }

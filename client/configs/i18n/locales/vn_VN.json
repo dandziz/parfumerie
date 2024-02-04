@@ -1,5 +1,16 @@
 {
     "name": "Họ và tên",
     "email": "Email",
-    "password": "Mật khẩu"
+    "password": "Mật khẩu",
+    "login": "Đăng nhập",
+    "loginTitle": "Đăng nhập tài khoản",
+    "notHaveAccount": "Bạn chưa có tài khoản",
+    "registerHere": "đăng ký tại đây",
+    "forgotPassword": "Quên mật khẩu?",
+    "resetPassword": "Đặt lại mật khẩu",
+    "passwordRetrieval": "Lấy lại mật khẩu",
+    "comeBackHere": "Quay lại tại đây",
+    "loginFailed": "Đăng nhập thất bại!",
+    "emailNotVerified": "Tài khoản của bạn chưa xác thực email, hãy xác thực email của bạn",
+    "requestResendEmail": "hoặc nhấn vào đây để nhận lại email"
 }

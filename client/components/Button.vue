@@ -33,7 +33,7 @@ export default {
       if (this.componentType === "button") {
         return "button";
       } else if (this.componentType === "link") {
-        return "NuxtLink";
+        return defineNuxtLink({});
       } else {
         return "div";
       }

@@ -20,7 +20,7 @@
           size="28"
           name="material-symbols:language"
         />
-        <v-menu transition="slide-y-transition">
+        <v-menu content-class="v-menu-mixin" transition="slide-y-transition">
           <template v-slot:activator="{ props }">
             <Icon
               class="cursor-pointer"
@@ -29,8 +29,8 @@
               name="material-symbols:account-circle-full"
             />
           </template>
-          <v-list>
-            <v-list-item v-for="(item, i) in userItems" :key="i">
+          <v-list class="p-0">
+            <v-list-item :prepend-icon="item.icon" v-for="(item, i) in userItems" :key="i">
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item>
           </v-list>
@@ -46,10 +46,12 @@ export default defineComponent({
     return {
       userItems: [
         {
-          title: "Dand",
+          title: "Thông tin cá nhân",
+          icon: 'mdi-card-account-details-outline'
         },
         {
-          title: "Da Ziz",
+          title: "Đăng xuất",
+          icon: 'mdi-logout-variant'
         },
       ],
     };
@@ -81,5 +83,15 @@ export default defineComponent({
   display: flex;
   gap: 1rem;
   align-items: center;
+}
+</style>
+
+<style lang="scss">
+.v-menu-mixin {
+  transform: translateY(21px) !important;
+  .v-list-item:hover {
+    background: #686868 !important;
+    color: white;
+  }
 }
 </style>

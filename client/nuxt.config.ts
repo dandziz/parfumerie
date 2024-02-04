@@ -19,7 +19,8 @@ export default {
   build: {
     transpile: ["vuetify"],
   },
-  plugins: [],
+  plugins: [
+  ],
   app: {
     pageTransition: { name: 'page', mode: 'in-out' },
   },
@@ -38,6 +39,7 @@ export default {
     "nuxt-icon",
     "@nuxtjs/i18n",
     "nuxt-swiper",
+    'nuxt3-notifications',
   ],
   vite: {
     vue: {
@@ -51,7 +53,7 @@ export default {
   },
   alias: {
     "~assets": fileURLToPath(new URL('./assets', import.meta.url)),
-    "@types": fileURLToPath(new URL('./types', import.meta.url)),
+    "@types": fileURLToPath(new URL('./types/index.d.ts', import.meta.url)),
     "@axios": fileURLToPath(new URL('./configs/axios.config.ts', import.meta.url)),
     "@config": fileURLToPath(new URL('./configs', import.meta.url))
   },
@@ -62,4 +64,7 @@ export default {
       current: 'vi',
     },
   },
+  nuxtNotifications: {
+    componentName: 'AppNotifications'
+  }
 };

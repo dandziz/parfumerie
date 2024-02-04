@@ -17,7 +17,6 @@
       />
     </NuxtLink>
     <v-divider></v-divider>
-
     <v-list :opened="opened">
       <div v-for="(item, index) in navigation" :key="index">
         <v-list-item
@@ -25,6 +24,7 @@
           :prepend-icon="item.icon.icon"
           :title="item.title"
           :to="item.to"
+          :class="{'main-active-item' : routeName == item.to?.name}"
         ></v-list-item>
         <v-list-group v-else :value="item.title">
           <template v-slot:activator="{ props }">
@@ -32,6 +32,7 @@
               v-bind="props"
               :prepend-icon="item.icon.icon"
               :title="item.title"
+              :class="{'main-active-item' : routeName?.includes(item.represent ?? '---')}"
             ></v-list-item>
           </template>
           <v-list-item
@@ -56,7 +57,7 @@ export default {
   data() {
     return {
       opened: [],
-      groupOpened: []
+      routeName: this.$route.name?.toString()
     };
   },
   props: {
@@ -90,7 +91,10 @@ export default {
     },
     groupOpened(newValue: Array<string>) {
       console.log(newValue);
-    }
+    },
+    $route(to, from) {
+      this.routeName = to.name
+    },
   },
 };
 </script>
@@ -126,7 +130,7 @@ export default {
   transition: 0.2s ease-in-out;
 }
 .v-list-item-title {
-  font-size: 15px !important;
+  font-size: 13px !important;
 }
 .v-list-item:hover {
   color: #bccee4;
@@ -136,5 +140,9 @@ export default {
 
 .v-list-item__active {
   color: #bccee4 !important;
+}
+
+.main-active-item {
+  background-color: rgba(152, 166, 173, 0.12) !important;
 }
 </style>

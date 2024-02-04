@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 
@@ -26,4 +27,10 @@ function getItems(Request $request, array $query, Builder $builder) {
         "pagination" => convertTypeOfPagination($builder),
         "data" => $builder->items(),
     ], 200);
+}
+
+function getPermissions(Collection $permissions) {
+    return array_map(function ($item) {
+        return $item['name'];
+    }, $permissions->toArray());
 }

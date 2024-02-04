@@ -17,11 +17,15 @@ class PermissionsSeeder extends Seeder
     public function run(): void
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
+        //Role
+        Permission::create(['name' => 'add perfumes', 'guard_name' => 'web']);
+        $admin = Role::create(['name' => 'admin', 'guard_name' => 'web']);
+        $manager = Role::create(['name' => 'manager', 'guard_name' => 'web']);
+        $user = Role::create(['name' => 'user', 'guard_name' => 'web']);
 
-        Permission::create(['name' => 'add perfumes', 'guard_name' => 'api']);
-        $admin = Role::create(['name' => 'admin', 'guard_name' => 'api']);
-        $manager = Role::create(['name' => 'manager', 'guard_name' => 'api']);
-        $user = Role::create(['name' => 'user', 'guard_name' => 'api']);
+        //Permissions
+        $auth = Permission::create(['name' => 'auth', 'guard_name' => 'web']);
+        $user->givePermissionTo($auth);
 
         $adminUser = User::factory()->create([
             'name' => 'Local Admin',
@@ -56,5 +60,6 @@ class PermissionsSeeder extends Seeder
         ]);
 
         $userNormal->assignRole($user);
+        $userNormal->givePermissionTo($auth);
     }
 }

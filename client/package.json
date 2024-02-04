@@ -19,17 +19,19 @@
     "@types/vue": "^2.0.0",
     "nuxt": "^3.9.3",
     "nuxt-icon": "^0.6.2",
+    "nuxt3-notifications": "^1.1.9",
     "sass": "^1.70.0",
     "vite-plugin-vuetify": "^1.0.2",
     "vue": "3.4.8",
     "vue-router": "^4.2.5",
-    "vuetify": "^3.4.2"
+    "vuetify": "^3.5.2"
   },
   "dependencies": {
     "@casl/ability": "^6.5.0",
     "@casl/vue": "^2.2.1",
     "@mdi/font": "^7.3.67",
     "@nuxtjs/style-resources": "^1.2.2",
+    "@types/js-cookie": "^3.0.6",
     "@vee-validate/nuxt": "^4.11.8",
     "@vee-validate/rules": "^4.11.8",
     "@vee-validate/yup": "^4.11.8",
@@ -37,6 +39,7 @@
     "bootstrap": "^5.3.2",
     "bootstrap-vue": "^2.23.1",
     "dart-sass": "^1.25.0",
+    "js-cookie": "^3.0.5",
     "nprogress": "^0.2.0",
     "nuxt-swiper": "^1.2.2",
     "sass-loader": "^14.0.0",

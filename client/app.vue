@@ -1,40 +1,43 @@
 <script setup lang="ts">
-import { type MaybeRef } from 'vue';
-import { ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useStore } from 'vuex'
-import axios from '@axios';
-import type { Response } from '@types';
-import { type Brand } from './models'
-import type { AxiosResponse } from 'axios';
-import NProgress from 'nprogress';
+import { type MaybeRef } from "vue";
+import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
+import axios from "@axios";
+import type { Response } from "@types";
+import { type Brand } from "./models";
+import type { AxiosResponse } from "axios";
+import NProgress from "nprogress";
 NProgress.configure({ showSpinner: false });
 
-const store = useStore()
+const store = useStore();
 
 let layout = ref<MaybeRef>("admin");
-layout.value = 'default'
+layout.value = "default";
 const route = useRoute();
 const router = useRouter();
-if (route.path.startsWith('/admin'))  layout.value = "admin";
-/*
-axios.get('brands').then((response: AxiosResponse<Response<Brand>>) => {
-  store.dispatch('brand/setBrands', response.data.data);
-})*/
+if (route.path.startsWith("/admin")) layout.value = "admin";
 
-watch(() => route.name, () => {
-  if (route.path.startsWith('/admin'))  layout.value = "admin";
-  else  layout.value = "default";
+axios.get("brands").then((response: AxiosResponse<Response<Brand>>) => {
+  store.dispatch("brand/setBrands", response.data.data);
 });
+
+watch(
+  () => route.name,
+  () => {
+    if (route.path.startsWith("/admin")) layout.value = "admin";
+    else layout.value = "default";
+  }
+);
 router.beforeResolve((to, from, next) => {
   if (to.name) {
-    NProgress.start()
+    NProgress.start();
   }
-  next()
-})
+  next();
+});
 router.afterEach(() => {
-  NProgress.done()
-})
+  NProgress.done();
+});
 </script>
 
 <template>
@@ -42,6 +45,7 @@ router.afterEach(() => {
   <NuxtLayout :name="layout">
     <NuxtPage page-key="static" />
   </NuxtLayout>
+  <Notification />
 </template>
 
 <style lang="scss">

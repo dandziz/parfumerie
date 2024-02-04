@@ -16,7 +16,7 @@ export type RESPONSE_API_ERROR<T> = RESPONSE_API & {
   error: ERROR_RESPONSE_MESSAGE<T>
 }
 export type RESPONSE_ERROR = {
-  error: string | { [key: string]: string },
+  error: { [key: string]: string },
   headers: { [key: string]: string },
   status: number,
   message: string,

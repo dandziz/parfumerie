@@ -9,7 +9,7 @@
 </template>
 
 <script>
-export default defineComponent({
+export default {
   props: {
     loading: {
       type: Boolean,
@@ -20,5 +20,5 @@ export default defineComponent({
       default: 'button'
     }
   },
-});
+};
 </script>

@@ -1,14 +1,13 @@
 <template>
   <div>
-
+    Create brand
   </div>
 </template>
 
 <script>
 export default {
   setup () {
-    const route = useRoute()
-    console.log(route.name);
+    
 
     return {}
   }

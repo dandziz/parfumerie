@@ -216,6 +216,33 @@
 }
 /* End NPprocess */
 
-/* Drawer */
+/* Notifications */
+.custom-notification {
+  .vue-notification-template {
+    padding: 10px 10px 15px;
+    font-size: 14px !important;
+    .notification-title {
+      padding-bottom: 10px;
+    }
+  }
+  .success {
+    background: #439b5d !important;
+    border-left-color: #3db55f !important
+  }
+}
 
-/* End Drawer */
+/* End Notifications */
+
+/* Form Control */
+.was-validated .form-control:valid, .form-control.is-valid,
+.was-validated .form-control:invalid, .form-control.is-invalid {
+  background-image: none;
+}
+
+.was-validated .form-control:valid, .form-control.is-valid:focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--bs-success-rgb), 0.2);
+}
+.was-validated .form-control:invalid, .form-control.is-invalid:focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--bs-danger-rgb), 0.2);
+}
+/* End Form Control */

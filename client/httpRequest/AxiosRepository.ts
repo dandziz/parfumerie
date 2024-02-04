@@ -8,7 +8,7 @@ import type {
     RESPONSE_API_ERROR,
     RESPONSE_API_SUCCESS,
     RESPONSE_DATA_SUCCESS,
-} from './types'
+} from '@types'
 
 class AxiosRepository {
     private axiosInstance = axios
@@ -32,23 +32,13 @@ class AxiosRepository {
 
     private handleApiError<D>(
         error: AxiosError<RESPONSE_API_ERROR<D>>,
-    ): ERROR_RESPONSE_FORMATTED<D> {
+    ): ERROR_RESPONSE_FORMATTED<D> | string {
         if (error?.response?.data?.error) {
             return this.renderErrorResponse<D>(
                 error?.response.data.error,
             ) as ERROR_RESPONSE_FORMATTED<D>
-        }
-        else {
-            if (error?.response?.data?.message) {
-                return this.renderErrorResponse({
-                    message: error.response?.data.message,
-                }) as ERROR_RESPONSE_FORMATTED<D>
-            }
-            else {
-                return this.renderErrorResponse({
-                    message: ['Unknown error'],
-                }) as ERROR_RESPONSE_FORMATTED<D>
-            }
+        } else {
+            return ''
         }
     }
 
@@ -98,12 +88,11 @@ class AxiosRepository {
 
             const response: RESPONSE_API_ERROR<D>
                 = error.response as RESPONSE_API_ERROR<D>
-            console.log(error);
             return Promise.reject({
                 error: this.handleApiError<D>(error),
                 headers: response.headers,
                 status: response.status,
-                message: this.handleApiError<D>(response?.data.message),
+                message: response?.data?.message,
             })
         }
     }
@@ -130,7 +119,7 @@ class AxiosRepository {
                 error: this.handleApiError<D>(error),
                 headers: error.response?.headers,
                 status: error.response?.status,
-                message: this.handleApiError<D>(error.response?.data.message),
+                message: error.response?.data as string,
             })
         }
     }
@@ -157,7 +146,7 @@ class AxiosRepository {
                 error: this.handleApiError<D>(error),
                 headers: error.response?.headers,
                 status: error.response?.status,
-                message: this.handleApiError<D>(error.response?.data.message),
+                message: error.response?.data as string,
             })
         }
     }
