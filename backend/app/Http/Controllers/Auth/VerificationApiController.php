@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Exceptions\InternalServerErrorException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\VerifyEmail\ResendEmailRequest;
 use App\Models\User;
@@ -35,11 +36,21 @@ class VerificationApiController extends Controller
     }
 
     public function resend(ResendEmailRequest $request) {
-        $user = User::query()->where('email', $request->get('email'))->first();
-        $user->sendApiEmailVerificationNotification();
-        return response()->json([
-           'status' => true,
-           'message' => __('messages.emailResendSuccessfully')
-        ], 200);
+        try {
+            $user = User::query()->where('email', $request->get('email'))->first();
+            if (!is_null($user->email_verified_at)) {
+                return response()->json([
+                    'status' => true,
+                    'message' => __('messages.emailHadVerified')
+                ], 422);
+            }
+            $user->sendApiEmailVerificationNotification();
+            return response()->json([
+                'status' => true,
+                'message' => __('messages.emailResendSuccessfully')
+            ], 200);
+        } catch(Exception $exception) {
+            throw new InternalServerErrorException();
+        }
     }
 }

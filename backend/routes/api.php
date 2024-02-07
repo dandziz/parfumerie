@@ -31,5 +31,4 @@ Route::middleware(['auth:api', 'verified.api', 'active.api'])->controller(UserCo
     Route::get('profile-details', 'getUserDetail');
 });
 
-Route::get('send-mail', [UserController::class, 'sendMail']);
 Route::post('email/resend', [VerificationApiController::class, 'resend'])->name('api.verification.resend');

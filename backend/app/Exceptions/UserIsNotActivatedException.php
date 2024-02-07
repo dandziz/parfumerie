@@ -4,7 +4,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Http\JsonResponse;
 
-class UserIsNotActivated extends Exception
+class UserIsNotActivatedException extends Exception
 {
     public function render($request): JsonResponse
     {

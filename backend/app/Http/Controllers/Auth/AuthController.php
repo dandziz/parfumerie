@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Exceptions\UserIsNotActivated;
+use App\Exceptions\EmailHasNotBeenVerifiedException;
+use App\Exceptions\UserIsNotActivatedException;
 use App\Exceptions\InternalServerErrorException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginPostRequest;
@@ -27,7 +28,8 @@ class AuthController extends Controller
 
     /**
      * @throws InternalServerErrorException
-     * @throws UserIsNotActivated
+     * @throws UserIsNotActivatedException
+     * @throws EmailHasNotBeenVerifiedException
      */
     public function login(LoginPostRequest $request): JsonResponse
     {
@@ -35,19 +37,21 @@ class AuthController extends Controller
         $check = Auth::guard()->attempt($input);
         if ($check) {
             $user = Auth::user();
-            if ($user->email_verified_at != null) {
-                $token = $user->createToken($user->name)->accessToken;
-                return response()->json(['status' => true, 'data' => [
-                    'user' => $user,
-                    'token' => [
-                        'access_token' => $token,
-                        'token_type' => 'Bearer'
-                    ],
-                    'user_ability' => [$user->roles[0]->name, getPermissions($user->roles[0]->permissions)]
-                ]], 200);
-            } else {
-                throw new UserIsNotActivated();
+            if ($user->email_verified_at == null) {
+                throw new EmailHasNotBeenVerifiedException();
             }
+            if ($user->status == 0) {
+                throw new UserIsNotActivatedException();
+            }
+            $token = $user->createToken($user->name)->accessToken;
+            return response()->json(['status' => true, 'data' => [
+                'user' => $user,
+                'token' => [
+                    'access_token' => $token,
+                    'token_type' => 'Bearer'
+                ],
+                'user_ability' => [$user->roles[0]->name, getPermissions($user->roles[0]->permissions)]
+            ]], 200);
         } else {
             throw new InternalServerErrorException();
         }

@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\API\Auth\MustVerifyApiEmail;
-use App\Http\Controllers\API\Auth\MustVerifyApiEmailInterface;
+use App\Http\Controllers\Auth\MustVerifyApiEmail;
+use App\Http\Controllers\Auth\MustVerifyApiEmailInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;

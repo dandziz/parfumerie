@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\UserIsNotActivated;
+use App\Exceptions\EmailHasNotBeenVerifiedException;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,12 +15,12 @@ class EnsureApiEmailIsVerified
      * @param \Illuminate\Http\Request $request
      * @param \Closure $next
      * @return mixed
-     * @throws UserIsNotActivated
+     * @throws EmailHasNotBeenVerifiedException
      */
     public function handle($request, Closure $next)
     {
         if (!$request->user('api')->email_verified_at) {
-            throw new UserIsNotActivated();
+            throw new EmailHasNotBeenVerifiedException();
         }
 
         return $next($request);

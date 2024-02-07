@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Auth;
+namespace App\Http\Controllers\Auth;
 
 use App\Notifications\VerifyApiEmail;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +26,7 @@ trait MustVerifyApiEmail
     {
         return $this->forceFill([
             'email_verified_at' => $this->freshTimestamp(),
+            'status' => 1
         ])->save();
     }
 

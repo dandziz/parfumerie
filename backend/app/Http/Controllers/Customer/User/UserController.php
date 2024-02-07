@@ -25,10 +25,6 @@ class UserController extends Controller
         return response()->json(['status' => true, 'message' => ['Get user successfully!'], 'data' => $user], 200);
     }
 
-    public function sendMail() {
-        //Mail::send()
-    }
-
     /**
      * Store a newly created resource in storage.
      */
