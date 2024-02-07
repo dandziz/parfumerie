@@ -1,8 +1,9 @@
 <script lang="ts">
 //import { User } from "@/models"
 import * as yup from "yup";
-import type { LOGIN_FIELDS } from "~/types";
-import type { RESPONSE_ERROR } from "@types";
+import type { RESPONSE_ERROR, DATA_SUCCESS, LOGIN_FIELDS } from "@types";
+import { UserRole } from "~/enums";
+import { useAbility } from "@casl/vue";
 
 export default {
   setup() {
@@ -10,9 +11,14 @@ export default {
       email: yup.string().required().email(),
       password: yup.string().required().min(8),
     });
-    const errors = ref<LOGIN_FIELDS>()
+    const errors = ref<LOGIN_FIELDS>({
+      email: '',
+      password: '',
+    });
+    const ability = useAbility()
+    const store = useStore()
 
-    return { schema, errors };
+    return { schema, errors, ability, store };
   },
   props: {},
   data() {
@@ -23,17 +29,41 @@ export default {
         password: "",
       },
       isEmailNotVerified: false,
+      isSendingMail: false,
     };
   },
   methods: {
     async handleSubmit(values: LOGIN_FIELDS) {
+      this.formData = values
       if (!this.loading) {
         try {
           this.loading = true;
-          const reponse = await this.$axios.post("login", JSON.stringify(values));
-          console.log(reponse);
-          this.$cookies.set('Dand', '22')
-          console.log(this.$cookies.get('Dand'));
+          const response = await this.$axios.post<DATA_SUCCESS, LOGIN_FIELDS>(
+            "login",
+            values
+          );
+          const data = response.data.data as DATA_SUCCESS
+          setToken(data.token.access_token)
+          setUserAbility(JSON.stringify(data.user_ability))
+          setUserInformation(JSON.stringify(data.user))
+          this.store.dispatch("user/setUser", data.user)
+          
+          if (data.user_ability[0] == UserRole.USER) {
+            const permissions = data.user_ability[1] as string[]
+            permissions.forEach(element => {
+              this.ability.update([{ action: element, subject: UserRole.USER }])
+            });
+            this.$router.replace('/')
+          } else if (response.data.data.user_ability[0] == UserRole.MANAGER) {
+
+          } else {
+
+          }
+          this.$notify({
+            title: this.$t("loginSuccess"),
+            text: response.data?.message,
+            type: "success",
+          });
           this.isEmailNotVerified = false;
         } catch (e) {
           const error = e as RESPONSE_ERROR;
@@ -51,16 +81,36 @@ export default {
         }
       }
     },
-    resendEmail() {
-      this.$router.replace('/resend-email')
+    async resendEmail() {
+      try {
+        this.isSendingMail = true
+        if (this.formData.email) {
+          const response  = await this.$axios.post('email/resend', {
+            'email': this.formData.email
+          })
+          this.$router.replace("/resend-email");
+        } else {
+          this.errors.email = this.$t('validate.required', ['Email'])
+        }
+      } catch(e) {
+        const error = e as RESPONSE_ERROR;
+        this.$notify({
+          title: this.$t('error'),
+          text: error.message,
+          type: "error",
+        })
+      } finally {
+        this.isSendingMail = false
+      }
+      
     },
     updateInformation() {
       this.errors = {
-        email: '',
-        password: ''
-      }
-      if(this.isEmailNotVerified) {
-        this.isEmailNotVerified = false
+        email: "",
+        password: "",
+      };
+      if (this.isEmailNotVerified) {
+        this.isEmailNotVerified = false;
       }
     },
   },
@@ -70,7 +120,7 @@ export default {
       return [
         { to: "/", name: "Trang chủ", active: false },
         { to: "/login", name: "Đăng nhập", active: true },
-      ]
+      ];
     },
   },
 };
@@ -87,8 +137,22 @@ export default {
         <div class="row">
           <div class="col-md-3"></div>
           <div
-            class="col-md-6 col-md-offset-3 form-group shadow-lg mb-5 bg-white"
+            class="col-md-6 col-md-offset-3 form-group shadow-lg mb-5 bg-white position-relative"
           >
+            <VOverlay
+              class="component-overlay"
+              persistent
+              contained
+              :model-value="isSendingMail"
+            >
+              <VProgressCircular
+                indeterminate
+                color="primary"
+                :width="2"
+                :size="50"
+                class="text-success"
+              />
+            </VOverlay>
             <div>
               <h5 class="text-center">{{ $t("loginTitle").toUpperCase() }}</h5>
               <p class="p-14 text-center mt-4">
@@ -100,6 +164,7 @@ export default {
                 class="row g-3"
                 :initial-values="formData"
                 :validation-schema="schema"
+                keepValues
                 @submit="handleSubmit"
               >
                 <div class="col-md-12">
@@ -122,8 +187,10 @@ export default {
                 </div>
                 <p class="p-14 mt-3 mb-0 text-red" v-show="isEmailNotVerified">
                   {{ $t("emailNotVerified") }},
-                  <NuxtLink to="/register" class="text-decoration-none" @click="resendEmail"
-                    >{{ $t("requestResendEmail") }}.</NuxtLink
+                  <a
+                    class="text-decoration-none"
+                    @click="resendEmail"
+                    >{{ $t("requestResendEmail") }}.</a
                   >
                 </p>
                 <div>

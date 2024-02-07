@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -22,6 +23,10 @@ class UserController extends Controller
     {
         $user = Auth::guard('api')->user();
         return response()->json(['status' => true, 'message' => ['Get user successfully!'], 'data' => $user], 200);
+    }
+
+    public function sendMail() {
+        //Mail::send()
     }
 
     /**

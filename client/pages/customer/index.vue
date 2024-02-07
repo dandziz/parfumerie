@@ -10,12 +10,11 @@
           <h5 class="text-uppercase fw-normal account-info">
             Thông tin tài khoản
           </h5>
-          <p><strong>Họ tên: </strong>Đào Duy Đán</p>
-          <p><strong>Email:</strong> daodan2612@gmail.com</p>
-          <p><strong>Điện thoại:</strong> 0366887398</p>
+          <p><strong>Họ tên: </strong>{{ user.name }}</p>
+          <p><strong>Email: </strong>{{ user.email }}</p>
+          <p><strong>Điện thoại: </strong>{{ user.phone_number }}</p>
           <p>
-            <strong>Địa chỉ :</strong> 61 Ngõ 354 Trường Chinh, Phường Khương
-            Thượng, Quận Đống Đa, Hà Nội, Vietnam
+            <strong>Địa chỉ: </strong>{{ user.address }}
           </p>
         </div>
       </div>
@@ -24,6 +23,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   setup() {
     return {};
@@ -35,6 +35,9 @@ export default {
         { to: "/customer", name: "Trang khách hàng", active: true },
       ],
     };
+  },
+  computed: {
+    ...mapState("user", ["user"]),
   },
 };
 </script>

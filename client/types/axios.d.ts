@@ -1,16 +1,21 @@
 import type { AxiosHeaders, AxiosRequestConfig } from "axios"
 
-type Data<T> = {
+type DATA<T> = {
   status: boolean,
-  messages: string,
+  message: string,
   data: Array<T>
 }
 
-export type Response<T> = {
+export type RESPONSE<T> = {
   headers: AxiosHeaders,
   status: number,
   request: XMLHttpRequest,
   statusText: string,
   config: AxiosRequestConfig,
-  data: Data<T>
+  data: DATA<T>
+}
+
+export type RESPONSE_NOT_DATA = {
+  status: boolean,
+  message: string,
 }

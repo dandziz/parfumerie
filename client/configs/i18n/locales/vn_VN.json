@@ -3,6 +3,7 @@
     "email": "Email",
     "password": "Mật khẩu",
     "login": "Đăng nhập",
+    "logout": "Đăng xuất",
     "loginTitle": "Đăng nhập tài khoản",
     "notHaveAccount": "Bạn chưa có tài khoản",
     "registerHere": "đăng ký tại đây",
@@ -10,7 +11,14 @@
     "resetPassword": "Đặt lại mật khẩu",
     "passwordRetrieval": "Lấy lại mật khẩu",
     "comeBackHere": "Quay lại tại đây",
+    "loginSuccess": "Đăng nhập thành công!",
     "loginFailed": "Đăng nhập thất bại!",
+    "success": "{0} thành công!",
+    "failed": "{0} thất bại!",
     "emailNotVerified": "Tài khoản của bạn chưa xác thực email, hãy xác thực email của bạn",
-    "requestResendEmail": "hoặc nhấn vào đây để nhận lại email"
+    "requestResendEmail": "hoặc nhấn vào đây để nhận lại email",
+    "validate" : {
+        "required": "{0} là trường bắt buộc."
+    },
+    "error": "Lỗi"
 }

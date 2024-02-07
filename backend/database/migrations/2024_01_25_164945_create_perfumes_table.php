@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Status;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->unsignedBigInteger('brand_id');
             $table->unsignedBigInteger('supplier_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedTinyInteger('status')->default(Status::Inactive);
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('supplier_id')->references('id')->on('suppliers');
             $table->foreign('brand_id')->references('id')->on('brands');

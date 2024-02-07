@@ -1,5 +1,6 @@
 import type { Commit } from 'vuex';
-import { Brand, State } from '~assets/model'
+import type { Brand } from '@/models'
+import type { BRAND_STATE } from '@types'
 
 const Brand = {
   namespaced: true,
@@ -7,7 +8,7 @@ const Brand = {
     brands: []
   },
   mutations: {
-    setBrands(state: State, brands: Array<Brand>) {
+    setBrands(state: BRAND_STATE, brands: Array<Brand>) {
       state.brands = brands
     }
   },

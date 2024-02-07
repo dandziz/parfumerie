@@ -138,11 +138,45 @@ body{
     background-color: var(--green) !important;
 }
 
+.nowrap-button {
+    white-space: nowrap;
+}
+
 .header-myAccount{
     display: block;
     height: 54px;
     min-width: 180px;
     line-height: 7px;
+    padding-left: 16px;
+    padding-right: 32px;
+    border-right-width: 2px;
+}
+
+.header-myAccount:hover {
+    box-shadow: rgba(0,0,0,0.15) 0px 1px 8px;
+    border-right-width: 0 !important;
+}
+
+.header-myAccount:hover .header-myAccount__info {
+    display: block;
+}
+
+.header-myAccount__info {
+    display: none;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    transform: translateY(100%);
+    height: auto;
+    z-index: 100;
+    padding: 8px 16px;
+    line-height: normal;
+}
+
+.header-myAccount__info a {
+    display: block;
+    padding-bottom: 12px;
+    font-size: 14px;
 }
 
 .header-myFavorites{

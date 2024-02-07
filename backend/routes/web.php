@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\VerificationApiController;
+use App\Http\Controllers\Server\ServerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('api/email/verify/{id}/{hash}', [VerificationApiController::class, 'verify'])
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('verification.api.verify');
+Route::get('/email-activation', [ServerController::class, 'index']);

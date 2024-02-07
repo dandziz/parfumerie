@@ -3,6 +3,7 @@
     :is="renderedComponent"
     :type="type"
     class="btn btn-outline-light rounded-0"
+    :to="to"
   >
     <slot></slot>
   </component>
@@ -22,6 +23,10 @@ export default {
     type: {
       type: String,
       default: 'button'
+    },
+    to: {
+      type: String,
+      default: ''
     }
   },
   computed: {

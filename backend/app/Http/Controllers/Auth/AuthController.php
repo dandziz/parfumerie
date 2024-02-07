@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Exceptions\UserIsNotActivated;
+use App\Exceptions\InternalServerErrorException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginPostRequest;
 use App\Models\User;
+use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +25,10 @@ class AuthController extends Controller
         //
     }
 
+    /**
+     * @throws InternalServerErrorException
+     * @throws UserIsNotActivated
+     */
     public function login(LoginPostRequest $request): JsonResponse
     {
         $input = $request->validated();
@@ -38,20 +46,25 @@ class AuthController extends Controller
                     'user_ability' => [$user->roles[0]->name, getPermissions($user->roles[0]->permissions)]
                 ]], 200);
             } else {
-                return response()->json(['status' => false, 'message' => __('messages.emailNotVerified')
-                ], 403);
+                throw new UserIsNotActivated();
             }
         } else {
-            return response()->json(['status' => false, 'message' => __('messages.invalidCredentials')
-            ], 401);
+            throw new InternalServerErrorException();
         }
     }
 
+    /**
+     * @throws InternalServerErrorException
+     */
     public function logout(): JsonResponse
     {
-        $user = Auth::guard('api')->user();
-        $user->token()->revoke();
-        return response()->json(['status' => true, 'message' => 'Logout successfully!'], 200);
+        try {
+            $user = Auth::guard('api')->user();
+            $user->token()->revoke();
+            return response()->json(['status' => true, 'message' => 'Logout successfully!'], 200);
+        } catch (Exception $exception) {
+            throw new InternalServerErrorException();
+        }
     }
 
     /**

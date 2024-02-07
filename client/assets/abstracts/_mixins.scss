@@ -40,9 +40,6 @@
 
 .navbar-nav {
   margin-top: 12px;
-  .header-myAccount {
-    border-right-width: 2px !important;
-  }
   a {
     color: $white;
   }
@@ -52,12 +49,14 @@
   display: none;
 }
 
-.sidebar-menu, .container-search {
+.sidebar-menu,
+.container-search {
   display: none !important;
 }
 
-@media (max-width: 992px){
-  .container-info, .container-search {
+@media (max-width: 992px) {
+  .container-info,
+  .container-search {
     width: 80vw !important;
     margin-left: auto;
     margin-right: auto;
@@ -66,20 +65,22 @@
   .sidebar-menu {
     display: block !important;
   }
-  .first-search, .navbar-nav {
+  .first-search,
+  .navbar-nav {
     display: none !important;
   }
   .navbar + div:first-child {
     justify-content: space-around;
   }
-  .btn-sidebar, .logo {
+  .btn-sidebar,
+  .logo {
     transform: translateY(-10px);
   }
   .logo_wrapper {
     width: 185px;
     height: 35px;
     .navbar-brand {
-        margin-right: 0;
+      margin-right: 0;
       .logo {
         width: 150px;
         height: auto;
@@ -129,7 +130,7 @@
         border-radius: 100%;
         svg {
           color: $white;
-        } 
+        }
       }
     }
     .username {
@@ -227,22 +228,57 @@
   }
   .success {
     background: #439b5d !important;
-    border-left-color: #3db55f !important
+    border-left-color: #3db55f !important;
   }
 }
 
 /* End Notifications */
 
 /* Form Control */
-.was-validated .form-control:valid, .form-control.is-valid,
-.was-validated .form-control:invalid, .form-control.is-invalid {
+.was-validated .form-control:valid,
+.form-control.is-valid,
+.was-validated .form-control:invalid,
+.form-control.is-invalid {
   background-image: none;
 }
 
-.was-validated .form-control:valid, .form-control.is-valid:focus {
+.was-validated .form-control:valid,
+.form-control.is-valid:focus {
   box-shadow: 0 0 0 0.2rem rgba(var(--bs-success-rgb), 0.2);
 }
-.was-validated .form-control:invalid, .form-control.is-invalid:focus {
+.was-validated .form-control:invalid,
+.form-control.is-invalid:focus {
   box-shadow: 0 0 0 0.2rem rgba(var(--bs-danger-rgb), 0.2);
 }
 /* End Form Control */
+
+/* Grid */
+
+.footer-xs-12 {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .footer-sm-6 {
+    width: 50% !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .footer-sm-12 {
+    width: 100% !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .footer-md-3 {
+    width: 25% !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .footer-md-6 {
+    width: 50% !important;
+  }
+}
+/* End Grid */

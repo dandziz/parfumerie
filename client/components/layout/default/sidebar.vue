@@ -14,11 +14,17 @@
       <div class="text-center text-white username">Xin chào</div>
       <div class="sidebar-navigation">
         <OutlineButton
+          componentType="link"
           class="sidebar-navigation__button p-14 text-uppercase text-white"
+          to="/login"
+          @click="handleClickBackdrop"
           >Đăng nhập</OutlineButton
         >
         <OutlineButton
+          componentType="link"
           class="sidebar-navigation__button p-14 text-uppercase text-white"
+          to="/register"
+          @click="handleClickBackdrop"
           >Đăng ký</OutlineButton
         >
       </div>

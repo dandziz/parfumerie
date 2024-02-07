@@ -1,11 +1,13 @@
 import { createStore } from 'vuex'
 import Brand from './modules/brand'
+import User from './modules/user'
 
 const store = createStore({
   state () {},
   mutations: {},
   modules: {
-    brand: Brand
+    brand: Brand,
+    user: User
   }
 })
 

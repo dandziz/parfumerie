@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Auth;
 
 use App\Notifications\VerifyApiEmail;
+use Illuminate\Database\Eloquent\Model;
 
 trait MustVerifyApiEmail
 {
@@ -11,7 +12,7 @@ trait MustVerifyApiEmail
      *
      * @return bool
      */
-    public function hasVerifiedEmail()
+    public function hasVerifiedEmail(): bool
     {
         return ! is_null($this->email_verified_at);
     }
@@ -21,7 +22,7 @@ trait MustVerifyApiEmail
      *
      * @return bool
      */
-    public function markEmailAsVerified()
+    public function markEmailAsVerified(): bool
     {
         return $this->forceFill([
             'email_verified_at' => $this->freshTimestamp(),
@@ -33,7 +34,7 @@ trait MustVerifyApiEmail
      *
      * @return void
      */
-    public function sendApiEmailVerificationNotification()
+    public function sendApiEmailVerificationNotification(): void
     {
         $this->notify(new VerifyApiEmail);
     }
@@ -43,7 +44,7 @@ trait MustVerifyApiEmail
      *
      * @return string
      */
-    public function getEmailForVerification()
+    public function getEmailForVerification(): string
     {
         return $this->email;
     }

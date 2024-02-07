@@ -4,11 +4,13 @@ import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from "@axios";
-import type { Response } from "@types";
+import type { RESPONSE } from "@types";
 import { type Brand } from "./models";
 import type { AxiosResponse } from "axios";
 import NProgress from "nprogress";
+import { importUserInformation } from "./utils/useStore";
 NProgress.configure({ showSpinner: false });
+import { useAbility } from "@casl/vue";
 
 const store = useStore();
 
@@ -18,10 +20,10 @@ const route = useRoute();
 const router = useRouter();
 if (route.path.startsWith("/admin")) layout.value = "admin";
 
-axios.get("brands").then((response: AxiosResponse<Response<Brand>>) => {
+axios.get("brands").then((response: AxiosResponse<RESPONSE<Brand>>) => {
   store.dispatch("brand/setBrands", response.data.data);
 });
-
+importUserInformation()
 watch(
   () => route.name,
   () => {

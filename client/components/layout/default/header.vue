@@ -1,10 +1,18 @@
 <template>
   <div>
-    <LayoutDefaultSidebar :activeSidebar="activeSidebar" @unactiveSidebar="unactiveSidebar" />
+    <LayoutDefaultSidebar
+      :activeSidebar="activeSidebar"
+      @unactiveSidebar="unactiveSidebar"
+    />
     <nav class="navbar navbar-expand-lg navbar-dark bg-success flex-column">
       <div class="w-100 container-info">
         <div class="container-fluid d-flex justify-content-between">
-          <Icon name="ic:round-menu" size="24px" class="cursor-pointer sidebar-menu" @click="activeSidebar = true" />
+          <Icon
+            name="ic:round-menu"
+            size="24px"
+            class="cursor-pointer sidebar-menu"
+            @click="activeSidebar = true"
+          />
 
           <NuxtLink
             to="/"
@@ -18,23 +26,28 @@
           <SearchInput class="first-search" placeholder="Tìm kiếm sản phẩm" />
 
           <div class="navbar-nav ms-auto mb-2 mb-lg-0 text-white">
-            <div class="header-myAccount border-end">
-              <p class="p-14-bold mt-3">Xin chào, Khách</p>
-              <p class="p-12-bold mt-3">
-                <NuxtLink to="/customer">Đăng nhập</NuxtLink>
+            <div class="header-myAccount border-end position-relative">
+              <p class="p-14-bold mt-3">Xin chào, {{ user.name ? user.name : 'Khách' }}</p>
+              <p v-if="!$ability.can('auth', 'user')" class="p-12-bold mt-3">
+                <NuxtLink to="/login">Đăng nhập</NuxtLink>
                 <span class="p-12"> hoặc </span>
-                <NuxtLink to="/admin">Đăng ký</NuxtLink>
+                <NuxtLink to="/register">Đăng ký</NuxtLink>
               </p>
+              <p v-else="$ability.can('auth', 'user')" class="p-12-bold mt-3">
+                <NuxtLink to="/customer">Tài khoản</NuxtLink>
+                <span class="p-12"> hoặc </span>
+                <span class="cursor-pointer" @click="handleLogout">Đăng xuất</span>
+              </p>
+              <div class="header-myAccount__info position-absolute bg-white">
+                <nuxt-link to="/customer" class="text-black ">Tài khoản</nuxt-link>
+                <nuxt-link to="/customer/order" class="text-black">Sổ địa chỉ</nuxt-link>
+              </div>
             </div>
             <div class="ms-3 me-5 header-myFavorites">
-              <a
-                class="me-4 text-white"
-              >
+              <a class="me-4 text-white">
                 <Icon name="material-symbols:favorite" size="24" />
               </a>
-              <a
-                class="text-white position-relative"
-              >
+              <a class="text-white position-relative">
                 <div class="soLuongGioHang">
                   <p class="numberOfCart p-13">0</p>
                 </div>
@@ -44,9 +57,7 @@
           </div>
 
           <div class="mobile-cart">
-            <a
-              class="text-white position-relative"
-            >
+            <a class="text-white position-relative">
               <div class="soLuongGioHang">
                 <p class="numberOfCart p-13">0</p>
               </div>
@@ -73,7 +84,11 @@
         <div class="content-th shadow">
           <div class="container-fluid bg-cream">
             <ul class="row p-3">
-              <li class="col-md-15" v-for="(item, index) in brands" :key="index">
+              <li
+                class="col-md-15"
+                v-for="(item, index) in brands"
+                :key="index"
+              >
                 <a>{{ item.name }}</a>
               </li>
             </ul>
@@ -118,26 +133,49 @@
   </div>
 </template>
 
-<script>
-import { mapState } from 'vuex'
+<script lang="ts">
+import { mapState } from "vuex";
+import type { RESPONSE_ERROR, RESPONSE_NOT_DATA } from '@types'
 export default {
+  setup() {
+    const store = useStore()
+    return { store }
+  },
   data() {
     return {
       activeSidebar: false,
-    }
+    };
   },
   computed: {
     ...mapState("brand", ["brands"]),
+    ...mapState("user", ["user"]),
   },
   methods: {
     unactiveSidebar() {
-      this.activeSidebar = false
+      this.activeSidebar = false;
+    },
+    async handleLogout() {
+      try {
+        const response = await this.$axios.post<undefined, RESPONSE_NOT_DATA>('logout')
+        const data = response.data as RESPONSE_NOT_DATA
+        logout()
+        this.store.dispatch('user/logout')
+        this.$ability.update([{action: 'read', subject: 'guest'}])
+        this.$notify({ title: this.$t('success', [this.$t('logout')]), text: data.message, type: 'success' })
+        this.$router.replace('/')
+      } catch(e) {
+        const error = e as RESPONSE_ERROR
+        this.$notify({ title: this.$t('failed', [this.$t('logout')]), text: error.message, type: 'error' })
+      }
     }
   },
   watch: {
-    activeSidebar(newValue, oldValue) {
-      document.documentElement.classList.toggle('frozen')
-    }
+    activeSidebar() {
+      document.documentElement.classList.toggle("frozen");
+    },
   },
-}
+  mounted () {
+    console.log(this.$ability.can('auth', 'user'));
+  },
+};
 </script>

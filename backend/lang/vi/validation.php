@@ -51,7 +51,7 @@ return [
     'email' => 'Trường :attribute phải là một địa chỉ email hợp lệ.',
     'ends_with' => 'Trường :attribute phải kết thúc bằng một trong các giá trị sau: :values.',
     'enum' => 'Giá trị đã chọn trong trường :attribute không hợp lệ.',
-    'exists' => 'Giá trị đã chọn trong trường :attribute không hợp lệ.',
+    'exists' => 'Giá trị :attribute không tồn tại.',
     'file' => 'Trường :attribute phải là một file',
 
     'filled' => 'Trường :attribute phải có giá trị.',

@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\UserStatus;
+use App\Enums\Status;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone_number')->unique();
-            $table->unsignedTinyInteger('status')->default(UserStatus::Unactivated);
+            $table->unsignedTinyInteger('status')->default(Status::Inactive);
             $table->string('email_verified_link')->nullable();
             $table->timestamp('email_verified_at')->nullable(true);
             $table->string('password');

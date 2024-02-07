@@ -1,4 +1,4 @@
-import { Ability } from '@casl/ability'
+import { defineAbility } from '@casl/ability'
 import type { UserAbility } from './AppAbility'
 
 export const initialAbility: UserAbility[] = [
@@ -8,4 +8,9 @@ export const initialAbility: UserAbility[] = [
   },
 ]
 
-export default new Ability(initialAbility)
+const existingAbility: UserAbility[] | undefined = getUserAbility()
+
+const ability = defineAbility((can, cannot) => {});
+ability.update(existingAbility || initialAbility)
+
+export default ability

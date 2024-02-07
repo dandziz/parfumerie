@@ -37,7 +37,7 @@ export default {
     breadcrumbs() {
       return [
         { to: "/", name: "Trang chủ", active: false },
-        { to: "/resend-email", name: "Nhận lại email xác thực", active: true },
+        { to: "/resend-email", name: "Nhận email xác thực", active: true },
       ];
     },
   },
