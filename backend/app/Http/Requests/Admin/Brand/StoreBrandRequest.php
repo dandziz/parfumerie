@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Admin\Brand;
 
 use App\Http\Requests\BaseRequest;
 
-class UpdateBrandRequest extends BaseRequest
+class StoreBrandRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,8 @@ class UpdateBrandRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name' => ['required']
+            'name' => ['required'],
         ];
     }
+
 }

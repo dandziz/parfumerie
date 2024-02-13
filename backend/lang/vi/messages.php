@@ -12,5 +12,6 @@ return [
     'emailHadVerified' => 'Email đã được xác thực trước đó!',
     'notFound' => 'Không tìm thấy dữ liệu!',
     'emailVerified' => 'Email đã được xác thực!',
-    'internalServerError' => 'Đã xảy ra lỗi. Vui lòng thử lại sau.'
+    'internalServerError' => 'Đã xảy ra lỗi. Vui lòng thử lại sau.',
+    'getOrderSuccess' => 'Lấy danh sách đơn hàng của người dùng thành công!'
 ];

@@ -12,6 +12,7 @@
     --red: red;
     --yellow: yellow;
     --cream: #f9f9f9;
+    --danger: #dc3545;
 }
 
 body {
@@ -21,6 +22,10 @@ body {
     /* -ms-user-select: none; */
     /* user-select: none; */
     overflow: hidden;
+}
+
+:focus-visible {
+    outline: 0;
 }
 
 html {
@@ -127,15 +132,24 @@ body{
 }
 
 .bg-success{
-    background-color: var(--green) !important;
+    background-color: var(--green);
 }
 
 .bg-cream {
     background-color: var(--cream);
 }
 
+.bg-none {
+    background-color: unset !important;
+}
+
 .btn-success{
     background-color: var(--green) !important;
+}
+
+.btn-danger {
+    background-color: var(--danger) !important;
+    color: var(--white) !important;
 }
 
 .nowrap-button {
@@ -377,7 +391,7 @@ a{
 .btn{
     background: var(--green);
     cursor: pointer;
-    transition: 0.8s;
+    transition: 0.4s;
     position: relative;
     overflow: hidden;
     z-index: 0;
@@ -459,8 +473,9 @@ a{
     width: 3px;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-thumb{

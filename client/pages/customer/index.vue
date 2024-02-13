@@ -48,17 +48,16 @@ export default {
 }
 </style>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .account-info {
   margin-top: 10px;
   margin-bottom: 27px;
 }
-.col-right-ac p {
-  font-size: 14px;
-  margin-bottom: 15px;
-}
-strong,
-p {
-  color: #42495b;
+.col-right-ac {
+  p, strong {
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: #42495b;
+  }
 }
 </style>

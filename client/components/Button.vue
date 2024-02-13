@@ -1,14 +1,16 @@
 <template>
   <component
-    class="btn btn-success"
-    :class="{ bg, 'rounded-0': !borderRadius, 'rounded-sm': borderRadius }"
+    class='btn'
+    :class="{ [bg]: bg && !bgNone, 'rounded-0': !borderRadius, 'rounded-sm': borderRadius, 'bg-none': bgNone }"
     :to="to"
     :is="renderedComponent"
   >
     <slot></slot>
   </component>
 </template>
-<script>
+<script lang="ts">
+import { bg } from 'vuetify/lib/locale/index.mjs';
+
 export default {
   props: {
     componentType: {
@@ -20,12 +22,16 @@ export default {
       default: "btn-success",
     },
     borderRadius: {
-      type: String,
-      default: "",
+      type: Boolean,
+      default: true,
     },
     to: {
       type: String,
       default: "",
+    },
+    bgNone: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {

@@ -30,28 +30,23 @@ export default {
   props: {
     imageLink: {
       type: String,
-      default: "",
-      require: true,
+      required: true,
     },
     link: {
       type: String,
       default: "",
-      require: true,
     },
     title: {
       type: String,
-      default: "",
-      require: true,
+      required: true,
     },
     time: {
       type: String,
-      default: "",
-      require: true,
+      required: true,
     },
     description: {
       type: String,
-      default: "",
-      require: true,
+      required: true,
     },
   },
 };

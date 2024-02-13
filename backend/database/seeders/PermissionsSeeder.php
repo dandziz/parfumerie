@@ -53,10 +53,9 @@ class PermissionsSeeder extends Seeder
             'name' => 'Dao Duy Dan',
             'email' => 'daodan2612@gmail.com',
             'phone_number' => '0847652149',
-            'email_verified_at' => null,
             'password' => bcrypt(12345678),
             'description' => 'User',
-            'status' => 0,
+            'status' => 1,
         ]);
 
         $userNormal->assignRole($user);

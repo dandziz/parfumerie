@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Http\Controllers\Auth\MustVerifyApiEmail;
 use App\Http\Controllers\Auth\MustVerifyApiEmailInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -40,7 +41,6 @@ class User extends Authenticatable implements MustVerifyApiEmailInterface
         'remember_token',
         'roles',
         'deleted_at',
-        'email_verified_link',
         'email_verified_at',
         'updated_at',
         'created_at',
@@ -70,5 +70,13 @@ class User extends Authenticatable implements MustVerifyApiEmailInterface
 
     public function getRoleAttribute() {
         return $this->roles[0]->name;
+    }
+
+    public function orders(): HasMany {
+        return $this->hasMany(Order::class);
+    }
+
+    public function address(): HasMany {
+        return $this->hasMany(Address::class);
     }
 }

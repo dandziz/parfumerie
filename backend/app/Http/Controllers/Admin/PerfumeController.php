@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StorePerfumeRequest;
-use App\Http\Requests\Admin\UpdatePerfumeRequest;
+use App\Http\Requests\Admin\Perfume\StorePerfumeRequest;
+use App\Http\Requests\Admin\Perfume\UpdatePerfumeRequest;
 use App\Models\Perfume;
 use Illuminate\Http\Request;
 

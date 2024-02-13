@@ -31,7 +31,7 @@ export default {
   props: {
     breadcrumbs: {
       type: Array<Breadcrumb>,
-      require: true,
+      required: true,
     },
   },
   methods: {

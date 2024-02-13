@@ -47,23 +47,19 @@ export default {
   props: {
     link: {
       type: String,
-      require: true,
-      default: "",
+      required: true,
     },
     imageLink: {
       type: String,
-      require: true,
-      default: "/",
+      required: true,
     },
     tenNuocHoa: {
       type: String,
-      require: true,
-      default: "",
+      required: true,
     },
     giaNuocHoa: {
       type: String,
-      require: true,
-      default: "",
+      required: true,
     },
   },
 };

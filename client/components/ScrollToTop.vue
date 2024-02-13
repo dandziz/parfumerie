@@ -37,7 +37,7 @@ export default {
 
 <style lang="scss" scoped>
 .scroll-to-top {
-  z-index: 1500;
+  z-index: 2100;
   height: 50px !important;
   width: 50px !important;
   border-radius: 100% !important;

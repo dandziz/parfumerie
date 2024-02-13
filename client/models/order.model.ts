@@ -1,0 +1,35 @@
+export interface Order {
+  id: number;
+  code: string;
+  email: string;
+  name: string;
+  phone_number: string;
+  address: string;
+  province: string;
+  district: string;
+  ward: string;
+  note: string;
+  payment_id: number;
+  delivery_charge: string;
+  order_status: number;
+  payment_status: number;
+  delivery_status: number;
+  order_date: Date;
+  completion_date: Date;
+  cancellation_date: Date;
+  promotion: string;
+  total: string;
+  other: number;
+  other_name: string;
+  other_phone: string;
+  other_address: string;
+  other_province: string;
+  other_district: string;
+  other_ward: string;
+  other_note: string;
+  user_id: number;
+  manager_id: number;
+  notice: number;
+  created_at: Date;
+  updated_at: Date;
+}

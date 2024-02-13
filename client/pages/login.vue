@@ -42,7 +42,7 @@ export default {
             "login",
             values
           );
-          const data = response.data.data as DATA_SUCCESS
+          const data = response.data.data
           setToken(data.token.access_token)
           setUserAbility(JSON.stringify(data.user_ability))
           setUserInformation(JSON.stringify(data.user))

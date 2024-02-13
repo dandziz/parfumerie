@@ -10,7 +10,7 @@ export default defineNuxtPlugin((app) => {
       themes: {
         light: {
           colors: {
-            success: '#07503d'
+            success: '#07503d',
           }
         },
       },

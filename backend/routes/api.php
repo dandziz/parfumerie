@@ -2,9 +2,10 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\VerificationApiController;
-use App\Http\Controllers\Customer\User\UserController;
+use App\Http\Controllers\Customer\AddressController;
+use App\Http\Controllers\Customer\OrderController;
+use App\Http\Controllers\Customer\UserController;
 use App\Http\Controllers\HomeController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,8 +28,24 @@ Route::controller(AuthController::class)->group(function() {
     Route::post('logout', 'logout')->middleware(['auth:api']);
 });
 
-Route::middleware(['auth:api', 'verified.api', 'active.api'])->controller(UserController::class)->group(function() {
+
+Route::middleware(['auth:api', 'verified.api', 'active.api'])->prefix('user')->controller(UserController::class)
+    ->group(function() {
     Route::get('profile-details', 'getUserDetail');
+});
+
+Route::middleware(['auth:api', 'verified.api', 'active.api'])->prefix('user')->controller(OrderController::class)
+    ->group(function() {
+    Route::get('orders', 'index');
+});
+
+Route::middleware(['auth:api', 'verified.api', 'active.api'])->prefix('user')->controller(AddressController::class)
+    ->group(function() {
+    Route::get('addresses', 'index');
+    Route::get('addresses/count', 'getNumberOfAddresses');
+    Route::post('addresses', 'store');
+    Route::put('address/{id}', 'update');
+    Route::delete('address/{id}', 'destroy');
 });
 
 Route::post('email/resend', [VerificationApiController::class, 'resend'])->name('api.verification.resend');

@@ -18,6 +18,7 @@
 </template>
 
 <script lang="ts">
+import type { RESPONSE_DATA_SUCCESS } from '~/types'
 export default {
   setup() {
     const route = useRoute();
@@ -29,11 +30,19 @@ export default {
       items: [
         { to: "/customer", text: "Thông tin tài khoản" },
         { to: "/customer/order", text: "Đơn hàng của bạn" },
-        { to: "/", text: "Đổi mật khẩu" },
-        { to: "/", text: "Sổ địa chỉ (3)" },
+        { to: "/customer/change-password", text: "Đổi mật khẩu" },
+        { to: "/customer/address", text: "Sổ địa chỉ " },
       ],
     };
   },
+  async mounted() {
+    try {
+      const response = await this.$axios.get<RESPONSE_DATA_SUCCESS<number>>('user/addresses/count');
+      this.items[3].text = `Sổ địa chỉ (${response.data.data})`;
+    } catch (e) {
+
+    }
+  }
 };
 </script>
 

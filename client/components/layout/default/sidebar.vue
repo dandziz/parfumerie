@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar" :class="{'active': activeSidebar}">
+  <div class="sidebar" :class="{ active: activeSidebar }">
     <Backdrop v-if="activeSidebar" @clickBackdrop="handleClickBackdrop" />
     <Icon
       name="material-symbols-light:close"
@@ -11,21 +11,30 @@
       <div class="sidebar-avatar">
         <div><Icon name="teenyicons:user-circle-solid" size="30px" /></div>
       </div>
-      <div class="text-center text-white username">Xin chào</div>
+      <div class="text-center text-white username">
+        <span v-if="$ability.can('auth', 'user')">Xin chào, {{ user.name }}</span>
+        <span v-else>Xin chào</span>
+      </div>
       <div class="sidebar-navigation">
         <OutlineButton
           componentType="link"
           class="sidebar-navigation__button p-14 text-uppercase text-white"
-          to="/login"
+          white
+          :to="$ability.can('auth', 'user') ? '/customer' : '/login'"
+          border
+          :borderRadius="false"
           @click="handleClickBackdrop"
-          >Đăng nhập</OutlineButton
+          >{{ $ability.can('auth', 'user') ? 'Tài khoản' : 'Đăng nhập' }}</OutlineButton
         >
         <OutlineButton
-          componentType="link"
+          :componentType="$ability.can('auth', 'user') ? 'button' : 'link'"
           class="sidebar-navigation__button p-14 text-uppercase text-white"
+          white
           to="/register"
-          @click="handleClickBackdrop"
-          >Đăng ký</OutlineButton
+          border
+          :borderRadius="false"
+          @click="handleClickLogoutOrRegister"
+          >{{ $ability.can('auth', 'user') ? 'Đăng xuất' : 'Đăng ký' }}</OutlineButton
         >
       </div>
     </div>
@@ -44,60 +53,7 @@
             </v-expansion-panel-title>
             <v-expansion-panel-text>
               <ul>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-              </ul>
-            </v-expansion-panel-text>
-          </v-expansion-panel>
-        </v-expansion-panels>
-        <v-expansion-panels class="sidebar-expan">
-          <v-expansion-panel>
-            <v-expansion-panel-title
-              expand-icon="mdi-plus"
-              collapse-icon="mdi-minus"
-            >
-              Thương hiệu
-            </v-expansion-panel-title>
-            <v-expansion-panel-text>
-              <ul>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
-                <li>A mu ra</li>
-                <li>Nẹt bô</li>
+                <li v-for="(item) in brands" :key="item.id">{{ item.name }}</li>
               </ul>
             </v-expansion-panel-text>
           </v-expansion-panel>
@@ -108,40 +64,47 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 export default {
   data() {
     return {
       windowWidth: window.innerWidth,
-    }
+    };
   },
   props: {
     activeSidebar: {
       type: Boolean,
       default: false,
-    }
+    },
   },
-  mounted () {
-    window.addEventListener('resize', this.handleResize);
+  mounted() {
+    window.addEventListener("resize", this.handleResize);
   },
   destroyed() {
-    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener("resize", this.handleResize);
   },
   computed: {
     ...mapState("brand", ["brands"]),
+    ...mapState("user", ["user"]),
   },
   methods: {
     handleResize() {
       this.windowWidth = window.innerWidth;
       if (this.windowWidth >= 992) {
-        this.$emit('unactiveSidebar')
+        this.$emit("unactiveSidebar");
       }
     },
     handleClickBackdrop() {
-      this.$emit('unactiveSidebar')
+      this.$emit("unactiveSidebar");
+    },
+    handleClickLogoutOrRegister() {
+      if (this.$ability.can('auth', 'user')) {
+        this.$emit('logout')
+      }
+      this.handleClickBackdrop()
     }
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss">

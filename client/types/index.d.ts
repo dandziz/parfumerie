@@ -7,3 +7,5 @@ export * from './response.d.ts'
 //store
 export * from './store/brand.d.ts'
 export * from './store/user.d.ts'
+
+export * from './vuetify.d.ts'

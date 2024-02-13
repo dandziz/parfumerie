@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>OK</p>
+    <v-text-field type="number" v-model:model-value="page"></v-text-field>
   </div>
 </template>
 
@@ -12,7 +12,7 @@ export default {
   },
   data() {
     return {
-      
+      page: 2
     }
   },
   mounted () {

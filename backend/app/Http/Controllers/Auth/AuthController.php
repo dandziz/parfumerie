@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Exceptions\EmailHasNotBeenVerifiedException;
+use App\Exceptions\UnauthorizedException;
 use App\Exceptions\UserIsNotActivatedException;
 use App\Exceptions\InternalServerErrorException;
 use App\Http\Controllers\Controller;
@@ -29,7 +29,7 @@ class AuthController extends Controller
     /**
      * @throws InternalServerErrorException
      * @throws UserIsNotActivatedException
-     * @throws EmailHasNotBeenVerifiedException
+     * @throws UnauthorizedException
      */
     public function login(LoginPostRequest $request): JsonResponse
     {
@@ -38,7 +38,7 @@ class AuthController extends Controller
         if ($check) {
             $user = Auth::user();
             if ($user->email_verified_at == null) {
-                throw new EmailHasNotBeenVerifiedException();
+                throw new UnauthorizedException();
             }
             if ($user->status == 0) {
                 throw new UserIsNotActivatedException();

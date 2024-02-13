@@ -1,15 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Customer\Address;
 
-use App\Http\Requests\BaseRequest;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
 
-class StoreBrandRequest extends BaseRequest
+class UpdateAddressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,8 +22,7 @@ class StoreBrandRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name' => ['required'],
+            //
         ];
     }
-
 }

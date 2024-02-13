@@ -4,7 +4,7 @@ import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from "@axios";
-import type { RESPONSE } from "@types";
+import type { RESPONSE_API_SUCCESS } from "@types";
 import { type Brand } from "./models";
 import type { AxiosResponse } from "axios";
 import NProgress from "nprogress";
@@ -20,7 +20,7 @@ const route = useRoute();
 const router = useRouter();
 if (route.path.startsWith("/admin")) layout.value = "admin";
 
-axios.get("brands").then((response: AxiosResponse<RESPONSE<Brand>>) => {
+axios.get("brands").then((response: AxiosResponse<RESPONSE_API_SUCCESS<Brand>>) => {
   store.dispatch("brand/setBrands", response.data.data);
 });
 importUserInformation()

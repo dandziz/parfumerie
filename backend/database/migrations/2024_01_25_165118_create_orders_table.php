@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,16 +22,16 @@ return new class extends Migration
             $table->string('province', 200);
             $table->string('district', 200);
             $table->string('ward', 200);
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->unsignedBigInteger('payment_id')->unsigned();
             $table->unsignedDecimal('delivery_charge')->default(0);
-            $table->tinyInteger('order_status')->default(0);
+            $table->tinyInteger('order_status')->default(OrderStatus::Pending);
             $table->tinyInteger('payment_status')->default(0);
             $table->tinyInteger('delivery_status')->default(0);
             $table->timestamp('order_date');
             $table->dateTime('completion_date')->nullable();
             $table->dateTime('cancellation_date')->nullable();
-            $table->unsignedDecimal('promotion');
+            $table->unsignedDecimal('promotion')->default(0);
             $table->unsignedDecimal('total');
             $table->tinyInteger('other')->default(0);
             $table->string('other_name', 50)->nullable();

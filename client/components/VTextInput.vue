@@ -30,11 +30,11 @@ export default defineComponent({
     },
     name: {
       type: String,
-      require: true,
+      required: true,
     },
     label: {
       type: String,
-      require: true,
+      required: true,
     },
     placeholder: {
       type: String,

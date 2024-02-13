@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreBrandRequest;
-use App\Http\Requests\Admin\UpdateBrandRequest;
+use App\Http\Requests\Admin\Brand\StoreBrandRequest;
+use App\Http\Requests\Admin\Brand\UpdateBrandRequest;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,7 +42,7 @@ class BrandController extends Controller
                 'status' => true,
                 'messages' => __('messages.success'),
                 'data' => $brand,
-            ], 200);
+            ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'messages' => __('messages.createFailed', ['name' => __('messages.brand')])

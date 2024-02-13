@@ -3,6 +3,7 @@ import { UserRole } from '~/enums'
 import { isUserLoggedIn } from '~/utils/utils'
 
 export default defineNuxtRouteMiddleware((to, from) => {
+  console.log(to.meta);
   const authRequired = ['/login', '/register'].includes(to.path)
   const auth = getNameRoute(to.name as string)
   const isLoggedIn = isUserLoggedIn()

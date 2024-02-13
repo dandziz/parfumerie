@@ -3,6 +3,7 @@
     <LayoutDefaultSidebar
       :activeSidebar="activeSidebar"
       @unactiveSidebar="unactiveSidebar"
+      @logout="handleLogout"
     />
     <nav class="navbar navbar-expand-lg navbar-dark bg-success flex-column">
       <div class="w-100 container-info">
@@ -162,7 +163,8 @@ export default {
         this.store.dispatch('user/logout')
         this.$ability.update([{action: 'read', subject: 'guest'}])
         this.$notify({ title: this.$t('success', [this.$t('logout')]), text: data.message, type: 'success' })
-        this.$router.replace('/')
+        if (this.$route.path != '/')
+          this.$router.replace('/')
       } catch(e) {
         const error = e as RESPONSE_ERROR
         this.$notify({ title: this.$t('failed', [this.$t('logout')]), text: error.message, type: 'error' })

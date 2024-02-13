@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('address', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50);
             $table->string('phone_number', 15);
             $table->string('company', 100);
             $table->string('address', 200);
-            $table->string('country', 30);
-            $table->string('province', 50)->nullable();
-            $table->string('district', 50)->nullable();
-            $table->string('ward', 50)->nullable();
+            $table->string('province', 50);
+            $table->string('district', 50);
+            $table->string('ward', 50);
             $table->string('zip_code', 10);
             $table->tinyInteger('default');
             $table->unsignedBigInteger('user_id');

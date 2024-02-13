@@ -1,5 +1,6 @@
 /* eslint-disable regex/invalid */
 import axios, { type AxiosInstance } from "axios";
+import ability from "./casl";
 
 const axiosIns: AxiosInstance = axios.create({
   // You can add your headers here
@@ -34,7 +35,7 @@ axiosIns.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (!localStorage.getItem("user") && !localStorage.getItem("access_token"))
+    if (!localStorage.getItem("user") && !localStorage.getItem("access_token") && !localStorage.getItem("user_ability"))
       return Promise.reject(error);
 
     // Handle error
@@ -45,6 +46,11 @@ axiosIns.interceptors.response.use(
 
       // Remove "accessToken" from localStorage
       localStorage.removeItem("access_token");
+
+      // Remove "userAbility" from localStorage
+      localStorage.removeItem("user_ability");
+
+      ability.update([{action: 'read', subject: 'guest'}])
 
       // If 401 response returned from api
       //router.push('/login')
