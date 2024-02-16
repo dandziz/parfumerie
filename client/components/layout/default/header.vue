@@ -159,15 +159,16 @@ export default {
       try {
         const response = await this.$axios.post<undefined, RESPONSE_NOT_DATA>('logout')
         const data = response.data as RESPONSE_NOT_DATA
-        logout()
-        this.store.dispatch('user/logout')
-        this.$ability.update([{action: 'read', subject: 'guest'}])
         this.$notify({ title: this.$t('success', [this.$t('logout')]), text: data.message, type: 'success' })
-        if (this.$route.path != '/')
-          this.$router.replace('/')
       } catch(e) {
         const error = e as RESPONSE_ERROR
         this.$notify({ title: this.$t('failed', [this.$t('logout')]), text: error.message, type: 'error' })
+      } finally {
+        logout()
+        this.store.dispatch('user/logout')
+        this.$ability.update([{action: 'read', subject: 'guest'}])
+        if (this.$route.path != '/')
+          this.$router.replace('/')
       }
     }
   },

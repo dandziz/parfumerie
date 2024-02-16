@@ -22,11 +22,7 @@ class AddressController extends Controller
         try {
             $user = Auth::guard('api')->user();
             $data = $user->address;
-            return response()->json([
-                'status' => true,
-                'message' => __('messages.success'),
-                'data' => $data
-            ], 200);
+            return returnSuccessResponse($data);
         } catch (Exception $exception) {
             throw new InternalServerErrorException();
         }
@@ -69,7 +65,7 @@ class AddressController extends Controller
             $address = Address::create($data + [
                 'user_id' => $user->id,
             ]);
-            return returnSuccessResponse($address);
+            return returnSuccessResponse($address, 201);
         } catch (Exception $exception) {
             throw new InternalServerErrorException();
         }
@@ -96,8 +92,8 @@ class AddressController extends Controller
      */
     public function update(StoreAddressRequest $request, $id)
     {
+        $address = Address::findOrFail($id);
         try {
-            $address = Address::findOrFail($id);
             $user = Auth::guard('api')->user();
             $builder = $user->address()->where('default', 1);
             $count = $builder->get()->count();
@@ -123,8 +119,8 @@ class AddressController extends Controller
      */
     public function destroy($id)
     {
+        $address = Address::findOrFail($id);
         try {
-            $address = Address::findOrFail($id);
             $user = Auth::guard('api')->user();
             if ($address->user_id != $user->id)
                 throw new UnauthorizedException();

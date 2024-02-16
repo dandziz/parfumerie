@@ -6,6 +6,7 @@ use App\Exceptions\InternalServerErrorException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\VerifyEmail\ResendEmailRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Mockery\Exception;
@@ -35,7 +36,11 @@ class VerificationApiController extends Controller
         }
     }
 
-    public function resend(ResendEmailRequest $request) {
+    /**
+     * @throws InternalServerErrorException
+     */
+    public function resend(ResendEmailRequest $request): JsonResponse
+    {
         try {
             $user = User::query()->where('email', $request->get('email'))->first();
             if (!is_null($user->email_verified_at)) {

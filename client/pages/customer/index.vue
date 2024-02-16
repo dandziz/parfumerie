@@ -26,6 +26,15 @@
 import { mapState } from "vuex";
 export default {
   setup() {
+    useHead({
+      title: "Thông tin cá nhân",
+      meta: [
+        {
+          name: "",
+          content: "",
+        },
+      ],
+    });
     return {};
   },
   data() {

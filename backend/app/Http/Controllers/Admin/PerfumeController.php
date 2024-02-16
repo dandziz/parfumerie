@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\InternalServerErrorException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Perfume\StorePerfumeRequest;
 use App\Http\Requests\Admin\Perfume\UpdatePerfumeRequest;
 use App\Models\Perfume;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PerfumeController extends Controller
 {
@@ -30,10 +33,18 @@ class PerfumeController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * @throws InternalServerErrorException
      */
-    public function store(StorePerfumeRequest $request)
+    public function store(StorePerfumeRequest $request): \Illuminate\Http\JsonResponse
     {
-        //
+        $user = Auth::guard('api')->user();
+        $data = $request->validated() + ['user_id' => $user->id];
+        //try {
+            $perfume = Perfume::query()->create($data);
+            return returnSuccessResponse($perfume, 201);
+        //} catch (Exception $exception) {
+            //throw new InternalServerErrorException();
+        //}
     }
 
     /**

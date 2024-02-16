@@ -50,7 +50,7 @@ export const passwordValidator = (password: string) => {
 // 👉 Confirm Password Validator
 export const confirmedValidator = (value: string, target: string) =>
 
-  value === target || 'The Confirm Password field confirmation does not match'
+  value === target || 'Trường xác nhận mật khẩu không khớp.'
 
 // 👉 Between Validator
 export const betweenValidator = (value: unknown, min: number, max: number) => {
@@ -109,6 +109,14 @@ export const lengthValidator = (value: unknown, length: number) => {
     return true
 
   return String(value).length === length || `The Min Character field must be at least ${length} characters`
+}
+
+// 👉 Min Validator
+export const minValidator = (value: unknown, length: number) => {
+  if (isEmpty(value))
+    return true
+
+  return String(value).length >= length || `Trường phải có ít nhất ${length} ký tự.`
 }
 
 // 👉 Alpha-dash Validator

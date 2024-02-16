@@ -3,10 +3,12 @@
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 
-function convertTypeOfPagination(LengthAwarePaginator $paginate) {
+function convertTypeOfPagination(LengthAwarePaginator $paginate): array
+{
     return [
         "total" => $paginate->total(),
         "per_page" => $paginate->perPage(),
@@ -15,7 +17,8 @@ function convertTypeOfPagination(LengthAwarePaginator $paginate) {
     ];
 }
 
-function getItems(Request $request, array $query, Builder $builder) {
+function getItems(Request $request, array $query, Builder $builder): JsonResponse
+{
     foreach ($query as $key => $item) {
         $builder->where($key, 'like', '%'.$item.'%');
     }
@@ -30,7 +33,8 @@ function getItems(Request $request, array $query, Builder $builder) {
     ], 200);
 }
 
-function getItemsByRelationship(Request $request, HasMany $builder) {
+function getItemsByRelationship(Request $request, HasMany $builder): JsonResponse
+{
     if ($request->has('sortBy') && $request->has('order')) {
         $builder->orderBy($request->get('sortBy'), $request->get('order'));
     }
@@ -45,16 +49,26 @@ function getItemsByRelationship(Request $request, HasMany $builder) {
     ], 200);
 }
 
-function getPermissions(Collection $permissions) {
+function getPermissions(Collection $permissions): array
+{
     return array_map(function ($item) {
         return $item['name'];
     }, $permissions->toArray());
 }
 
-function returnSuccessResponse($data) {
+function returnSuccessResponse($data, $status = 200): JsonResponse
+{
     return response()->json([
         "status" => true,
         "message" => __('messages.success'),
         "data" => $data,
-    ], 201);
+    ], $status);
+}
+
+function returnsFailureResponse($message, $status = 500): JsonResponse
+{
+    return response()->json([
+        "status" => false,
+        "message" => $message,
+    ], $status);
 }

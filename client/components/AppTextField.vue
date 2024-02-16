@@ -15,7 +15,7 @@
           color: 'primary',
           ...field
         }"
-        :error-messages="errorMessage"
+        :error-messages="errorMessage || ($attrs.errorCustom as string | undefined)"
         @update:modelValue="onInput"
       >
         <template v-if="$attrs.icon" v-slot:prepend-inner
@@ -44,7 +44,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .icon-color {
   color: rgb(200, 200, 200);
 }

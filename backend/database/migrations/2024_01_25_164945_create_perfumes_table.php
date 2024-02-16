@@ -15,15 +15,14 @@ return new class extends Migration
         Schema::create('perfumes', function (Blueprint $table) {
             $table->id();
             $table->string('code', 100)->unique();
-            $table->string('name', 100);
+            $table->text('name');
+            $table->string('slug', 255)->unique();
             $table->tinyInteger('gender');
             $table->string('origin');
             $table->text('description');
-            $table->text('information');
-            $table->text('overview');
-            $table->text('paragraph');
-            $table->timestamp('start_date');
-            $table->float('rate');
+            $table->text('product_information')->nullable();
+            $table->dateTime('start_date')->useCurrent();
+            $table->float('rate')->default(0);
             $table->unsignedBigInteger('brand_id');
             $table->unsignedBigInteger('supplier_id');
             $table->unsignedBigInteger('user_id');

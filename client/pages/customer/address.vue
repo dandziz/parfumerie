@@ -162,7 +162,7 @@
                         >Hủy</OutlineButton
                       >
                       <Button
-                        class="btn-danger text-white d-flex align-items-center gap-2"
+                        class="btn-danger text-white"
                         type="submit"
                         :disabled="deleteLoading"
                         @click="onDelete"

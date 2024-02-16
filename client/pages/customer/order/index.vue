@@ -37,6 +37,15 @@ import type { Order } from "@/models";
 
 export default {
   setup() {
+    useHead({
+      title: "Đơn hàng của bạn",
+      meta: [
+        {
+          name: "",
+          content: "",
+        },
+      ],
+    });
     return {};
   },
   data() {

@@ -29,23 +29,21 @@ Route::controller(AuthController::class)->group(function() {
 });
 
 
-Route::middleware(['auth:api', 'verified.api', 'active.api'])->prefix('user')->controller(UserController::class)
-    ->group(function() {
-    Route::get('profile-details', 'getUserDetail');
-});
-
-Route::middleware(['auth:api', 'verified.api', 'active.api'])->prefix('user')->controller(OrderController::class)
-    ->group(function() {
-    Route::get('orders', 'index');
-});
-
-Route::middleware(['auth:api', 'verified.api', 'active.api'])->prefix('user')->controller(AddressController::class)
-    ->group(function() {
-    Route::get('addresses', 'index');
-    Route::get('addresses/count', 'getNumberOfAddresses');
-    Route::post('addresses', 'store');
-    Route::put('address/{id}', 'update');
-    Route::delete('address/{id}', 'destroy');
+Route::middleware(['auth:api', 'verified.api', 'active.api'])->prefix('user')->group(function() {
+    Route::controller(UserController::class)->group(function () {
+        Route::get('profile-details', 'getUserDetail');
+        Route::post('change-password', 'changePassword');
+    });
+    Route::controller(AddressController::class)->group(function () {
+        Route::get('addresses', 'index');
+        Route::get('addresses/count', 'getNumberOfAddresses');
+        Route::post('addresses', 'store');
+        Route::put('address/{id}', 'update');
+        Route::delete('address/{id}', 'destroy');
+    });
+    Route::controller(OrderController::class)->group(function () {
+        Route::get('orders', 'index');
+    });
 });
 
 Route::post('email/resend', [VerificationApiController::class, 'resend'])->name('api.verification.resend');

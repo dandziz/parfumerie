@@ -1,5 +1,8 @@
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 import { fileURLToPath } from "url";
+import ckeditor5 from '@ckeditor/vite-plugin-ckeditor5';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default {
   ssr: false,
@@ -7,7 +10,7 @@ export default {
   css: [
     "bootstrap/dist/css/bootstrap.css",
     "./assets/css/global.css",
-    "nprogress/nprogress.css"
+    "nprogress/nprogress.css",
   ],
   buildModules: ["@nuxtjs/style-resources"],
   styleResources: {
@@ -19,10 +22,9 @@ export default {
   build: {
     transpile: ["vuetify"],
   },
-  plugins: [
-  ],
+  plugins: [],
   app: {
-    pageTransition: { name: 'page', mode: 'in-out' },
+    pageTransition: { name: "page", mode: "in-out" },
   },
   modules: [
     (
@@ -39,7 +41,7 @@ export default {
     "nuxt-icon",
     "@nuxtjs/i18n",
     "nuxt-swiper",
-    'nuxt3-notifications',
+    "nuxt3-notifications",
   ],
   vite: {
     vue: {
@@ -47,24 +49,34 @@ export default {
         transformAssetUrls,
       },
     },
+    plugins: [
+      ckeditor5({
+        theme: require.resolve("@ckeditor/ckeditor5-theme-lark"),
+      }),
+    ],
   },
   i18n: {
     vueI18n: "./configs/i18n",
   },
   alias: {
-    "~assets": fileURLToPath(new URL('./assets', import.meta.url)),
-    "@types": fileURLToPath(new URL('./types/index.d.ts', import.meta.url)),
-    "@axios": fileURLToPath(new URL('./configs/axios.config.ts', import.meta.url)),
-    "@config": fileURLToPath(new URL('./configs', import.meta.url))
+    "~assets": fileURLToPath(new URL("./assets", import.meta.url)),
+    "@types": fileURLToPath(new URL("./types/index.ts", import.meta.url)),
+    "@axios": fileURLToPath(
+      new URL("./configs/axios.config.ts", import.meta.url)
+    ),
+    "@config": fileURLToPath(new URL("./configs", import.meta.url)),
+    "@validator": fileURLToPath(
+      new URL("./core/validator/validators.ts", import.meta.url)
+    ),
   },
   vuetify: {
     treeShake: true,
     customVariables: ["~/assets/styles/variables/_vuetify.scss"],
     lang: {
-      current: 'vi',
+      current: "vi",
     },
   },
   nuxtNotifications: {
-    componentName: 'AppNotifications'
-  }
+    componentName: "AppNotifications",
+  },
 };

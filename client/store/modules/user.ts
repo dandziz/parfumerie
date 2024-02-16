@@ -1,6 +1,6 @@
 import type { Commit } from 'vuex';
 import type { User } from '@/models'
-import type { USER_STATE } from '@types'
+import type { USER_STATE } from '~/types'
 
 const initUser: User = {
   id: -1,

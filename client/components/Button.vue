@@ -1,7 +1,13 @@
 <template>
   <component
-    class='btn'
-    :class="{ [bg]: bg && !bgNone, 'rounded-0': !borderRadius, 'rounded-sm': borderRadius, 'bg-none': bgNone }"
+    class="btn d-flex align-items-center gap-2"
+    :class="{
+      [bg]: bg && !bgNone,
+      'rounded-0': !borderRadius,
+      'rounded-sm': borderRadius,
+      'bg-none': bgNone,
+      'text-white': bg == 'btn-success',
+    }"
     :to="to"
     :is="renderedComponent"
   >
@@ -9,7 +15,7 @@
   </component>
 </template>
 <script lang="ts">
-import { bg } from 'vuetify/lib/locale/index.mjs';
+import { bg } from "vuetify/lib/locale/index.mjs";
 
 export default {
   props: {

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Brand\StoreBrandRequest;
 use App\Http\Requests\Admin\Brand\UpdateBrandRequest;
 use App\Models\Brand;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,15 +39,9 @@ class BrandController extends Controller
             $brand = $request->validated();
             $user = Auth::guard('api')->user();
             $brand = Brand::create([...$brand, 'user_id' => $user->id]);
-            return response()->json([
-                'status' => true,
-                'messages' => __('messages.success'),
-                'data' => $brand,
-            ], 201);
+            return returnSuccessResponse($brand, 201);
         } catch (\Exception $e) {
-            return response()->json([
-                'messages' => __('messages.createFailed', ['name' => __('messages.brand')])
-            ], 500);
+            return returnsFailureResponse(__('messages.createFailed', ['name' => __('messages.brand')]));
         }
     }
 
@@ -55,11 +50,7 @@ class BrandController extends Controller
      */
     public function show(Brand $Brand)
     {
-        return response()->json([
-            'status' => true,
-            'messages' => __('success'),
-            'data' => $Brand
-        ]);
+        return returnSuccessResponse($Brand);
     }
 
     /**
@@ -73,33 +64,27 @@ class BrandController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBrandRequest $request, Brand $Brand)
+    public function update(UpdateBrandRequest $request, Brand $Brand): JsonResponse
     {
         $data = $request->validated();
         $isUpdate = $Brand->update($data);
         if ($isUpdate) {
             return response()->json([], 204);
         } else {
-            return response()->json([
-                'status' => false,
-                'messages' => __('messages.updateFailed', ['name' => __('messages.brand')]),
-            ], 500);
+            return returnsFailureResponse(__('messages.updateFailed', ['name' => __('messages.brand')]));
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Brand $Brand)
+    public function destroy(Brand $Brand): JsonResponse
     {
         $isDelete = $Brand->delete();
         if ($isDelete) {
             return response()->json([], 204);
         } else {
-            return response()->json([
-                'status' => false,
-                'messages' => __('messages.deleteFailed', ['name' => __('messages.brand')]),
-            ], 500);
+            return returnsFailureResponse(__('messages.deleteFailed', ['name' => __('messages.brand')]));
         }
     }
 }

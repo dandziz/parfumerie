@@ -47,33 +47,24 @@ export default {
           setUserAbility(JSON.stringify(data.user_ability))
           setUserInformation(JSON.stringify(data.user))
           this.store.dispatch("user/setUser", data.user)
-          
+          const permissions = data.user_ability[1] as string[]
+          permissions.forEach(element => {
+            this.ability.update([{ action: element, subject: UserRole.USER }])
+          });
           if (data.user_ability[0] == UserRole.USER) {
-            const permissions = data.user_ability[1] as string[]
-            permissions.forEach(element => {
-              this.ability.update([{ action: element, subject: UserRole.USER }])
-            });
             this.$router.replace('/')
           } else if (response.data.data.user_ability[0] == UserRole.MANAGER) {
 
           } else {
-
+            this.$router.replace('/admin')
           }
-          this.$notify({
-            title: this.$t("loginSuccess"),
-            text: response.data?.message,
-            type: "success",
-          });
+          successfulNotification(this.$t("loginSuccess"), response.data?.message)
           this.isEmailNotVerified = false;
         } catch (e) {
           const error = e as RESPONSE_ERROR;
           this.isEmailNotVerified = error.status == 403;
           if (error.status != 403) {
-            this.$notify({
-              title: this.$t("loginFailed"),
-              text: error.message,
-              type: "error",
-            });
+            failureNotification(this.$t("loginFailed"), error.message)
             this.errors = error.error as LOGIN_FIELDS;
           }
         } finally {
@@ -85,7 +76,7 @@ export default {
       try {
         this.isSendingMail = true
         if (this.formData.email) {
-          const response  = await this.$axios.post('email/resend', {
+          const response = await this.$axios.post('email/resend', {
             'email': this.formData.email
           })
           this.$router.replace("/resend-email");
@@ -94,11 +85,7 @@ export default {
         }
       } catch(e) {
         const error = e as RESPONSE_ERROR;
-        this.$notify({
-          title: this.$t('error'),
-          text: error.message,
-          type: "error",
-        })
+        failureNotification(this.$t('error'), error.message)
       } finally {
         this.isSendingMail = false
       }
@@ -114,7 +101,9 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() {
+    
+  },
   computed: {
     breadcrumbs() {
       return [

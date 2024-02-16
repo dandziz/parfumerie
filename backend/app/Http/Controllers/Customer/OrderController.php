@@ -23,7 +23,7 @@ class OrderController extends Controller
             $orders = $user->orders();
             return getItemsByRelationship($request, $orders);
         } catch (Exception $exception) {
-            //throw new InternalServerErrorException();
+            throw new InternalServerErrorException();
         }
     }
 

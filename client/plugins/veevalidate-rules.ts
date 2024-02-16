@@ -3,13 +3,16 @@ import { defineRule } from "vee-validate";
 import * as rules from "@vee-validate/rules";
 import { localize } from '@vee-validate/i18n';
 import type { string } from "yup";
+import { configure } from "vee-validate";
 
 configure({
   // Generates an English message locale generator
   generateMessage: localize('vn', {
     messages: {
       required: 'Trường này là bắt buộc',
-      email: 'Email không đúng định dạng'
+      email: 'Email không đúng định dạng',
+      min: 'Trường này phải có ít nhất {0} kí tự.',
+      confirmed: 'Trường này phải trùng khớp với trường trước đó.'
     },
   }),
 });

@@ -9,7 +9,7 @@ import type {
   RESPONSE_API_SUCCESS,
   RESPONSE_DATA_SUCCESS,
   RESPONSE_NOT_DATA
-} from "@types";
+} from "~/types";
 
 class AxiosRepository {
   private axiosInstance = axios;
@@ -60,7 +60,6 @@ class AxiosRepository {
       return Promise.resolve(response as RESPONSE_API_SUCCESS<T>);
     } catch (e) {
       const error = e as AxiosError<RESPONSE_NOT_DATA>;
-      console.log(error);
 
       return Promise.reject({
         error: "message.getDataFailed",
@@ -87,7 +86,6 @@ class AxiosRepository {
       return Promise.resolve(response);
     } catch (e) {
       const error = e as AxiosError<RESPONSE_API_ERROR<D>>;
-
       const response = error.response;
       return Promise.reject({
         error: this.handleApiError<D>(error),

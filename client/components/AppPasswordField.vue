@@ -1,0 +1,54 @@
+<template>
+  <div class="p-14">
+    <div class="form-label fw-bold">
+      {{ $attrs.label }}
+      <span
+        class="text-danger"
+        v-if="$attrs.rules"
+        >*</span
+      >
+    </div>
+    <v-text-field
+      v-bind="{
+        ...$attrs,
+        label: undefined,
+        variant: 'outlined',
+        density: 'compact',
+        color: 'primary',
+      }"
+      :error-messages="($attrs.errorCustom as string | undefined)"
+      @update:modelValue="onInput"
+      :type="show ? 'text' : 'password'"
+      :append-inner-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+      @click:append-inner="show = !show"
+    >
+      <template v-if="$attrs.icon" v-slot:prepend-inner
+        ><Icon :name="($attrs.icon as string)" size="24" class="icon-color"
+      /></template>
+    </v-text-field>
+  </div>
+</template>
+
+<script setup lang="ts">
+defineOptions({
+  name: "AppPasswordField",
+  inheritAttrs: false,
+});
+</script>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
+  data() {
+    return {
+      show: false,
+    };
+  },
+  methods: {
+    onInput(value: string) {
+      this.$emit("update:modelValue", value);
+      this.$emit("update:errorCustom", "");
+    },
+  },
+});
+</script>

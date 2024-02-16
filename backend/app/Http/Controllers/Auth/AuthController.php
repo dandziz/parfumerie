@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Exceptions\InvalidCredentialException;
 use App\Exceptions\UnauthorizedException;
 use App\Exceptions\UserIsNotActivatedException;
 use App\Exceptions\InternalServerErrorException;
@@ -43,7 +44,11 @@ class AuthController extends Controller
             if ($user->status == 0) {
                 throw new UserIsNotActivatedException();
             }
-            $token = $user->createToken($user->name)->accessToken;
+            try {
+                $token = $user->createToken($user->name)->accessToken;
+            } catch(Exception $e) {
+                throw new InternalServerErrorException();
+            }
             return response()->json(['status' => true, 'data' => [
                 'user' => $user,
                 'token' => [
@@ -53,7 +58,7 @@ class AuthController extends Controller
                 'user_ability' => [$user->roles[0]->name, getPermissions($user->roles[0]->permissions)]
             ]], 200);
         } else {
-            throw new InternalServerErrorException();
+            throw new InvalidCredentialException();
         }
     }
 
