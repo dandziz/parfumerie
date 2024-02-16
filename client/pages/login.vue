@@ -183,15 +183,8 @@ export default {
                   >
                 </p>
                 <div>
-                  <EffectButton type="submit">
+                  <EffectButton type="submit" :loading="loading">
                     {{ $t("login").toUpperCase() }}
-                    <VProgressCircular
-                      indeterminate
-                      color="white"
-                      :width="2"
-                      :size="20"
-                      v-if="loading"
-                    />
                   </EffectButton>
                 </div>
               </Form>

@@ -61,7 +61,8 @@ export default {
 
 <style scoped>
 .admin-layout {
-  font-family: Nunito, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
 }
 .v-main {
   background-color: #fafbfe;

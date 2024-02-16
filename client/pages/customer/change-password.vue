@@ -33,15 +33,8 @@
               ]"
               v-model:errorCustom="errors.passwordConfirmation"
             ></app-password-field>
-            <Button type="submit" class="text-white text-uppercase" :disabled="submitLoading"
+            <Button type="submit" class="text-white text-uppercase" :loading="submitLoading"
               >Đặt lại mật khẩu
-              <VProgressCircular
-                indeterminate
-                color="white"
-                :width="2"
-                :size="20"
-                v-if="submitLoading"
-              />
             </Button>
           </v-form>
         </div>
@@ -85,9 +78,9 @@ export default {
       },
       formValidation: false,
       errors: {
-        oldPassword: "Sai rồi!",
-        password: "Sai rồi!",
-        passwordConfirmation: "Sai rồi!",
+        oldPassword: "",
+        password: "",
+        passwordConfirmation: "",
       },
       submitLoading: false,
     };

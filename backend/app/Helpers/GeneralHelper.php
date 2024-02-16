@@ -19,8 +19,8 @@ function convertTypeOfPagination(LengthAwarePaginator $paginate): array
 
 function getItems(Request $request, array $query, Builder $builder): JsonResponse
 {
-    foreach ($query as $key => $item) {
-        $builder->where($key, 'like', '%'.$item.'%');
+    if ($request->has('sortBy') && $request->has('order')) {
+        $builder->orderBy($request->get('sortBy'), $request->get('order'));
     }
     $itemPerPage = $request->has('itemsPerPage') ? (int)$request->get('itemsPerPage') : 10;
     $pageNumber = $request->has('currentPage') ? (int)$request->get('currentPage') : 1;

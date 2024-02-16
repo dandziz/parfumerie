@@ -1,12 +1,6 @@
 <template>
   <div class="position-relative">
-    <VOverlay
-      class="component-overlay"
-      persistent
-      contained
-      :model-value="loading"
-    >
-    </VOverlay>
+    <app-loading :model-value="loading"></app-loading>
     <v-data-table-server
       :items-per-page="perPage"
       :headers="headers"
@@ -28,7 +22,7 @@
                     outlined
                     hide-details
                     :model-value="perPage"
-                    label="Số đơn hàng"
+                    :label="labelItemsPerPage"
                     item-title="text"
                     item-value="value"
                     :items="perPageChoices"
@@ -58,13 +52,12 @@
             </div>
           </v-col>
           <v-col cols="12" md="7" class="ps-0">
-            <v-pagination
-              @update:modelValue="onUpdatePage"
+            <app-pagination
               v-model="currentPage"
               class="my-4"
               :length="pageCount"
-              :total-visible="displayPaginate"
-            ></v-pagination>
+              @update:modelValue="onUpdatePage"
+            ></app-pagination>
           </v-col>
         </v-row>
       </template>
@@ -114,27 +107,6 @@ export default {
       this.$emit('onSortTable', value)
     }
   },
-  computed: {
-    displayPaginate() {
-      if (this.$vuetify.display.width > 1280) return 7;
-      else if (
-        this.$vuetify.display.width <= 1280 &&
-        this.$vuetify.display.width > 1200
-      )
-        return 6;
-      else if (
-        this.$vuetify.display.width <= 1200 &&
-        this.$vuetify.display.width > 960
-      )
-        return 4
-      else if (
-        this.$vuetify.display.width <= 960 &&
-        this.$vuetify.display.width > 480
-      )
-        return 6
-      else return 3;
-    },
-  },
   props: {
     perPage: {
       type: Number,
@@ -159,13 +131,15 @@ export default {
     totalPages: {
       type: Number,
       required: true,
+    },
+    labelItemsPerPage: {
+      type: String,
+      default: ''
     }
   },
 };
 </script>
 
-<style lang="scss" scoped>
-.table-selected {
-  padding: 16px;
-}
+<style lang="scss">
+
 </style>

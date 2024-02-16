@@ -19,6 +19,7 @@
             :current-page="options.currentPage"
             :total-pages="options.totalPages"
             item-value="name"
+            label-items-per-page="Số đơn hàng mỗi trang"
             @loadItems="loadItems"
             @onUpdatePerPage="onUpdatePerPage"
             @onUpdatePage="onUpdatePage"

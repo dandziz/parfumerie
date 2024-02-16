@@ -16,7 +16,6 @@
     </VOverlay>
     <v-form @submit.prevent="onSubmit" class="mt-2" v-model="formValidation">
       <v-row>
-        {{ forms }}
         <v-col cols="12" sm="6">
           <app-input-field
             label="Mã nước hoa"
@@ -50,10 +49,19 @@
           <div class="form-label fw-bold">
             Giới tính<span class="text-danger">*</span>
           </div>
-          <v-radio-group inline v-model="forms.gender" :rules="[requiredValidator]" ripple>
-            <v-radio label="Nam" value="0" color="primary"></v-radio>
-            <v-radio label="Nữ" value="1" color="primary"></v-radio>
-            <v-radio label="Unisex" value="2" color="primary"></v-radio>
+          <v-radio-group
+            inline
+            v-model="forms.gender"
+            :rules="[requiredValidator]"
+            ripple
+          >
+            <v-radio
+              v-for="(item, ind) in genders"
+              :key="ind"
+              color="primary"
+              :label="item.label"
+              :value="item.value"
+            ></v-radio>
           </v-radio-group>
         </v-col>
         <v-col cols="12" sm="6">
@@ -61,10 +69,16 @@
             label="Xuất xứ"
             v-model="forms.origin"
             :rules="[requiredValidator]"
+            v-model:errorCustom="errors.origin"
           ></app-input-field>
         </v-col>
         <v-col cols="12" sm="6">
-          <app-textarea-field label="Mô tả" v-model="forms.description" :rules="[requiredValidator]">
+          <app-textarea-field
+            label="Mô tả"
+            v-model="forms.description"
+            :rules="[requiredValidator]"
+            v-model:errorCustom="errors.description"
+          >
           </app-textarea-field>
         </v-col>
         <v-col cols="12" sm="6">
@@ -75,6 +89,7 @@
             item-title="name"
             item-value="id"
             :rules="[requiredValidator]"
+            v-model:errorCustom="errors.brand_id"
           ></app-autocomplete-field>
         </v-col>
         <v-col cols="12" sm="6">
@@ -85,9 +100,10 @@
             item-title="name"
             item-value="id"
             :rules="[requiredValidator]"
+            v-model:errorCustom="errors.supplier_id"
           ></app-autocomplete-field>
         </v-col>
-        <v-col cols="12">
+        <v-col cols="12" class="d-flex justify-content-end">
           <Button type="submit">Thêm nước hoa</Button>
         </v-col>
       </v-row>
@@ -103,11 +119,11 @@ import {
   minValidator,
 } from "@validator";
 import type { Brand, Perfume, Supplier } from "~/models";
-import type { RESPONSE_API_SUCCESS } from "~/types";
+import type { RESPONSE_ERROR, RESPONSE_API_SUCCESS } from "~/types";
 export default {
   setup() {
-    const brands = reactive<Brand[]>([])
-    const suppliers = reactive<Pick<Supplier, "id" | "name">[]>([])
+    const brands = reactive<Brand[]>([]);
+    const suppliers = reactive<Pick<Supplier, "id" | "name">[]>([]);
     return {
       brands,
       suppliers,
@@ -139,6 +155,11 @@ export default {
         brand_id: "",
         supplier_id: "",
       },
+      genders: [
+        { label: "Nam", value: 1 },
+        { label: "Nữ", value: 0 },
+        { label: "Unisex", value: 2 },
+      ],
     };
   },
   mounted() {
@@ -146,13 +167,41 @@ export default {
     this.generateCode();
   },
   methods: {
-    onSubmit() {
+    async onSubmit() {
       if (this.formValidation) {
-        const data = {...this.forms}
+        try {
+          this.isLoading = true;
+          const data = { ...this.forms };
+          const response = await this.$axios.post<
+            Perfume,
+            Omit<
+              Perfume,
+              | "id"
+              | "user_id"
+              | "updated_at"
+              | "created_at"
+              | "product_information"
+              | "start_date"
+              | "rate"
+              | "status"
+              | "brand_name"
+              | "supplier_name"
+            >
+          >("admin/perfumes", data);
+          console.log(response);
+        } catch (e) {
+          const error = e as RESPONSE_ERROR;
+          this.errors = error.error as typeof this.errors;
+        } finally {
+          this.isLoading = false;
+        }
       }
     },
     generateCode() {
       this.forms.code = generateRandomString();
+      if (this.errors.code) {
+        this.errors.code = ''
+      }
     },
     handleInputName(value: string) {
       this.forms.slug = changeToSlug(value);

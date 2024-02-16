@@ -943,3 +943,7 @@ a.link-footer:hover{
         margin-top: 0;
     }
 }
+
+.table-selected {
+    padding: 16px;
+  }
