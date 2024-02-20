@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Perfume\StorePerfumeRequest;
 use App\Http\Requests\Admin\Perfume\UpdatePerfumeRequest;
 use App\Models\Perfume;
+use App\Services\ImageService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,12 +40,26 @@ class PerfumeController extends Controller
     {
         $user = Auth::guard('api')->user();
         $data = $request->validated() + ['user_id' => $user->id];
-        //try {
+        try {
             $perfume = Perfume::query()->create($data);
+            if ($request->images && count($request->images) > 0) {
+                (new ImageService())->storeProductImages($request->images, $perfume);
+            }
+            $array = json_decode($request->get('price'));
+            if (is_array($array)) {
+                foreach ($array as $price) {
+                    $perfume->price()->create([
+                        'perfume_id' => $perfume->id,
+                        'capacity' => $price[0],
+                        'import_price' => $price[1],
+                        'price' => $price[2],
+                    ]);
+                }
+            }
             return returnSuccessResponse($perfume, 201);
-        //} catch (Exception $exception) {
-            //throw new InternalServerErrorException();
-        //}
+        } catch (Exception $exception) {
+            throw new InternalServerErrorException();
+        }
     }
 
     /**

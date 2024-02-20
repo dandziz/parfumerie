@@ -77,11 +77,17 @@ class AxiosRepository {
     headers?: HEADERS
   ): Promise<RESPONSE_API_SUCCESS<RESPONSE_DATA_SUCCESS<T>>> {
     try {
+      const config = {
+        params: {
+          ...params
+        },
+        headers: {
+          ...headers,
+        }
+      }
+      console.log(config);
       const response: RESPONSE_API_SUCCESS<RESPONSE_DATA_SUCCESS<T>> =
-        await this.axiosInstance.post(url, data, {
-          params,
-          headers,
-        });
+        await this.axiosInstance.post(url, data, config);
 
       return Promise.resolve(response);
     } catch (e) {

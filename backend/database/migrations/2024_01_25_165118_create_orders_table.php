@@ -24,15 +24,15 @@ return new class extends Migration
             $table->string('ward', 200);
             $table->text('note')->nullable();
             $table->unsignedBigInteger('payment_id')->unsigned();
-            $table->unsignedDecimal('delivery_charge')->default(0);
+            $table->unsignedDecimal('delivery_charge', 12)->default(0);
             $table->tinyInteger('order_status')->default(OrderStatus::Pending);
             $table->tinyInteger('payment_status')->default(0);
             $table->tinyInteger('delivery_status')->default(0);
             $table->timestamp('order_date');
             $table->dateTime('completion_date')->nullable();
             $table->dateTime('cancellation_date')->nullable();
-            $table->unsignedDecimal('promotion')->default(0);
-            $table->unsignedDecimal('total');
+            $table->unsignedDecimal('promotion', 12)->default(0);
+            $table->unsignedDecimal('total', 12);
             $table->tinyInteger('other')->default(0);
             $table->string('other_name', 50)->nullable();
             $table->string('other_phone', 15)->nullable();

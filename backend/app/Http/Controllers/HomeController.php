@@ -15,4 +15,10 @@ class HomeController extends Controller
             'data' => $brands,
         ]);
     }
+
+    function getImage() {
+        $imageUrl = asset('images/email.png'); // Lấy URL của ảnh
+
+        return response()->json(['image_url' => $imageUrl]);
+    }
 }

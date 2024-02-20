@@ -1,13 +1,13 @@
 <template>
   <div>
-    <Button
+    <AppButton
       v-scroll="onScroll"
       v-show="fab"
       @click="toTop"
       class="scroll-to-top"
     >
       <Icon name="iconamoon:arrow-up-2-duotone" class="scroll-to-top-icon" size="24" />
-    </Button>
+    </AppButton>
   </div>
 </template>
 

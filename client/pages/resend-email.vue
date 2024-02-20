@@ -18,7 +18,7 @@
               Vui lòng kiểm tra hộp thư của bạn!
             </p>
             <div class="d-flex justify-content-center">
-              <Button componentType="link" to="/login">Đăng Nhập</Button>
+              <AppButton componentType="link" to="/login">Đăng Nhập</AppButton>
             </div>
           </div>
           <div class="col-md-3"></div>

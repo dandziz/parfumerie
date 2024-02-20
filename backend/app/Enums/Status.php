@@ -10,6 +10,6 @@ use BenSampo\Enum\Enum;
  */
 final class Status extends Enum
 {
-    const Inactive = 0;
-    const Active = 1;
+    const Inactive = false;
+    const Active = true;
 }

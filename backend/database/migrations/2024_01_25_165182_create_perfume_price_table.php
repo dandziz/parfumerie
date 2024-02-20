@@ -12,14 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('perfume_price', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger("perfume_id");
-            $table->integer("capacity");
+            $table->string("capacity");
             $table->tinyInteger("quantity")->default(0);
-            $table->unsignedDecimal("import_price");
-            $table->unsignedDecimal("price");
-            $table->primary(['perfume_id', 'capacity']);
+            $table->unsignedInteger("import_price");
+            $table->unsignedInteger("price");
+            $table->unique(['perfume_id', 'capacity']);
             $table->foreign("perfume_id")->references("id")->on("perfumes");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

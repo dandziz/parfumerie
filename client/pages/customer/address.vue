@@ -8,14 +8,14 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-lg-9 col-right-ac">
           <h5 class="text-uppercase fw-normal account-info">Địa chỉ của bạn</h5>
-          <Button
+          <AppButton
             @click="
               dialog = true;
               methodStatus = true;
               resetForm();
             "
             class="text-uppercase rounded-sm"
-            >Thêm địa chỉ</Button
+            >Thêm địa chỉ</AppButton
           >
           <Modal
             :title="methodStatus ? 'Thêm địa chỉ mới' : 'Chỉnh sửa địa chỉ'"
@@ -125,7 +125,7 @@
                       <OutlineButton @click="dialog = false" class="me-2"
                         >Hủy</OutlineButton
                       >
-                      <Button
+                      <AppButton
                         class="text-white d-flex align-items-center gap-2"
                         type="submit"
                         :disabled="submitLoading"
@@ -138,7 +138,7 @@
                           :width="2"
                           :size="20"
                           v-if="submitLoading"
-                      /></Button>
+                      /></AppButton>
                     </div>
                   </v-col>
                 </v-row>
@@ -161,7 +161,7 @@
                       <OutlineButton @click="deleteDialog = false" class="me-2"
                         >Hủy</OutlineButton
                       >
-                      <Button
+                      <AppButton
                         class="btn-danger text-white"
                         type="submit"
                         :disabled="deleteLoading"
@@ -173,7 +173,7 @@
                           :width="2"
                           :size="20"
                           v-if="deleteLoading"
-                      /></Button>
+                      /></AppButton>
                     </div>
                   </v-col>
                 </v-row>
@@ -217,18 +217,18 @@
                 </v-col>
                 <v-col cols="12" md="3" class="mx-auto my-auto">
                   <div class="address-action">
-                    <Button
+                    <AppButton
                       class="p-14 me-2"
                       :bg-none="$vuetify.display.width > 960"
                       @click="onUpdateAddress(item)"
-                      >Chỉnh sửa địa chỉ</Button
+                      >Chỉnh sửa địa chỉ</AppButton
                     >
-                    <Button
+                    <AppButton
                       class="p-14 text-danger"
                       bg="btn-danger"
                       :bg-none="$vuetify.display.width > 960"
                       @click="handleDeleteAddress(item)"
-                      >Xóa</Button
+                      >Xóa</AppButton
                     >
                   </div>
                 </v-col>
@@ -637,11 +637,6 @@ export default {
 </script>
 
 <style lang="scss">
-.custom-modal {
-  .v-overlay__scrim {
-    background: rgb(var(--v-theme-on-surface)) !important;
-  }
-}
 .default-address {
   font-size: 10px;
   color: #27ae60;

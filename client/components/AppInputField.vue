@@ -33,9 +33,11 @@ import { defineComponent } from "vue";
 export default defineComponent({
   methods: {
     onInput(value: string) {
-      this.$emit("update:modelValue", value);
+      let val = value
+      if (this.$attrs?.transfer && value && this.$attrs?.transfer == 'uppercase')  val = value.toUpperCase()
+      this.$emit("update:modelValue", val);
       this.$emit("update:errorCustom", "");
-      this.$emit("onInput", value);
+      this.$emit("onInput", val);
     },
   },
 });

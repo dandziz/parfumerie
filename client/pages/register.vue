@@ -106,13 +106,13 @@ export default defineComponent({});
                 <div
                   class="col-md-12 d-flex justify-content-center align-items-center"
                 >
-                  <button
+                  <AppButton
                     class="btn btn-submit rounded-0 me-2"
                     name="submit"
                     type="submit"
                   >
                     ĐĂNG KÝ
-                  </button>
+                  </AppButton>
                   <NuxtLink
                     class="p-14 text-dark"
                     to="/login"

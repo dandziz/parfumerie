@@ -4,6 +4,7 @@ namespace App\Http\Requests\Admin\Perfume;
 
 use App\Enums\PerfumeGender;
 use App\Http\Requests\BaseRequest;
+use App\Rules\PerfumePriceRule;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Validation\Rule;
 
@@ -29,10 +30,13 @@ class StorePerfumeRequest extends BaseRequest
             'name' => 'required|string',
             'slug' => 'required|string|max:255|unique:perfumes,slug',
             'gender' => ['required', new EnumValue(PerfumeGender::class)],
+            'images' => 'required|array|max:10',
+            'images.*' => 'required|image|max:10000',
             'origin' => 'required|string|max:255',
             'description' => 'required|string',
             'brand_id' => 'exists:brands,id',
             'supplier_id' => 'exists:suppliers,id',
+            'price' => ['required', new PerfumePriceRule]
         ];
     }
 }

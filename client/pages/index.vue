@@ -94,13 +94,13 @@
             </swiper>
           </v-sheet>
           <div class="show-all d-flex justify-content-center">
-            <Button
+            <AppButton
               bg="btn-success"
               class="p-14 d-flex align-items-center gap-1"
             >
               <Icon name="fa:hand-o-right" size="14px" />
               Xem tất cả
-            </Button>
+            </AppButton>
           </div>
         </div>
       </div>

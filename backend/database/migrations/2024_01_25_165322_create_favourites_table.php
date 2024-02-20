@@ -12,12 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('favourites', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger("user_id");
             $table->unsignedBigInteger("perfume_id");
-            $table->integer("capacity");
-            $table->primary(['user_id', 'perfume_id', 'capacity']);
+            $table->unsignedBigInteger("capacity_id");
+            $table->unique(['user_id', 'perfume_id', 'capacity_id']);
             $table->foreign("user_id")->references("id")->on("users");
             $table->foreign("perfume_id")->references("id")->on("perfumes");
+            $table->foreign("capacity_id")->references("id")->on("perfume_price");
             $table->timestamps();
         });
     }

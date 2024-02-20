@@ -14,123 +14,205 @@
         class="text-success"
       />
     </VOverlay>
-    <v-form @submit.prevent="onSubmit" class="mt-2" v-model="formValidation">
-      <v-row>
-        <v-col cols="12" sm="6">
-          <app-input-field
-            label="Mã nước hoa"
-            v-model="forms.code"
-            :rules="[requiredValidator]"
-            v-model:errorCustom="errors.code"
-            readonly
-            append-inner-icon="mdi mdi-reload"
-            @click:appendInner="generateCode"
+    <v-form
+      @submit.prevent="onSubmit"
+      class="mt-2"
+      v-model="formValidation"
+      ref="form"
+    >
+      <v-divider thickness="3"></v-divider>
+      <v-card-item title="Thông tin cơ bản">
+        <v-row class="mt-2">
+          <v-col cols="12" sm="6">
+            <app-input-field
+              label="Mã nước hoa"
+              v-model="forms.code"
+              :rules="[requiredValidator]"
+              v-model:errorCustom="errors.code"
+              readonly
+              append-inner-icon="mdi mdi-reload"
+              @click:appendInner="generateCode"
+            >
+            </app-input-field>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <app-input-field
+              label="Tên nước hoa"
+              v-model="forms.name"
+              :rules="[requiredValidator]"
+              v-model:errorCustom="errors.name"
+              @onInput="handleInputName"
+            ></app-input-field>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <app-input-field
+              label="Slug"
+              v-model="forms.slug"
+              :rules="[requiredValidator]"
+              v-model:errorCustom="errors.slug"
+            ></app-input-field>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <div class="form-label fw-bold">
+              Giới tính<span class="text-danger">*</span>
+            </div>
+            <v-radio-group
+              inline
+              v-model="forms.gender"
+              :rules="[requiredValidator]"
+              :error-messages="errors.gender"
+              ripple
+              @update:model-value="errors.gender = ''"
+            >
+              <v-radio
+                v-for="(item, ind) in genders"
+                :key="ind"
+                color="primary"
+                :label="item.label"
+                :value="item.value"
+              ></v-radio>
+            </v-radio-group>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <app-input-field
+              label="Xuất xứ"
+              v-model="forms.origin"
+              :rules="[requiredValidator]"
+              v-model:errorCustom="errors.origin"
+            ></app-input-field>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <app-textarea-field
+              label="Mô tả"
+              v-model="forms.description"
+              :rules="[requiredValidator]"
+              v-model:errorCustom="errors.description"
+            >
+            </app-textarea-field>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <app-autocomplete-field
+              label="Thương hiệu"
+              v-model="forms.brand_id"
+              :items="brands"
+              item-title="name"
+              item-value="id"
+              :rules="[requiredValidator]"
+              v-model:errorCustom="errors.brand_id"
+            ></app-autocomplete-field>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <app-autocomplete-field
+              label="Nhà cung cấp"
+              v-model="forms.supplier_id"
+              :items="suppliers"
+              item-title="name"
+              item-value="id"
+              :rules="[requiredValidator]"
+              v-model:errorCustom="errors.supplier_id"
+            ></app-autocomplete-field>
+          </v-col>
+        </v-row>
+      </v-card-item>
+      <v-divider thickness="3"></v-divider>
+      <v-card-item title="Dung tích">
+        {{ capacities }}
+        <template #append>
+          <img src="/icons/bi--sort-numeric-down.svg" class="cursor-pointer" alt="" @click="sortCapacities" />
+        </template>
+        <v-row class="mt-2" v-for="(item, ind) in capacities" :key="ind">
+          <v-col cols="4"
+            ><app-combobox-field
+              label="Dung tích"
+              v-model="item[0]"
+              :items="capacityLabel"
+              transfer="uppercase"
+              :rules="[requiredValidator]"
+            ></app-combobox-field
+          ></v-col>
+          <v-col cols="3"
+            ><app-input-field
+              label="Giá nhập"
+              type="number"
+              v-model="item[1]"
+              :rules="[requiredValidator, integerValidator]"
+              min="0"
+            ></app-input-field
+          ></v-col>
+          <v-col cols="3"
+            ><app-input-field
+              label="Giá"
+              type="number"
+              v-model="item[2]"
+              :rules="[requiredValidator, integerValidator]"
+              min="0"
+            ></app-input-field
+          ></v-col>
+          <v-col cols="2" class="d-flex mx-auto my-auto"
+            >
+            <AppButton
+              bg-none
+              @click="handleRemoveCapacity(ind)"
+              v-if="ind < capacities.length - 1"
+              ><img src="/icons/mynaui--minus-square.svg" alt=""></AppButton
           >
-          </app-input-field>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <app-input-field
-            label="Tên nước hoa"
-            v-model="forms.name"
-            :rules="[requiredValidator]"
-            v-model:errorCustom="errors.name"
-            @onInput="handleInputName"
-          ></app-input-field>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <app-input-field
-            label="Slug"
-            v-model="forms.slug"
-            :rules="[requiredValidator]"
-            v-model:errorCustom="errors.slug"
-          ></app-input-field>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <div class="form-label fw-bold">
-            Giới tính<span class="text-danger">*</span>
-          </div>
-          <v-radio-group
-            inline
-            v-model="forms.gender"
-            :rules="[requiredValidator]"
-            ripple
-          >
-            <v-radio
-              v-for="(item, ind) in genders"
-              :key="ind"
-              color="primary"
-              :label="item.label"
-              :value="item.value"
-            ></v-radio>
-          </v-radio-group>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <app-input-field
-            label="Xuất xứ"
-            v-model="forms.origin"
-            :rules="[requiredValidator]"
-            v-model:errorCustom="errors.origin"
-          ></app-input-field>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <app-textarea-field
-            label="Mô tả"
-            v-model="forms.description"
-            :rules="[requiredValidator]"
-            v-model:errorCustom="errors.description"
-          >
-          </app-textarea-field>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <app-autocomplete-field
-            label="Thương hiệu"
-            v-model="forms.brand_id"
-            :items="brands"
-            item-title="name"
-            item-value="id"
-            :rules="[requiredValidator]"
-            v-model:errorCustom="errors.brand_id"
-          ></app-autocomplete-field>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <app-autocomplete-field
-            label="Thương hiệu"
-            v-model="forms.supplier_id"
-            :items="suppliers"
-            item-title="name"
-            item-value="id"
-            :rules="[requiredValidator]"
-            v-model:errorCustom="errors.supplier_id"
-          ></app-autocomplete-field>
-        </v-col>
-        <v-col cols="12" class="d-flex justify-content-end">
-          <Button type="submit">Thêm nước hoa</Button>
-        </v-col>
-      </v-row>
+            <AppButton
+              bg-none
+              @click="handleAddCapacity"
+              v-if="ind == capacities.length - 1"
+              ><img src="/icons/mynaui--plus-square.svg" alt=""></AppButton
+          ></v-col>
+        </v-row>
+      </v-card-item>
+      <v-divider thickness="3"></v-divider>
+      <v-card-item title="Ảnh">
+        <drag-and-drop
+          v-model="files"
+          :max-size="fileValidation.maxSize"
+          :max-file="fileValidation.maxFile"
+          v-model:error-messages="errors.images"
+          class="mt-2"
+        ></drag-and-drop>
+      </v-card-item>
+      <v-card-actions class="gap-2 px-4">
+        <v-spacer></v-spacer>
+        <AppButton type="button" bg="bg-danger" @click="clear">Clear</AppButton>
+        <AppButton type="submit">Thêm nước hoa</AppButton>
+      </v-card-actions>
     </v-form>
   </v-card>
 </template>
 
 <script lang="ts">
 import { PerfumeGender } from "~/enums";
-import {
-  confirmedValidator,
-  requiredValidator,
-  minValidator,
-} from "@validator";
+
+import { requiredValidator, integerValidator } from "@validator";
 import type { Brand, Perfume, Supplier } from "~/models";
 import type { RESPONSE_ERROR, RESPONSE_API_SUCCESS } from "~/types";
 export default {
   setup() {
     const brands = reactive<Brand[]>([]);
     const suppliers = reactive<Pick<Supplier, "id" | "name">[]>([]);
+    const files = reactive<Array<File>>([]);
+    useHead({
+      title: "Thêm nước hoa",
+      meta: [
+        {
+          name: "",
+          content: "",
+        },
+      ],
+    });
     return {
       brands,
       suppliers,
       PerfumeGender,
       requiredValidator,
+      integerValidator,
+      files,
     };
   },
+  components: {},
   data() {
     return {
       formValidation: false,
@@ -154,12 +236,24 @@ export default {
         description: "",
         brand_id: "",
         supplier_id: "",
+        images: "",
       },
       genders: [
         { label: "Nam", value: 1 },
         { label: "Nữ", value: 0 },
         { label: "Unisex", value: 2 },
       ],
+      capacityLabel: [
+        "CHIẾT 10ML",
+        "CHIẾT 20ML",
+        "CHIẾT 30ML",
+        "FULLBOX 100ML",
+      ],
+      capacities: [["", "", ""]],
+      fileValidation: {
+        maxSize: 10000000,
+        maxFile: 10,
+      },
     };
   },
   mounted() {
@@ -168,27 +262,55 @@ export default {
   },
   methods: {
     async onSubmit() {
+      console.log(JSON.stringify(this.capacities));
       if (this.formValidation) {
+        if (this.files && this.files.length > 0) {
+          if (this.files.length > this.fileValidation.maxFile) {
+            this.errors.images = "Số lượng ảnh vượt quá quy định!";
+            return;
+          }
+          for (let i = 0; i < this.files.length; i++) {
+            if (this.files[i].size > this.fileValidation.maxSize) {
+              this.errors.images = `File ${
+                this.files[i].name
+              } vượt quá kích cỡ cho phép là ${
+                this.fileValidation.maxSize / 1000000
+              }MB!`;
+              return;
+            }
+          }
+        } else {
+          this.errors.images = "Chưa có ảnh nào được tải lên!";
+          return;
+        }
+        if (!this.capacities || !this.capacities[0][0] || !this.capacities[0][1]) {
+          return;
+        }
         try {
           this.isLoading = true;
           const data = { ...this.forms };
-          const response = await this.$axios.post<
-            Perfume,
-            Omit<
-              Perfume,
-              | "id"
-              | "user_id"
-              | "updated_at"
-              | "created_at"
-              | "product_information"
-              | "start_date"
-              | "rate"
-              | "status"
-              | "brand_name"
-              | "supplier_name"
-            >
-          >("admin/perfumes", data);
-          console.log(response);
+          let formData = new FormData();
+          for (let key in data) {
+            formData.append(key, (data as any)[key]);
+          }
+          for (var i = 0; i < this.files.length; i++) {
+            let file = this.files[i];
+            formData.append("images[" + i + "]", file);
+          }
+          formData.append('price', JSON.stringify(this.capacities));
+          const response = await this.$axios.post<Perfume, FormData>(
+            "admin/perfumes",
+            formData,
+            undefined,
+            {
+              "Content-Type": "multipart/form-data",
+            }
+          );
+          successfulNotification(
+            response.data.message,
+            "Thêm nước hoa thành công!"
+          );
+          this.generateCode();
         } catch (e) {
           const error = e as RESPONSE_ERROR;
           this.errors = error.error as typeof this.errors;
@@ -200,8 +322,12 @@ export default {
     generateCode() {
       this.forms.code = generateRandomString();
       if (this.errors.code) {
-        this.errors.code = ''
+        this.errors.code = "";
       }
+    },
+    clear() {
+      (this.$refs?.form as HTMLFormElement)?.reset();
+      this.generateCode();
     },
     handleInputName(value: string) {
       this.forms.slug = changeToSlug(value);
@@ -222,6 +348,19 @@ export default {
       } finally {
         this.isLoading = false;
       }
+    },
+    handleAddCapacity() {
+      this.capacities.push(["", "", ""]);
+    },
+    handleRemoveCapacity(index: number) {
+      this.capacities.splice(index, 1);
+    },
+    sortCapacities() {
+      this.capacities.sort((a: string[], b: string[]): number => {
+        const aValue = parseInt(a[1]);
+        const bValue = parseInt(b[1]);
+        return aValue - bValue;
+      });
     },
   },
 };

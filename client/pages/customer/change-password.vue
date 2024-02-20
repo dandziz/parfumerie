@@ -33,9 +33,9 @@
               ]"
               v-model:errorCustom="errors.passwordConfirmation"
             ></app-password-field>
-            <Button type="submit" class="text-white text-uppercase" :loading="submitLoading"
+            <AppButton type="submit" class="text-white text-uppercase" :loading="submitLoading"
               >Đặt lại mật khẩu
-            </Button>
+            </AppButton>
           </v-form>
         </div>
       </div>

@@ -138,6 +138,8 @@
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/bensampo/laravel-enum" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/laminas/laminas-code" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/spatie/laravel-permission" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/intervention/gif" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/intervention/image" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

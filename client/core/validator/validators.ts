@@ -65,9 +65,9 @@ export const integerValidator = (value: unknown) => {
     return true
 
   if (Array.isArray(value))
-    return value.every(val => /^-?[0-9]+$/.test(String(val))) || 'This field must be an integer'
+    return value.every(val => /^-?[0-9]+$/.test(String(val))) || 'Trường này phải là một số'
 
-  return /^-?[0-9]+$/.test(String(value)) || 'This field must be an integer'
+  return /^-?[0-9]+$/.test(String(value)) || 'Trường này phải là một số'
 }
 
 // 👉 Regex Validator
@@ -127,4 +127,8 @@ export const alphaDashValidator = (value: unknown) => {
   const valueAsString = String(value)
 
   return /^[0-9A-Z_-]*$/i.test(valueAsString) || 'All Character are not valid'
+}
+
+export const imageValidator = (value: Array<File>) => {
+  return !value || !value.length || value[0].size < 10000 || 'Ảnh phải có kích thước nhỏ hơn 10MB!'
 }

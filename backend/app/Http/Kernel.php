@@ -72,6 +72,7 @@ class Kernel extends HttpKernel
         'active.api' => \App\Http\Middleware\EnsureApiUserIsActivated::class,
         'role' => RoleMiddleware::class,
         'manage' => Manage::class,
-        'admin' => Admin::class
+        'admin' => Admin::class,
+        'convertGenderToInt' => \App\Http\Middleware\ConvertGenderToInt::class,
     ];
 }

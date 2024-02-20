@@ -1,7 +1,8 @@
 <template>
   <component
-    class="btn d-flex align-items-center gap-2 "
+    class="btn cursor-pointer"
     :class="{
+      'd-flex align-items-center gap-2': componentType == 'button',
       [bg]: bg && !bgNone,
       'rounded-0': !borderRadius,
       'rounded-sm': borderRadius,
@@ -11,6 +12,7 @@
     :to="to"
     :is="renderedComponent"
     :disabled="loading"
+    :type="type"
   >
     <slot></slot>
     <VProgressCircular
@@ -62,6 +64,10 @@ export default {
         return "div";
       }
     },
+    type() {
+      if (this.componentType != 'link') return this.componentType
+      else  return ''
+    }
   },
 };
 </script>

@@ -6,7 +6,7 @@
     @submit="handleSubmit"
   >
     <VTextInput name="name" :label="$t('name')" placeholder="Your name" />
-    <button class="btn btn-submit mt-3" type="submit">Submit</button>
+    <AppButton class="btn btn-submit mt-3" type="submit">Submit</AppButton>
   </Form>
 </template>
 

@@ -20,6 +20,8 @@ export function generateRandomString() {
 }
 
 export function changeToSlug(title: string) {
+  if (!title) return ''
+
   //Đổi chữ hoa thành chữ thường
   let slug = title.toLowerCase();
 

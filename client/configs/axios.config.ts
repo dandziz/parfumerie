@@ -24,7 +24,9 @@ axiosIns.interceptors.request.use((config) => {
     config.headers.Authorization = token ? `Bearer ${JSON.parse(token)}` : "";
   }
   config.headers.Accept = "*/*";
-  config.headers["Content-Type"] = "application/json";
+  if (!config.headers["Content-Type"]) {
+    config.headers["Content-Type"] = "application/json";
+  }
 
   return config;
 });

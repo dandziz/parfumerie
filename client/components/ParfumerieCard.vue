@@ -22,19 +22,19 @@
         <div class="product-price p-14-bold text-success">{{ giaNuocHoa }}</div>
         <div class="product-menu hidden-menu">
           <NuxtLink :to="link">
-            <button class="btn-menu">
+            <AppButton class="btn-menu">
               <Icon name="fa:cart-plus" class="text-success" size="17px" />
-            </button>
+            </AppButton>
           </NuxtLink>
           <div>
-            <button class="btn-menu xemThongTin">
+            <AppButton class="btn-menu xemThongTin">
               <Icon name="fa:eye" class="text-success" size="17px" />
-            </button>
+            </AppButton>
           </div>
           <div>
-            <button class="btn-menu addYeuThich" type="button">
+            <AppButton class="btn-menu addYeuThich" type="button">
               <Icon name="ph:heart-light" class="text-success" size="17px" />
-            </button>
+            </AppButton>
           </div>
         </div>
       </div>

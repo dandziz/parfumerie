@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text("description");
             $table->bigInteger("viewer_count")->default(0);
             $table->tinyInteger("type");
+            $table->longText('content')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

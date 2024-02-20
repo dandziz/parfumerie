@@ -448,3 +448,13 @@
   }
 }
 /* End Custom Grid */
+
+.custom-modal {
+  .v-overlay__scrim {
+    background: rgb(var(--v-theme-on-surface)) !important;
+  }
+}
+
+.btn.bg-none {
+  border-width: 0;
+}

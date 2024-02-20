@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rates', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('perfume_id');
             $table->string('name', 100);
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->string('email', 100)->nullable();
             $table->string('content', 100);
             $table->tinyInteger('rate');
-            $table->primary(['order_id', 'perfume_id']);
+            $table->unique(['order_id', 'perfume_id']);
             $table->foreign('order_id')->references('id')->on('orders');
             $table->foreign('perfume_id')->references('id')->on('perfumes');
             $table->timestamps();

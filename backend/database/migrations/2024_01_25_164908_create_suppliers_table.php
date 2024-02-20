@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string("address", 100);
             $table->string("phone_number", 15);
             $table->string("email", 30);
-            $table->unsignedTinyInteger('status')->default(Status::Active);
+            $table->boolean('status')->default(Status::Active);
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

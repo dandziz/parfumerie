@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\InternalServerErrorException;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Supplier\StoreSupplierRequest;
 use App\Http\Requests\Admin\Supplier\UpdateSupplierRequest;
 use App\Models\Supplier;

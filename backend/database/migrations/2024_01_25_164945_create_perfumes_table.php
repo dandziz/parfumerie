@@ -20,13 +20,13 @@ return new class extends Migration
             $table->tinyInteger('gender');
             $table->string('origin');
             $table->text('description');
-            $table->text('product_information')->nullable();
+            $table->longText('product_information')->nullable();
             $table->dateTime('start_date')->useCurrent();
             $table->float('rate')->default(0);
             $table->unsignedBigInteger('brand_id');
             $table->unsignedBigInteger('supplier_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedTinyInteger('status')->default(Status::Inactive);
+            $table->boolean('status')->default(Status::Inactive);
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('supplier_id')->references('id')->on('suppliers');
             $table->foreign('brand_id')->references('id')->on('brands');

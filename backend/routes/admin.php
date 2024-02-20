@@ -13,7 +13,7 @@
 
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\PerfumeController;
-use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\Admin\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:api', 'manage'])->controller(BrandController::class)->group(function() {
@@ -25,7 +25,7 @@ Route::middleware(['auth:api', 'manage'])->controller(BrandController::class)->g
 
 Route::middleware(['auth:api', 'manage'])->controller(PerfumeController::class)->group(function() {
     Route::get('perfumes', 'index');
-    Route::post('perfumes', 'store');
+    Route::middleware('convertGenderToInt')->post('perfumes', 'store');
     Route::get('perfumes/{perfume}', 'show');
     Route::put('perfumes/{perfume}', 'update');
 });

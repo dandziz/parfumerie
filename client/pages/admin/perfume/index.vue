@@ -1,7 +1,21 @@
 <template>
   <v-card title="Danh sách nước hoa">
     <div class="container">
+      <v-dialog max-width="450" class="custom-modal" v-model:model-value="dialog">
+        <dialog-close-button />
+        <v-card title="Xóa nước hoa?">
+          <v-card-text>Bạn có chắc chắn muốn xóa sản phẩm nước hoa này không ?</v-card-text>
+          <v-card-actions class="gap-2">
+            <v-spacer />
+            <AppButton bgNone @click="dialog=false">Hủy</AppButton>
+            <AppButton bg="bg-danger">Đồng ý</AppButton>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <v-row>
+        <v-col cols="12">
+          <AppButton component-type="link" to="/admin/perfume/create" bg="bg-primary">Thêm nước hoa</AppButton>
+        </v-col>
         <v-col cols="12">
           <app-loading :model-value="loading"></app-loading>
           <v-data-table-server
@@ -74,19 +88,19 @@
                   item.supplier_name.length > 15
                     ? item.supplier_name.substring(0, 12) + "..."
                     : item.supplier_name
-                }}<v-tooltip activator="parent" location="top">{{
+                }}<v-tooltip activator="parent" location="top" v-if="item.supplier_name.length > 15">{{
                   item.supplier_name
                 }}</v-tooltip></span
               >
             </template>
             <template #item.actions="{ item }">
               <div class="d-flex gap-1">
-                <Button bg="bg-primary" class="p-1">
-                  <Icon name="mingcute:edit-line" size="20"></Icon
-                ></Button>
-                <Button bg="bg-danger" class="p-1">
-                  <Icon name="mingcute:delete-line" size="20"></Icon
-                ></Button>
+                <AppButton bg="bg-primary" class="p-1">
+                  <img src="/icons/mingcute--edit-line.svg" class="img-icon" alt="">
+                </AppButton>
+                <AppButton bg="bg-danger" class="p-1" @click="dialog = true">
+                  <img src="/icons/mingcute--delete-line.svg" class="img-icon" alt="">
+                </AppButton>
               </div>
             </template>
           </v-data-table-server>
@@ -103,7 +117,7 @@ import type { Perfume } from "@/models";
 export default {
   setup() {
     useHead({
-      title: "Đơn hàng của bạn",
+      title: "Danh sách nước hoa",
       meta: [
         {
           name: "",
@@ -116,6 +130,7 @@ export default {
   data() {
     return {
       loading: false,
+      dialog: false,
       headers: [
         { title: "ID", sortable: true, key: "id" },
         { title: "Mã", sortable: false, key: "code" },

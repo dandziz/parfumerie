@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("name");
             $table->text("description");
             $table->string("image_link")->nullable();
-            $table->unsignedTinyInteger('status')->default(Status::Active);
+            $table->boolean('status')->default(Status::Active);
             $table->timestamps();
             $table->softDeletes();
         });

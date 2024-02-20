@@ -85,13 +85,14 @@
               <span class="helpEmail p-12-bold"></span>
             </div>
             <div class="col-md-2">
-              <button
+              <AppButton
                 class="btn btn-submit btn-user-submit p-14 nowrap-button"
                 name="submit-btn"
                 type="submit"
+                bg-none
               >
                 Đăng ký
-              </button>
+              </AppButton>
             </div>
           </form>
         </div>
