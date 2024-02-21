@@ -162,7 +162,7 @@
                         >Hủy</OutlineButton
                       >
                       <AppButton
-                        class="btn-danger text-white"
+                        bg="bg-danger"
                         type="submit"
                         :disabled="deleteLoading"
                         @click="onDelete"
@@ -641,5 +641,9 @@ export default {
   font-size: 10px;
   color: #27ae60;
   padding-left: 10px;
+}
+.address-action {
+  display: flex;
+  flex-direction: row;
 }
 </style>

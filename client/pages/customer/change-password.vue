@@ -103,7 +103,6 @@ export default {
         } catch (e) {
           const error = e as RESPONSE_ERROR;
           this.errors = { ...(error.error as CHANGE_PASSWORD) };
-          console.log(this.errors);
           if (error.message) {
             failureNotification(
               convertStringToTitle(this.$t("failed")),

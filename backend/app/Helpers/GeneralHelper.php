@@ -65,7 +65,15 @@ function returnSuccessResponse($data, $status = 200): JsonResponse
     ], $status);
 }
 
-function returnsFailureResponse($message, $status = 500): JsonResponse
+function returnMessageResponse($message, $status = 200): JsonResponse
+{
+    return response()->json([
+        "status" => true,
+        "message" => $message,
+    ], $status);
+}
+
+function returnFailureResponse($message, $status = 500): JsonResponse
 {
     return response()->json([
         "status" => false,

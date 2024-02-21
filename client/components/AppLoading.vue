@@ -5,6 +5,7 @@
     contained
     :model-value="modelValue"
   >
+    <slot></slot>
   </VOverlay>
 </template>
 

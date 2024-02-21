@@ -33,10 +33,13 @@ class ImageService {
         }
     }
 
-    public function unlinkImage($img_link, $folderName): void
+    public function unlinkImage($img_link, $thumb_link): void
     {
-        if (File::exists('storage/images/'.$folderName.'/'.$img_link)) {
-            unlink('storage/images/'.$folderName.'/'.$img_link);
+        if (File::exists('storage/images/'.$img_link)) {
+            unlink('storage/images/'.$img_link);
+        }
+        if (File::exists('storage/images/'.$thumb_link)) {
+            unlink('storage/images/'.$thumb_link);
         }
     }
 }

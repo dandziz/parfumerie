@@ -9,7 +9,7 @@
       />
       <v-main style="height: 250px; position: relative">
         <LayoutAdminHeader @toggleSidebar="toggleSidebar" />
-        <AdminBreadcrumb></AdminBreadcrumb>
+        <!-- <AdminBreadcrumb></AdminBreadcrumb> -->
         <div class="p-3 admin-content">
           <slot></slot>
         </div>

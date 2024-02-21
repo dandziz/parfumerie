@@ -74,5 +74,6 @@ class Kernel extends HttpKernel
         'manage' => Manage::class,
         'admin' => Admin::class,
         'convertGenderToInt' => \App\Http\Middleware\ConvertGenderToInt::class,
+        'retrieve.image' => \App\Http\Middleware\RetrieveImageFromIdMiddleware::class,
     ];
 }

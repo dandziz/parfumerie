@@ -69,7 +69,7 @@ export default defineComponent({
     },
     async handleLogout() {
       try {
-        const response = await this.$axios.post<undefined, RESPONSE_NOT_DATA>('logout')
+        const response = await this.$axios.post<undefined, RESPONSE_NOT_DATA>('logout', undefined);
         const data = response.data as RESPONSE_NOT_DATA
         this.$notify({ title: this.$t('success', [this.$t('logout')]), text: data.message, type: 'success' })
       } catch(e) {

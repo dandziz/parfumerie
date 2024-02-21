@@ -41,7 +41,7 @@ class BrandController extends Controller
             $brand = Brand::create([...$brand, 'user_id' => $user->id]);
             return returnSuccessResponse($brand, 201);
         } catch (\Exception $e) {
-            return returnsFailureResponse(__('messages.createFailed', ['name' => __('messages.brand')]));
+            return returnFailureResponse(__('messages.createFailed', ['name' => __('messages.brand')]));
         }
     }
 
@@ -71,7 +71,7 @@ class BrandController extends Controller
         if ($isUpdate) {
             return response()->json([], 204);
         } else {
-            return returnsFailureResponse(__('messages.updateFailed', ['name' => __('messages.brand')]));
+            return returnFailureResponse(__('messages.updateFailed', ['name' => __('messages.brand')]));
         }
     }
 
@@ -84,7 +84,7 @@ class BrandController extends Controller
         if ($isDelete) {
             return response()->json([], 204);
         } else {
-            return returnsFailureResponse(__('messages.deleteFailed', ['name' => __('messages.brand')]));
+            return returnFailureResponse(__('messages.deleteFailed', ['name' => __('messages.brand')]));
         }
     }
 }

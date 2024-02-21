@@ -1,112 +1,175 @@
 <template>
   <v-card title="Danh sách nước hoa">
-    <div class="container">
-      <v-dialog max-width="450" class="custom-modal" v-model:model-value="dialog">
-        <dialog-close-button />
-        <v-card title="Xóa nước hoa?">
-          <v-card-text>Bạn có chắc chắn muốn xóa sản phẩm nước hoa này không ?</v-card-text>
-          <v-card-actions class="gap-2">
-            <v-spacer />
-            <AppButton bgNone @click="dialog=false">Hủy</AppButton>
-            <AppButton bg="bg-danger">Đồng ý</AppButton>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-row>
-        <v-col cols="12">
-          <AppButton component-type="link" to="/admin/perfume/create" bg="bg-primary">Thêm nước hoa</AppButton>
-        </v-col>
-        <v-col cols="12">
-          <app-loading :model-value="loading"></app-loading>
-          <v-data-table-server
-            :items-per-page="options.itemsPerPage"
-            :headers="headers"
-            :items-length="options.totalItems"
-            :items="options.serverItems"
-            :loading="loading"
-            item-value="name"
-            :no-wrap="true"
-            @update:sortBy="onSortTable"
+    <v-dialog max-width="450" class="custom-modal" v-model:model-value="dialog">
+      <dialog-close-button />
+      <v-card title="Xóa nước hoa?">
+        <v-card-text
+          >Bạn có chắc chắn muốn xóa sản phẩm nước hoa này không ?</v-card-text
+        >
+        <v-card-actions class="gap-2">
+          <v-spacer />
+          <AppButton bgNone @click="dialog = false">Hủy</AppButton>
+          <AppButton bg="bg-danger">Đồng ý</AppButton>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-row>
+      <v-col cols="12">
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <AppButton
+            component-type="link"
+            to="/admin/perfume/create"
+            bg="bg-primary"
+            >Thêm nước hoa</AppButton
           >
-            <template v-slot:bottom>
-              <v-row wrap>
-                <v-col cols="12" md="5">
-                  <div class="table-selected mt-1">
-                    <v-row wrap>
-                      <v-col cols="7"
-                        ><v-select
-                          dense
-                          outlined
-                          hide-details
-                          :model-value="options.itemsPerPage"
-                          label="Số nước hoa mỗi trang"
-                          item-title="text"
-                          item-value="value"
-                          :items="perPageChoices"
-                          density="compact"
-                          variant="outlined"
-                          color="primary"
-                          @update:modelValue="onUpdatePerPage"
-                        >
-                        </v-select
-                      ></v-col>
-                      <v-col cols="5">
-                        <v-text-field
-                          label="Trang"
-                          type="number"
-                          min="1"
-                          :max="options.totalPages"
-                          density="compact"
-                          variant="outlined"
-                          v-model="options.currentPage"
-                          color="primary"
-                          @update:modelValue="onUpdatePage"
-                        >
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
-                  </div>
-                </v-col>
-                <v-col cols="12" md="7" class="ps-0">
-                  <app-pagination
-                    v-model="options.currentPage"
-                    class="my-4"
-                    :length="options.totalPages"
-                    @update:modelValue="onUpdatePage"
-                  ></app-pagination>
-                </v-col>
-              </v-row>
-            </template>
-            <template v-slot:loading>
-              <v-skeleton-loader
-                :type="`table-row@${options.itemsPerPage}`"
-              ></v-skeleton-loader>
-            </template>
-            <template #item.supplier_name="{ item }">
-              <span class="position-relative"
-                >{{
-                  item.supplier_name.length > 15
-                    ? item.supplier_name.substring(0, 12) + "..."
-                    : item.supplier_name
-                }}<v-tooltip activator="parent" location="top" v-if="item.supplier_name.length > 15">{{
-                  item.supplier_name
-                }}</v-tooltip></span
+        </v-card-actions>
+      </v-col>
+      <v-col cols="12">
+        <app-loading :model-value="loading"></app-loading>
+        <v-data-table-server
+          :items-per-page="options.itemsPerPage"
+          :headers="headers"
+          :items-length="options.totalItems"
+          :items="options.serverItems"
+          :loading="loading"
+          item-value="name"
+          :no-wrap="true"
+          @update:sortBy="onSortTable"
+        >
+          <template v-slot:bottom>
+            <v-row wrap>
+              <v-col cols="12" md="5">
+                <div class="table-selected mt-1">
+                  <v-row wrap>
+                    <v-col cols="7"
+                      ><v-select
+                        dense
+                        outlined
+                        hide-details
+                        :model-value="options.itemsPerPage"
+                        label="Số nước hoa mỗi trang"
+                        item-title="text"
+                        item-value="value"
+                        :items="perPageChoices"
+                        density="compact"
+                        variant="outlined"
+                        color="primary"
+                        @update:modelValue="onUpdatePerPage"
+                      >
+                      </v-select
+                    ></v-col>
+                    <v-col cols="5">
+                      <v-text-field
+                        label="Trang"
+                        type="number"
+                        min="1"
+                        :max="options.totalPages"
+                        density="compact"
+                        variant="outlined"
+                        v-model="options.currentPage"
+                        color="primary"
+                        @update:modelValue="onUpdatePage"
+                      >
+                      </v-text-field>
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+              <v-col cols="12" md="7" class="ps-0">
+                <app-pagination
+                  v-model="options.currentPage"
+                  class="my-4"
+                  :length="options.totalPages"
+                  @update:modelValue="onUpdatePage"
+                ></app-pagination>
+              </v-col>
+            </v-row>
+          </template>
+          <template v-slot:loading>
+            <v-skeleton-loader
+              :type="`table-row@${options.itemsPerPage}`"
+            ></v-skeleton-loader>
+          </template>
+          <template #item.supplier_name="{ item }">
+            <span class="position-relative"
+              >{{
+                item.supplier_name.length > 15
+                  ? item.supplier_name.substring(0, 12) + "..."
+                  : item.supplier_name
+              }}<v-tooltip
+                activator="parent"
+                location="top"
+                v-if="item.supplier_name.length > 15"
+                >{{ item.supplier_name }}</v-tooltip
+              ></span
+            >
+          </template>
+          <template #item.actions="{ item }">
+            <div class="d-flex gap-1">
+              <AppButton
+                component-type="link"
+                :to="{
+                  name: 'admin-perfume-id-image',
+                  params: {
+                    id: item.id,
+                  },
+                }"
+                bg="bg-primary"
+                class="p-1"
               >
-            </template>
-            <template #item.actions="{ item }">
-              <div class="d-flex gap-1">
-                <AppButton bg="bg-primary" class="p-1">
-                  <img src="/icons/mingcute--edit-line.svg" class="img-icon" alt="">
-                </AppButton>
-                <AppButton bg="bg-danger" class="p-1" @click="dialog = true">
-                  <img src="/icons/mingcute--delete-line.svg" class="img-icon" alt="">
-                </AppButton>
-              </div>
-            </template>
-          </v-data-table-server>
-        </v-col>
-      </v-row>
-    </div>
+                <img
+                  src="/icons/mingcute--edit-line.svg"
+                  class="img-icon"
+                  alt=""
+                />
+              </AppButton>
+              <AppButton
+                component-type="link"
+                :to="{
+                  name: 'admin-perfume-id-image',
+                  params: {
+                    id: item.id,
+                  },
+                }"
+                bg="bg-success"
+                class="p-1"
+              >
+                <img
+                  src="/icons/material-symbols-light--image-outline.svg"
+                  class="img-icon"
+                  alt=""
+                />
+              </AppButton>
+              <AppButton
+                component-type="link"
+                :to="{
+                  name: 'admin-perfume-id-price',
+                  params: {
+                    id: item.id,
+                  },
+                }"
+                bg="bg-secondary"
+                class="p-1"
+              >
+                <img
+                  src="/icons/solar--tag-price-linear.svg"
+                  class="img-icon"
+                  alt=""
+                />
+              </AppButton>
+              <AppButton bg="bg-danger" class="p-1" @click="dialog = true">
+                <img
+                  src="/icons/mingcute--delete-line.svg"
+                  class="img-icon"
+                  alt=""
+                />
+              </AppButton>
+            </div>
+          </template>
+        </v-data-table-server>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
@@ -164,6 +227,7 @@ export default {
           title: "Actions",
           sortable: false,
           key: "actions",
+          minWidth: '163px',
         },
       ],
       options: {

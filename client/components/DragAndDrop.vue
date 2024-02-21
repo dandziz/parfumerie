@@ -95,11 +95,10 @@ export default defineComponent({
             break;
           }
         if (!this.images.some((e) => e.name === files[i].name)) {
-          /*
           if (this.maxSize && files[i].size > this.maxSize) {
             this.errorMessage = `Một số hình ảnh đã bị loại bỏ do kích thước vượt quá ${this.maxSize / 1000000}MB!`
             continue;
-          } */
+          }
           this.images.push({
             name: files[i].name,
             url: URL.createObjectURL(files[i]),
@@ -163,6 +162,13 @@ export default defineComponent({
         this.$emit("update:errorMessages", "");
       }
     },
+    resetImages() {
+      for (let i = 0; i < this.images.length; i++) {
+        URL.revokeObjectURL(this.images[i].url);
+      }
+      this.images = []
+      this.$emit("update:modelValue", []);
+    }
   },
 });
 </script>
@@ -222,7 +228,7 @@ export default defineComponent({
       margin-right: 5px;
       height: 100px;
       position: relative;
-      margin-bottom: 8px;
+      margin-top: 8px;
       img {
         width: 100%;
         height: 100%;

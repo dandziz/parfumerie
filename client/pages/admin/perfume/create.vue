@@ -116,7 +116,6 @@
       </v-card-item>
       <v-divider thickness="3"></v-divider>
       <v-card-item title="Dung tích">
-        {{ capacities }}
         <template #append>
           <img src="/icons/bi--sort-numeric-down.svg" class="cursor-pointer" alt="" @click="sortCapacities" />
         </template>
@@ -167,11 +166,13 @@
       <v-divider thickness="3"></v-divider>
       <v-card-item title="Ảnh">
         <drag-and-drop
+          ref="uploadImages"
           v-model="files"
           :max-size="fileValidation.maxSize"
           :max-file="fileValidation.maxFile"
           v-model:error-messages="errors.images"
           class="mt-2"
+          :key="keyUploadImages"
         ></drag-and-drop>
       </v-card-item>
       <v-card-actions class="gap-2 px-4">
@@ -254,6 +255,7 @@ export default {
         maxSize: 10000000,
         maxFile: 10,
       },
+      keyUploadImages: String(Date.now())
     };
   },
   mounted() {
@@ -262,7 +264,6 @@ export default {
   },
   methods: {
     async onSubmit() {
-      console.log(JSON.stringify(this.capacities));
       if (this.formValidation) {
         if (this.files && this.files.length > 0) {
           if (this.files.length > this.fileValidation.maxFile) {
@@ -327,6 +328,22 @@ export default {
     },
     clear() {
       (this.$refs?.form as HTMLFormElement)?.reset();
+      this.capacities = [["", "", ""]];
+      if (this.$refs.uploadImages && (this.$refs.uploadImages as any)?.resetImages) {
+        (this.$refs.uploadImages as any).resetImages();
+      }
+      this.keyUploadImages = String(Date.now())
+      this.errors = {
+        code: "",
+        name: "",
+        slug: "",
+        gender: "",
+        origin: "",
+        description: "",
+        brand_id: "",
+        supplier_id: "",
+        images: "",
+      }
       this.generateCode();
     },
     handleInputName(value: string) {

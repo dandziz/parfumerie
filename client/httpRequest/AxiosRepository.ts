@@ -49,18 +49,23 @@ class AxiosRepository {
     headers?: HEADERS
   ): Promise<RESPONSE_API_SUCCESS<T>> {
     try {
+      const config = {
+        params: {
+          ...params
+        },
+        headers: {
+          ...headers,
+        }
+      }
       const response: RESPONSE_API_SUCCESS<T> = await this.axiosInstance.get(
         url,
-        {
-          params,
-          headers,
-        }
+        config
       );
-
+      
       return Promise.resolve(response as RESPONSE_API_SUCCESS<T>);
     } catch (e) {
       const error = e as AxiosError<RESPONSE_NOT_DATA>;
-
+      
       return Promise.reject({
         error: "message.getDataFailed",
         headers: error.response?.headers,
@@ -85,10 +90,9 @@ class AxiosRepository {
           ...headers,
         }
       }
-      console.log(config);
       const response: RESPONSE_API_SUCCESS<RESPONSE_DATA_SUCCESS<T>> =
         await this.axiosInstance.post(url, data, config);
-
+      
       return Promise.resolve(response);
     } catch (e) {
       const error = e as AxiosError<RESPONSE_API_ERROR<D>>;
@@ -109,21 +113,26 @@ class AxiosRepository {
     headers?: HEADERS
   ): Promise<RESPONSE_API_SUCCESS<RESPONSE_DATA_SUCCESS<T>>> {
     try {
+      const config = {
+        params: {
+          ...params
+        },
+        headers: {
+          ...headers,
+        }
+      }
       const response: RESPONSE_API_SUCCESS<RESPONSE_DATA_SUCCESS<T>> =
-        await this.axiosInstance.put(url, data, {
-          params,
-          headers,
-        });
-
+        await this.axiosInstance.put(url, data, config);
       return Promise.resolve(response);
     } catch (e) {
       const error = e as AxiosError<RESPONSE_API_ERROR<D>>;
+      const response = error.response;
 
       return Promise.reject({
         error: this.handleApiError<D>(error),
-        headers: error.response?.headers,
-        status: error.response?.status,
-        message: error.response?.data?.message,
+        headers: response?.headers,
+        status: response?.status,
+        message: response?.data?.message,
       });
     }
   }
@@ -135,21 +144,27 @@ class AxiosRepository {
     headers?: HEADERS
   ): Promise<RESPONSE_API_SUCCESS<RESPONSE_DATA_SUCCESS<T>>> {
     try {
+      const config = {
+        params: {
+          ...params
+        },
+        headers: {
+          ...headers,
+        }
+      }
       const response: RESPONSE_API_SUCCESS<RESPONSE_DATA_SUCCESS<T>> =
-        await this.axiosInstance.patch(url, data, {
-          params,
-          headers,
-        });
+        await this.axiosInstance.patch(url, data, config);
 
       return Promise.resolve(response);
     } catch (e) {
       const error = e as AxiosError<RESPONSE_API_ERROR<D>>;
+      const response = error.response;
 
       return Promise.reject({
         error: this.handleApiError<D>(error),
-        headers: error.response?.headers,
-        status: error.response?.status,
-        message: error.response?.data?.message,
+        headers: response?.headers,
+        status: response?.status,
+        message: response?.data?.message,
       });
     }
   }
@@ -161,23 +176,28 @@ class AxiosRepository {
     headers?: HEADERS
   ): Promise<RESPONSE_API_SUCCESS<T>> {
     try {
+      const config = {
+        params: {
+          ...params
+        },
+        headers: {
+          ...headers,
+        }
+      }
       const response: RESPONSE_API_SUCCESS<T> = await this.axiosInstance.delete(
         url,
-        {
-          params,
-          headers,
-        }
+        config
       );
 
       return Promise.resolve(response);
     } catch (e) {
-      const error = e as AxiosError;
+      const error = e as AxiosError<RESPONSE_NOT_DATA>;
 
       return Promise.reject({
         error: "message.deleteFailed",
         headers: error.response?.headers,
         status: error.response?.status,
-        message: error.response?.data as string,
+        message: error.response?.data?.message as string,
       });
     }
   }

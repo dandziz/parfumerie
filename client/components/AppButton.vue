@@ -9,7 +9,7 @@
       'bg-none': bgNone,
       'text-white': !bgNone,
     }"
-    :to="to"
+    :to="$attrs.to"
     :is="renderedComponent"
     :disabled="loading"
     :type="type"
@@ -35,15 +35,11 @@ export default {
     },
     bg: {
       type: String,
-      default: "btn-success",
+      default: "bg-success",
     },
     borderRadius: {
       type: Boolean,
       default: true,
-    },
-    to: {
-      type: String,
-      default: "",
     },
     bgNone: {
       type: Boolean,
