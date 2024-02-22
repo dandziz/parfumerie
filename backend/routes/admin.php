@@ -29,16 +29,22 @@ Route::middleware(['auth:api', 'manage'])->controller(PerfumeController::class)
     Route::get('', 'index');
     Route::middleware('convertGenderToInt')->post('', 'store');
     Route::get('{perfume}', 'show');
-    Route::put('{perfume}', 'update');
+    Route::patch('{perfume}', 'update');
+
+    /* Images */
     Route::get('{perfume}/images', 'getImages');
     Route::post('{perfume}/images', 'addImages');
-    Route::middleware('retrieve.image')->group(function() {
-        Route::delete('{perfume}/{imageId}', 'deleteImage');
-        Route::post('{perfume}/{imageId}/default', 'updateDefaultImage');
-        Route::post('{perfume}/{imageId}/ml', 'updateDefaultMLImage');
-        Route::post('{perfume}/{imageId}/fullbox', 'updateDefaultFullboxImage');
-    });
+    Route::delete('{perfume}/{media}', 'deleteImage');
+    Route::post('{perfume}/{media}/default', 'updateDefaultImage');
+    Route::post('{perfume}/{media}/ml', 'updateDefaultMLImage');
+    Route::post('{perfume}/{media}/fullbox', 'updateDefaultFullboxImage');
     Route::post('{perfume}/images/index', 'updateImageIndex');
+
+    /* Prices */
+    Route::get('{perfume}/prices', 'getPrices');
+    Route::post('{perfume}/prices', 'addPrice');
+    Route::patch('{perfume}/prices/{perfume_price}', 'updatePrice');
+    Route::delete('{perfume}/prices/{perfume_price}', 'deletePrice');
 });
 
 Route::middleware(['auth:api', 'manage'])->controller(SupplierController::class)

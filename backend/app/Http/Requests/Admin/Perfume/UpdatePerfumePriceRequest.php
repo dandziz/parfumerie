@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Admin\PerfumePrice;
+namespace App\Http\Requests\Admin\Perfume;
 
 use App\Http\Requests\BaseRequest;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class StorePerfumePriceRequest extends BaseRequest
+class UpdatePerfumePriceRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +22,11 @@ class StorePerfumePriceRequest extends BaseRequest
      */
     public function rules(): array
     {
-        //dd($this->route('perfume')->id);
         return [
-            'capacity' => [Rule::unique('perfume_price')->where(function (Builder $query) {
-                return $query->where('perfume_id', $this->route('perfume')->id);
-            })],
+            'capacity' => 'required|string',
+            'quantity' => 'required|boolean',
             'import_price' => 'required|integer',
-            'price' => 'required|integer',
-            'quantity' => 'required|boolean'
+            'price' => 'required|integer'
         ];
     }
 }

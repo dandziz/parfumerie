@@ -325,15 +325,6 @@ export default {
   -ms-user-select: none;
   user-select: none;
 }
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.5s ease;
-}
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
 .image-type,
 .image-index {
   position: absolute;

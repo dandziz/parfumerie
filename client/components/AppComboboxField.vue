@@ -37,6 +37,7 @@ export default defineComponent({
       if (this.$attrs?.transfer && value && this.$attrs?.transfer == 'uppercase')  val = value.toUpperCase()
       this.$emit("update:modelValue", val);
       this.$emit("update:errorCustom", "");
+      this.$emit("onChange");
     },
   },
 });

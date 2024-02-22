@@ -23,7 +23,7 @@ class Handler extends ExceptionHandler
     protected function unauthenticated($request, AuthenticationException $exception): \Illuminate\Http\Response|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
     {
         return response()->json([
-            'status' => 401,
+            'status' => false,
             'message' => 'Unauthenticated.'
         ], 401);
     }

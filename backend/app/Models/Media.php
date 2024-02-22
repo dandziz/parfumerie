@@ -10,14 +10,17 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Media extends Model
 {
     use HasFactory;
+    protected $table = 'media';
     protected $fillable = ['name', 'img', 'thumb', 'type', 'img_sort'];
     protected $hidden = ['img', 'thumb'];
     protected $appends = ['img_link', 'thumb_link'];
-    public function getImgLinkAttribute() {
+    public function getImgLinkAttribute(): string
+    {
         return asset('storage/images/'.$this->img);
     }
 
-    public function getThumbLinkAttribute() {
+    public function getThumbLinkAttribute(): string
+    {
         return asset('storage/images/'.$this->thumb);
     }
 
@@ -26,7 +29,7 @@ class Media extends Model
         return $this->morphTo();
     }
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
         static::addGlobalScope(new MediaScope());

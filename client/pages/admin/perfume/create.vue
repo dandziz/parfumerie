@@ -4,7 +4,7 @@
       class="component-overlay"
       persistent
       contained
-      :model-value="isLoading"
+      :model-value="loading"
     >
       <VProgressCircular
         indeterminate
@@ -117,51 +117,78 @@
       <v-divider thickness="3"></v-divider>
       <v-card-item title="Dung tích">
         <template #append>
-          <img src="/icons/bi--sort-numeric-down.svg" class="cursor-pointer" alt="" @click="sortCapacities" />
+          <img
+            src="/icons/bi--sort-numeric-down.svg"
+            class="cursor-pointer"
+            alt=""
+            @click="sortCapacities"
+          />
         </template>
-        <v-row class="mt-2" v-for="(item, ind) in capacities" :key="ind">
-          <v-col cols="4"
-            ><app-combobox-field
-              label="Dung tích"
-              v-model="item[0]"
-              :items="capacityLabel"
-              transfer="uppercase"
-              :rules="[requiredValidator]"
-            ></app-combobox-field
-          ></v-col>
-          <v-col cols="3"
-            ><app-input-field
-              label="Giá nhập"
-              type="number"
-              v-model="item[1]"
-              :rules="[requiredValidator, integerValidator]"
-              min="0"
-            ></app-input-field
-          ></v-col>
-          <v-col cols="3"
-            ><app-input-field
-              label="Giá"
-              type="number"
-              v-model="item[2]"
-              :rules="[requiredValidator, integerValidator]"
-              min="0"
-            ></app-input-field
-          ></v-col>
-          <v-col cols="2" class="d-flex mx-auto my-auto"
-            >
-            <AppButton
-              bg-none
-              @click="handleRemoveCapacity(ind)"
-              v-if="ind < capacities.length - 1"
-              ><img src="/icons/mynaui--minus-square.svg" alt=""></AppButton
-          >
-            <AppButton
-              bg-none
-              @click="handleAddCapacity"
-              v-if="ind == capacities.length - 1"
-              ><img src="/icons/mynaui--plus-square.svg" alt=""></AppButton
-          ></v-col>
-        </v-row>
+        <transition-group name="list">
+          <v-row class="mt-2" v-for="(item, ind) in capacities" :key="ind">
+            <v-col cols="3"
+              ><app-combobox-field
+                ref="capacity"
+                label="Dung tích"
+                v-model="item[0]"
+                :items="capacityLabel"
+                transfer="uppercase"
+                :rules="[
+                  requiredValidator,
+                  uniqueValidator(item[0], capacityCheck, ind),
+                ]"
+                @onChange="onChangeCapacity"
+              ></app-combobox-field
+            ></v-col>
+            <v-col cols="3"
+              ><app-input-field
+                label="Giá nhập"
+                type="number"
+                v-model="item[1]"
+                :rules="[requiredValidator, integerValidator]"
+                min="0"
+                @onInput="errors.prices = ''"
+              ></app-input-field
+            ></v-col>
+            <v-col cols="3"
+              ><app-input-field
+                label="Giá"
+                type="number"
+                v-model="item[2]"
+                :rules="[requiredValidator, integerValidator]"
+                min="0"
+                @onInput="errors.prices = ''"
+              ></app-input-field
+            ></v-col>
+            <v-col cols="2" lg="2" class="mx-auto my-auto"
+              ><v-switch
+                color="primary"
+                v-model:model-value="item[3]"
+                label="Còn hàng"
+                class="hidden-details"
+              ></v-switch
+            ></v-col>
+            <v-col cols="12" lg="1" class="d-flex my-auto">
+              <AppButton
+                bg-none
+                @click="handleRemoveCapacity(ind)"
+                v-if="ind < capacities.length - 1"
+                ><img src="/icons/mynaui--minus-square.svg" alt=""
+              /></AppButton>
+              <AppButton
+                bg-none
+                @click="handleAddCapacity"
+                v-if="ind == capacities.length - 1"
+                ><img src="/icons/mynaui--plus-square.svg" alt="" /></AppButton
+            ></v-col>
+          </v-row>
+        </transition-group>
+        <v-messages
+          active
+          :messages="errors.prices"
+          color="danger"
+          class="opacity-100"
+        ></v-messages>
       </v-card-item>
       <v-divider thickness="3"></v-divider>
       <v-card-item title="Ảnh">
@@ -187,7 +214,11 @@
 <script lang="ts">
 import { PerfumeGender } from "~/enums";
 
-import { requiredValidator, integerValidator } from "@validator";
+import {
+  requiredValidator,
+  integerValidator,
+  uniqueValidator,
+} from "@validator";
 import type { Brand, Perfume, Supplier } from "~/models";
 import type { RESPONSE_ERROR, RESPONSE_API_SUCCESS } from "~/types";
 export default {
@@ -210,6 +241,7 @@ export default {
       PerfumeGender,
       requiredValidator,
       integerValidator,
+      uniqueValidator,
       files,
     };
   },
@@ -217,7 +249,7 @@ export default {
   data() {
     return {
       formValidation: false,
-      isLoading: false,
+      loading: false,
       forms: {
         code: "",
         name: "",
@@ -238,6 +270,7 @@ export default {
         brand_id: "",
         supplier_id: "",
         images: "",
+        prices: "",
       },
       genders: [
         { label: "Nam", value: 1 },
@@ -250,12 +283,12 @@ export default {
         "CHIẾT 30ML",
         "FULLBOX 100ML",
       ],
-      capacities: [["", "", ""]],
+      capacities: [["", "", "", false]],
       fileValidation: {
         maxSize: 10000000,
         maxFile: 10,
       },
-      keyUploadImages: String(Date.now())
+      keyUploadImages: String(Date.now()),
     };
   },
   mounted() {
@@ -284,11 +317,16 @@ export default {
           this.errors.images = "Chưa có ảnh nào được tải lên!";
           return;
         }
-        if (!this.capacities || !this.capacities[0][0] || !this.capacities[0][1]) {
+        if (
+          !this.capacities ||
+          !this.capacities[0][0] ||
+          !this.capacities[0][1] ||
+          !this.capacities[0][2]
+        ) {
           return;
         }
         try {
-          this.isLoading = true;
+          this.loading = true;
           const data = { ...this.forms };
           let formData = new FormData();
           for (let key in data) {
@@ -298,7 +336,7 @@ export default {
             let file = this.files[i];
             formData.append("images[" + i + "]", file);
           }
-          formData.append('price', JSON.stringify(this.capacities));
+          formData.append("prices", JSON.stringify(this.capacities));
           const response = await this.$axios.post<Perfume, FormData>(
             "admin/perfumes",
             formData,
@@ -316,7 +354,7 @@ export default {
           const error = e as RESPONSE_ERROR;
           this.errors = error.error as typeof this.errors;
         } finally {
-          this.isLoading = false;
+          this.loading = false;
         }
       }
     },
@@ -328,11 +366,14 @@ export default {
     },
     clear() {
       (this.$refs?.form as HTMLFormElement)?.reset();
-      this.capacities = [["", "", ""]];
-      if (this.$refs.uploadImages && (this.$refs.uploadImages as any)?.resetImages) {
+      this.capacities = [["", "", "", false]];
+      if (
+        this.$refs.uploadImages &&
+        (this.$refs.uploadImages as any)?.resetImages
+      ) {
         (this.$refs.uploadImages as any).resetImages();
       }
-      this.keyUploadImages = String(Date.now())
+      this.keyUploadImages = String(Date.now());
       this.errors = {
         code: "",
         name: "",
@@ -343,7 +384,8 @@ export default {
         brand_id: "",
         supplier_id: "",
         images: "",
-      }
+        prices: "",
+      };
       this.generateCode();
     },
     handleInputName(value: string) {
@@ -351,7 +393,7 @@ export default {
     },
     async fetch() {
       try {
-        this.isLoading = true;
+        this.loading = true;
         const brands = await this.$axios.get<RESPONSE_API_SUCCESS<Brand[]>>(
           "brands"
         );
@@ -363,21 +405,29 @@ export default {
       } catch (e) {
         failureNotification("Lấy thông tin liên quan không thành công!");
       } finally {
-        this.isLoading = false;
+        this.loading = false;
       }
     },
     handleAddCapacity() {
-      this.capacities.push(["", "", ""]);
+      this.capacities.push(["", "", "", false]);
     },
     handleRemoveCapacity(index: number) {
       this.capacities.splice(index, 1);
     },
     sortCapacities() {
-      this.capacities.sort((a: string[], b: string[]): number => {
-        const aValue = parseInt(a[1]);
-        const bValue = parseInt(b[1]);
+      this.capacities.sort((a: Array<string|boolean>, b: Array<string|boolean>): number => {
+        const aValue = parseInt(a[2] as string);
+        const bValue = parseInt(b[2] as string);
         return aValue - bValue;
       });
+    },
+    onChangeCapacity() {
+      this.errors.prices = '';
+    }
+  },
+  computed: {
+    capacityCheck() {
+      return this.capacities.map((value) => value[0]) as string[];
     },
   },
 };

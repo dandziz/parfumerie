@@ -8,6 +8,16 @@ export const requiredValidator = (value: unknown) => {
   return !!String(value).trim().length || 'Trường này là bắt buộc'
 }
 
+// 👉 Required Validator
+export const uniqueValidator = (value: unknown, array: string[], index: number) => {
+  const arr = JSON.parse(JSON.stringify(array)) as string[]
+  arr.splice(index, 1)
+  if (isEmpty(value))
+    return true
+
+  return !arr.includes(value as string) || 'Trường này không được trùng lặp.'
+}
+
 // 👉 Email Validator
 export const emailValidator = (value: unknown) => {
   if (isEmpty(value))

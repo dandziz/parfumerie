@@ -34,9 +34,9 @@ class StorePerfumeRequest extends BaseRequest
             'images.*' => 'required|image|max:10000',
             'origin' => 'required|string|max:255',
             'description' => 'required|string',
-            'brand_id' => 'exists:brands,id',
-            'supplier_id' => 'exists:suppliers,id',
-            'price' => ['required', new PerfumePriceRule]
+            'brand_id' => 'required|exists:brands,id',
+            'supplier_id' => 'required|exists:suppliers,id',
+            'prices' => ['required', new PerfumePriceRule]
         ];
     }
 }

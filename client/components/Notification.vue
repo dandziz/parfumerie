@@ -5,6 +5,7 @@
     pauseOnHover
     closeOnClick
     class="custom-notification"
+    :duration="800"
   >
     <template #body="props">
       <div :class='`vue-notification-template vue-notification ${props.item.type}`'>

@@ -2,16 +2,20 @@
 
 namespace App\Http\Requests\Admin\Perfume;
 
+use App\Enums\PerfumeGender;
+use App\Http\Requests\BaseRequest;
+use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class UpdatePerfumeRequest extends FormRequest
+class UpdatePerfumeRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +26,17 @@ class UpdatePerfumeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'code' => ['required','string','max:100',
+                Rule::unique('perfumes')->ignore($this->perfume->id),],
+            'name' => 'required|string',
+            'slug' => ['required','string','max:255',
+                Rule::unique('perfumes')->ignore($this->perfume->id),],
+            'gender' => ['required', new EnumValue(PerfumeGender::class)],
+            'origin' => 'required|string|max:255',
+            'description' => 'required|string',
+            'brand_id' => 'required|exists:brands,id',
+            'supplier_id' => 'required|exists:suppliers,id',
+            'status' => 'required|boolean',
         ];
     }
 }

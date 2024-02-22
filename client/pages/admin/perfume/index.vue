@@ -91,16 +91,30 @@
               :type="`table-row@${options.itemsPerPage}`"
             ></v-skeleton-loader>
           </template>
+          <template #item.gender="{ item }">
+            <span>{{
+              PerfumeGenderName[item.gender]
+            }}</span>
+          </template>
+          <template #item.status="{ item }">
+            <span
+              :class="{
+                'tag-success': item.status == PerfumerStatus.Active,
+                'tag-danger': item.status == PerfumerStatus.Inactive,
+              }"
+              >{{ PerfumerStatusName[item.status as number] }}</span
+            >
+          </template>
           <template #item.supplier_name="{ item }">
             <span class="position-relative"
               >{{
-                item.supplier_name.length > 15
+                (item.supplier_name && item.supplier_name.length > 15)
                   ? item.supplier_name.substring(0, 12) + "..."
                   : item.supplier_name
               }}<v-tooltip
                 activator="parent"
                 location="top"
-                v-if="item.supplier_name.length > 15"
+                v-if="item.supplier_name && item.supplier_name.length > 15"
                 >{{ item.supplier_name }}</v-tooltip
               ></span
             >
@@ -110,7 +124,7 @@
               <AppButton
                 component-type="link"
                 :to="{
-                  name: 'admin-perfume-id-image',
+                  name: 'admin-perfume-id',
                   params: {
                     id: item.id,
                   },
@@ -176,19 +190,23 @@
 <script lang="ts">
 import type { GET_LIST_RESPONSE } from "@types";
 import type { Perfume } from "@/models";
+import {
+  PerfumerStatus,
+  PerfumeGenderName,
+  PerfumeGender,
+  PerfumerStatusName,
+} from "~/enums";
 
 export default {
   setup() {
     useHead({
       title: "Danh sách nước hoa",
-      meta: [
-        {
-          name: "",
-          content: "",
-        },
-      ],
     });
-    return {};
+    return {
+      PerfumerStatus,
+      PerfumeGenderName,
+      PerfumerStatusName,
+    };
   },
   data() {
     return {
@@ -227,7 +245,7 @@ export default {
           title: "Actions",
           sortable: false,
           key: "actions",
-          minWidth: '163px',
+          minWidth: "163px",
         },
       ],
       options: {
