@@ -7,8 +7,9 @@
 <script>
 export default {
   setup () {
-    
-
+    definePageMeta({
+      middleware: ["admin"]
+    })
     return {}
   }
 }

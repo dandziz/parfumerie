@@ -12,7 +12,8 @@ class Media extends Model
     use HasFactory;
     protected $table = 'media';
     protected $fillable = ['name', 'img', 'thumb', 'type', 'img_sort'];
-    protected $hidden = ['img', 'thumb'];
+    protected $hidden = ['img', 'thumb', 'mediable_type', 'mediable_id', 'created_at',
+        'updated_at', 'name', 'status'];
     protected $appends = ['img_link', 'thumb_link'];
     public function getImgLinkAttribute(): string
     {
@@ -27,6 +28,12 @@ class Media extends Model
     public function mediable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function setAttributeVisibility(): void
+    {
+        $this->makeVisible(array_merge($this->hidden, $this->appends))
+            ->makeHidden(['img', 'thumb', 'mediable_type']);
     }
 
     protected static function boot(): void

@@ -47,6 +47,9 @@ export default {
         },
       ],
     });
+    definePageMeta({
+      middleware: ["customer"]
+    })
     return {};
   },
   data() {

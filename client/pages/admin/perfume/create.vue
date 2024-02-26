@@ -186,8 +186,7 @@
         <v-messages
           active
           :messages="errors.prices"
-          color="danger"
-          class="opacity-100"
+          class="message-danger opacity-100"
         ></v-messages>
       </v-card-item>
       <v-divider thickness="3"></v-divider>
@@ -228,13 +227,10 @@ export default {
     const files = reactive<Array<File>>([]);
     useHead({
       title: "Thêm nước hoa",
-      meta: [
-        {
-          name: "",
-          content: "",
-        },
-      ],
     });
+    definePageMeta({
+      middleware: ["admin"]
+    })
     return {
       brands,
       suppliers,

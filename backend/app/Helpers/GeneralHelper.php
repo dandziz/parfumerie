@@ -17,19 +17,23 @@ function convertTypeOfPagination(LengthAwarePaginator $paginate): array
     ];
 }
 
-function getItems(Request $request, array $query, Builder $builder): JsonResponse
+function getItems(Request $request, array $query, Builder $builder): \Illuminate\Contracts\Pagination\LengthAwarePaginator
 {
     if ($request->has('sortBy') && $request->has('order')) {
         $builder->orderBy($request->get('sortBy'), $request->get('order'));
     }
     $itemPerPage = $request->has('itemsPerPage') ? (int)$request->get('itemsPerPage') : 10;
     $pageNumber = $request->has('currentPage') ? (int)$request->get('currentPage') : 1;
-    $builder = $builder->paginate($itemPerPage, ['*'], 'page', $pageNumber);
+    return $builder->paginate($itemPerPage, ['*'], 'page', $pageNumber);
+}
+
+function returnItemsWithPagination($builder, $items): JsonResponse
+{
     return response()->json([
         "status" => true,
         "message" => __('messages.success'),
         "pagination" => convertTypeOfPagination($builder),
-        "data" => $builder->items(),
+        "data" => $items,
     ], 200);
 }
 
@@ -79,4 +83,12 @@ function returnFailureResponse($message, $status = 500): JsonResponse
         "status" => false,
         "message" => $message,
     ], $status);
+}
+
+function getMoneyFormat($price): string
+{
+    if (!is_float($price))
+        return number_format($price, 0, ',', '.').'₫';
+    else
+        return number_format($price, 2, '.', ',').'₫';
 }

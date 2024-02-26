@@ -20,7 +20,7 @@
       v-model="formValidation"
       ref="form"
     >
-      <v-card-item>
+      <v-card-item title="Thông tin chung">
         <v-row class="mt-2">
           <v-col cols="12"
             ><v-switch
@@ -121,6 +121,20 @@
           </v-col>
         </v-row>
       </v-card-item>
+      <v-card-item title="Tổng quan sản phẩm">
+        <v-row class="mt-2">
+          <v-col cols="12">
+            <client-only placeholder="loading...">
+              <CkeditorNuxt v-model="forms.product_information" @update:model-value="errors.product_information = ''" />
+            </client-only>
+            <v-messages
+              active
+              :messages="errors.product_information"
+              class="message-danger opacity-100 pt-2 pb-1 ps-4"
+            ></v-messages>
+          </v-col>
+        </v-row>
+      </v-card-item>
       <v-card-actions class="gap-2 px-4">
         <v-spacer></v-spacer>
         <AppButton type="button" bg="bg-danger" @click="undo"
@@ -136,9 +150,13 @@
 import { requiredValidator, integerValidator } from "@validator";
 import type { Brand, Perfume, Supplier, PerfumeForm } from "~/models";
 import type { RESPONSE_ERROR, RESPONSE_API_SUCCESS } from "~/types";
+import CkeditorNuxt from "@/views/admin/perfume/CkeditorNuxt.vue";
 import { defineComponent } from "vue";
 export default defineComponent({
   setup() {
+    definePageMeta({
+      middleware: ["admin"],
+    });
     useHead({
       title: "Cập nhật |",
     });
@@ -156,6 +174,7 @@ export default defineComponent({
       brand_id: "",
       supplier_id: "",
       status: false,
+      product_information: "",
     });
     const forms = reactive<PerfumeForm>({
       name: "",
@@ -167,6 +186,7 @@ export default defineComponent({
       status: false,
       brand_id: "",
       supplier_id: "",
+      product_information: "",
     });
     return {
       brands,
@@ -177,6 +197,9 @@ export default defineComponent({
       initial,
       forms,
     };
+  },
+  components: {
+    CkeditorNuxt,
   },
   mounted() {
     this.fetch();
@@ -196,6 +219,7 @@ export default defineComponent({
         brand_id: "",
         supplier_id: "",
         status: "",
+        product_information: "",
       },
       genders: [
         { label: "Nam", value: 1 },
@@ -207,17 +231,30 @@ export default defineComponent({
   methods: {
     async onSubmit() {
       if (this.formValidation) {
+        if (!this.forms.product_information) {
+          this.errors.product_information = "Trường này là bắt buộc";
+          return;
+        }
         try {
-          this.loading = true
-          const response = await this.$axios.patch<null, PerfumeForm>(`admin/perfumes/${this.perfumeId}`, this.forms);
-          successfulNotification('Thành công', 'Cập nhật thông tin nước hoa thành công!');
-          this.initial = JSON.parse(JSON.stringify(this.forms))
+          this.loading = true;
+          const response = await this.$axios.patch<null, PerfumeForm>(
+            `admin/perfumes/${this.perfumeId}`,
+            this.forms
+          );
+          successfulNotification(
+            "Thành công",
+            "Cập nhật thông tin nước hoa thành công!"
+          );
+          this.initial = JSON.parse(JSON.stringify(this.forms));
         } catch (e) {
-          const error = e as RESPONSE_ERROR
-          this.errors = error.error as typeof this.errors
-          failureNotification("Lỗi", "Cập nhật thông tin nước hoa không thành công!");
+          const error = e as RESPONSE_ERROR;
+          this.errors = error.error as typeof this.errors;
+          failureNotification(
+            "Lỗi",
+            "Cập nhật thông tin nước hoa không thành công!"
+          );
         } finally {
-          this.loading = false
+          this.loading = false;
         }
       }
     },
@@ -242,16 +279,16 @@ export default defineComponent({
           "user_id",
           "updated_at",
           "created_at",
-          "product_information",
           "start_date",
           "rate",
         ];
         for (let i = 0; i < arr.length; i++) {
           delete data[arr[i] as keyof Perfume];
         }
-        data.status = data.status == 0 ? false : true
+        data.status = data.status == 0 ? false : true;
         this.forms = reactive(JSON.parse(JSON.stringify(data)));
-        this.initial = JSON.parse(JSON.stringify(data));
+        this.initial = reactive(JSON.parse(JSON.stringify(data)));
+        this.forms.product_information = this.forms.product_information ?? "";
         this.suppliers = suppliers.data.data;
         document.title += " " + data.name;
       } catch (e) {
@@ -270,7 +307,16 @@ export default defineComponent({
       }
     },
     undo() {
-      this.forms = reactive(JSON.parse(JSON.stringify(this.initial)));
+      this.forms.code = this.initial.code;
+      this.forms.name = this.initial.name;
+      this.forms.slug = this.initial.slug;
+      this.forms.gender = this.initial.gender;
+      this.forms.origin = this.initial.origin;
+      this.forms.description = this.initial.description;
+      this.forms.brand_id = this.initial.brand_id;
+      this.forms.supplier_id = this.initial.supplier_id;
+      this.forms.status = this.initial.status;
+      this.forms.product_information = this.initial.product_information;
       this.errors = {
         code: "",
         name: "",
@@ -281,6 +327,7 @@ export default defineComponent({
         brand_id: "",
         supplier_id: "",
         status: "",
+        product_information: "",
       };
     },
   },

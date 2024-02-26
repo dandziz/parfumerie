@@ -270,6 +270,9 @@ export default {
         },
       ],
     });
+    definePageMeta({
+      middleware: ["customer"]
+    })
     const address = ref<Address[]>([]);
     const initialForms = {
       name: "",
@@ -293,17 +296,6 @@ export default {
       address,
       initialForms,
       forms,
-    };
-  },
-  head() {
-    return {
-      title: "Sổ địa chỉ",
-      meta: [
-        {
-          name: "description",
-          content: "This is my page description.",
-        },
-      ],
     };
   },
   data() {

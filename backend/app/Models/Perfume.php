@@ -14,12 +14,14 @@ class Perfume extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'perfumes';
     protected $fillable = ['code', 'name', 'slug', 'gender', 'origin', 'description',
-        'brand_id', 'supplier_id', 'user_id', 'status'];
-    protected $hidden = ['deleted_at', 'brand', 'supplier'];
-    protected $appends = ['brand_name', 'supplier_name'];
+        'brand_id', 'supplier_id', 'user_id', 'status', 'product_information'];
+    protected $hidden = ['deleted_at', 'brand', 'supplier', 'product_information', 'brand_id',
+        'user_id', 'supplier_id', 'supplier_name', 'created_at', 'deleted_at', 'updated_at',
+        'price', 'status', 'media'];
+    protected $appends = ['brand_name', 'supplier_name', 'display_price', 'avatar', 'price', 'media'];
 
     protected $casts = [
-        'start_date' => 'datetime:d/m/Y',
+        'created_at' => 'datetime:d/m/Y',
     ];
 
     public function getBrandNameAttribute() {
@@ -28,6 +30,32 @@ class Perfume extends Model
 
     public function getSupplierNameAttribute() {
         return $this->supplier->name;
+    }
+
+    public function getAvatarAttribute() {
+        $media = $this->media()->where('type', 1)->first();
+        return $media->img_link;
+    }
+
+    public function getPriceAttribute() {
+        return $this->price()->get();
+    }
+
+    public function getMediaAttribute() {
+        return $this->media()->get();
+    }
+
+    public function getDisplayPriceAttribute(): string
+    {
+        $min = $this->price()->min('price');
+        $max = $this->price()->max('price');
+        return getMoneyFormat($min).' - '.getMoneyFormat($max);
+    }
+
+    public function setAttributeVisibility(): void
+    {
+        $this->makeVisible(array_merge($this->hidden, $this->appends))
+            ->makeHidden(['brand', 'supplier']);
     }
 
     public function brand(): BelongsTo {
@@ -46,4 +74,5 @@ class Perfume extends Model
     public function price(): HasMany {
         return $this->hasMany(PerfumePrice::class);
     }
+
 }

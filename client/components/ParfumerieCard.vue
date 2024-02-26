@@ -1,10 +1,10 @@
 <template>
   <div class="card rounded-0 pduct">
-    <NuxtLink class="product-link" :to="link">
+    <NuxtLink class="product-link" :to="$attrs.link">
       <img class="product-img" :src="imageLink" alt="" />
     </NuxtLink>
     <div class="card-body">
-      <NuxtLink :to="link">
+      <NuxtLink :to="$attrs.link">
         <p class="card-text p-14-bold title-product text-black">
           {{ tenNuocHoa }}
         </p>
@@ -14,26 +14,26 @@
           v-for="n in 5"
           name="material-symbols-light:star-outline"
           size="24px"
-          class="text-warning"
+          class="text-warning rating-icon"
           :key="n"
         />
       </div>
-      <div>
+      <div class="product-footer">
         <div class="product-price p-14-bold text-success">{{ giaNuocHoa }}</div>
         <div class="product-menu hidden-menu">
-          <NuxtLink :to="link">
+          <NuxtLink :to="$attrs.link">
             <AppButton class="btn-menu">
-              <Icon name="fa:cart-plus" class="text-success" size="17px" />
+              <Icon name="fa:cart-plus" color="white" size="17px" />
             </AppButton>
           </NuxtLink>
           <div>
             <AppButton class="btn-menu xemThongTin">
-              <Icon name="fa:eye" class="text-success" size="17px" />
+              <Icon name="fa:eye" color="white" size="17px" />
             </AppButton>
           </div>
           <div>
             <AppButton class="btn-menu addYeuThich" type="button">
-              <Icon name="ph:heart-light" class="text-success" size="17px" />
+              <Icon name="ph:heart-bold" color="white" size="17px" />
             </AppButton>
           </div>
         </div>
@@ -45,10 +45,6 @@
 <script>
 export default {
   props: {
-    link: {
-      type: String,
-      required: true,
-    },
     imageLink: {
       type: String,
       required: true,
@@ -79,5 +75,11 @@ export default {
   &:hover svg {
     color: white !important;
   }
+}
+.rating-icon {
+  transform: translateX(-4.44px);
+}
+.product-footer {
+  height: 49px;
 }
 </style>

@@ -16,6 +16,13 @@
     <v-row>
       <v-col cols="12">
         <v-card-actions>
+          <v-switch
+            v-if="$vuetify.display.width <= 1430"
+            color="primary"
+            v-model:model-value="hiddenColumn"
+            :label="hiddenColumn ? 'Ẩn cột' : 'Hiện cột'"
+            class="hidden-details"
+          ></v-switch>
           <v-spacer></v-spacer>
           <AppButton
             component-type="link"
@@ -92,9 +99,7 @@
             ></v-skeleton-loader>
           </template>
           <template #item.gender="{ item }">
-            <span>{{
-              PerfumeGenderName[item.gender]
-            }}</span>
+            <span>{{ PerfumeGenderName[item.gender] }}</span>
           </template>
           <template #item.status="{ item }">
             <span
@@ -108,7 +113,7 @@
           <template #item.supplier_name="{ item }">
             <span class="position-relative"
               >{{
-                (item.supplier_name && item.supplier_name.length > 15)
+                item.supplier_name && item.supplier_name.length > 15
                   ? item.supplier_name.substring(0, 12) + "..."
                   : item.supplier_name
               }}<v-tooltip
@@ -202,6 +207,9 @@ export default {
     useHead({
       title: "Danh sách nước hoa",
     });
+    definePageMeta({
+      middleware: ["admin"]
+    })
     return {
       PerfumerStatus,
       PerfumeGenderName,
@@ -212,42 +220,6 @@ export default {
     return {
       loading: false,
       dialog: false,
-      headers: [
-        { title: "ID", sortable: true, key: "id" },
-        { title: "Mã", sortable: false, key: "code" },
-        { title: "Tên", sortable: false, key: "name" },
-        {
-          title: "Giới tính",
-          sortable: false,
-          key: "gender",
-        },
-        {
-          title: "Ngày bán",
-          sortable: true,
-          key: "start_date",
-        },
-        {
-          title: "Status",
-          sortable: false,
-          key: "status",
-        },
-        {
-          title: "Thương hiệu",
-          sortable: false,
-          key: "brand_name",
-        },
-        {
-          title: "Nhà cung cấp",
-          sortable: false,
-          key: "supplier_name",
-        },
-        {
-          title: "Actions",
-          sortable: false,
-          key: "actions",
-          minWidth: "163px",
-        },
-      ],
       options: {
         itemsPerPage: 10,
         totalItems: -1,
@@ -265,7 +237,66 @@ export default {
         { text: "20", value: 20 },
         { text: "50", value: 50 },
       ],
+      hiddenColumn: false,
     };
+  },
+  computed: {
+    headers() {
+      const hide = this.$vuetify.display.width <= 1430;
+      const partOne = [
+        {
+          title: "Giới tính",
+          sortable: false,
+          key: "gender",
+        },
+        {
+          title: "Ngày bán",
+          sortable: true,
+          key: "created_at",
+        },
+      ];
+      const partTwo = [
+        {
+          title: "Status",
+          sortable: false,
+          key: "status",
+        },
+      ];
+      const partThird = [
+        {
+          title: "Thương hiệu",
+          sortable: false,
+          key: "brand_name",
+        },
+        {
+          title: "Nhà cung cấp",
+          sortable: false,
+          key: "supplier_name",
+        },
+      ];
+      const actions = [
+        {
+          title: "Actions",
+          sortable: false,
+          key: "actions",
+          minWidth: "190px",
+        },
+      ];
+      const headers = [
+        { title: "ID", sortable: true, key: "id" },
+        { title: "Mã", sortable: false, key: "code" },
+        { title: "Tên", sortable: false, key: "name" },
+      ];
+      if (this.hiddenColumn || !hide) {
+        headers.push(...partOne)
+      }
+      headers.push(...partTwo)
+      if (this.hiddenColumn || !hide) {
+        headers.push(...partThird)
+      }
+      headers.push(...actions)
+      return headers;
+    },
   },
   mounted() {
     this.loadItems();

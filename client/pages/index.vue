@@ -73,23 +73,39 @@
               :modules="modules"
               class="maleSlider"
             >
-              <swiper-slide v-for="n in 10" :key="n">
+              <swiper-slide
+                v-if="perfumes.length > 0"
+                v-for="item in perfumes"
+                :key="item[0].id"
+              >
                 <div class="carp-wrap">
                   <ParfumerieCard
-                    link=""
-                    imageLink="/images/male/sample/2DIQJPIW0L7_1.jpeg"
-                    tenNuocHoa="Yves Saint Laurent La Nuit De L'Homme EDT"
-                    giaNuocHoa="225.000 đ - 1.190.000 đ"
+                    :link="{ name: 'slug', params: { slug: item[0].slug } }"
+                    :imageLink="item[0].avatar"
+                    :tenNuocHoa="item[0].name"
+                    :giaNuocHoa="item[0].display_price"
                   />
                 </div>
                 <div class="carp-wrap">
                   <ParfumerieCard
-                    link=""
-                    imageLink="/images/male/sample/2DIQJPIW0L7_1.jpeg"
-                    tenNuocHoa="Yves Saint Laurent La Nuit De L'Homme EDT"
-                    giaNuocHoa="225.000 đ - 1.190.000 đ"
+                    :link="{ name: 'slug', params: { slug: item[1].slug } }"
+                    :imageLink="item[1].avatar"
+                    :tenNuocHoa="item[1].name"
+                    :giaNuocHoa="item[1].display_price"
                   />
                 </div>
+              </swiper-slide>
+              <swiper-slide v-else v-for="n in 5" :key="n">
+                <v-skeleton-loader
+                  class="mx-auto border rounded-0"
+                  max-width="300"
+                  type="image, article"
+                ></v-skeleton-loader>
+                <v-skeleton-loader
+                  class="mx-auto border rounded-0"
+                  max-width="300"
+                  type="image, article"
+                ></v-skeleton-loader>
               </swiper-slide>
             </swiper>
           </v-sheet>
@@ -144,14 +160,21 @@
 
 <script lang="ts">
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
+import type { Perfume } from "~/models";
+import type { RESPONSE_API_SUCCESS } from "~/types";
 export default {
   setup() {
+    const perfumes = ref<Perfume[][]>([]);
     return {
       modules: [Autoplay, Navigation, Pagination],
+      perfumes,
     };
   },
   data() {
     return {};
+  },
+  mounted() {
+    this.fetch();
   },
   computed: {
     numberSliders(): number {
@@ -187,6 +210,19 @@ export default {
       } else {
         return 1;
       }
+    },
+  },
+  methods: {
+    async fetch() {
+      try {
+        const response = await this.$axios.get<RESPONSE_API_SUCCESS<Perfume[]>>(
+          "perfumes"
+        );
+        const data = response.data.data
+        for(let i = 0; i < data.length; i+=2) {
+          this.perfumes.push([data[i], data[i+1]])
+        }
+      } catch (e) {}
     },
   },
 };
@@ -228,7 +264,7 @@ export default {
   .card {
     border-width: 0;
     .card-body {
-      padding: 0 5px 10px 5px;
+      padding: 0 5px 0 5px;
     }
   }
 }

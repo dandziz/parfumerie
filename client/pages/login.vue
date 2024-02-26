@@ -49,7 +49,7 @@ export default {
           this.store.dispatch("user/setUser", data.user)
           const permissions = data.user_ability[1] as string[]
           permissions.forEach(element => {
-            this.ability.update([{ action: element, subject: UserRole.USER }])
+            this.ability.update([{ action: element, subject: data.user_ability[0] }])
           });
           if (data.user_ability[0] == UserRole.USER) {
             this.$router.replace('/')

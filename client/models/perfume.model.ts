@@ -1,4 +1,5 @@
 import type { PerfumeGender } from "~/enums";
+import type { Image, Price } from ".";
 
 export interface Perfume {
   id?: number;
@@ -19,6 +20,10 @@ export interface Perfume {
   user_id?: number;
   updated_at?: Date;
   created_at?: Date;
+  display_price?: string;
+  avatar?: string;
+  media?: Image[],
+  price?: Price[]
 }
 
 export interface PerfumeForm
@@ -33,4 +38,5 @@ export interface PerfumeForm
     | "status"
     | "brand_id"
     | "supplier_id"
+    | "product_information"
   > {}

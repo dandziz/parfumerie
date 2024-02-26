@@ -20,7 +20,7 @@ export function generateRandomString() {
 }
 
 export function changeToSlug(title: string) {
-  if (!title) return ''
+  if (!title) return "";
 
   //Đổi chữ hoa thành chữ thường
   let slug = title.toLowerCase();
@@ -50,5 +50,13 @@ export function changeToSlug(title: string) {
   slug = "@" + slug + "@";
   slug = slug.replace(/\@\-|\-\@|\@/gi, "");
   //In slug ra textbox có id “slug”
-  return slug
+  return slug;
+}
+
+export function formatMoney(number: number): string {
+  const formattedNumber = number.toLocaleString("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+  return formattedNumber.replace(/&nbsp;/g, '');
 }

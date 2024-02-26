@@ -37,6 +37,7 @@ class UpdatePerfumeRequest extends BaseRequest
             'brand_id' => 'required|exists:brands,id',
             'supplier_id' => 'required|exists:suppliers,id',
             'status' => 'required|boolean',
+            'product_information' => 'required|string'
         ];
     }
 }

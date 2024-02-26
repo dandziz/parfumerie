@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('origin');
             $table->text('description');
             $table->longText('product_information')->nullable();
-            $table->dateTime('start_date')->useCurrent();
             $table->float('rate')->default(0);
             $table->unsignedBigInteger('brand_id');
             $table->unsignedBigInteger('supplier_id');

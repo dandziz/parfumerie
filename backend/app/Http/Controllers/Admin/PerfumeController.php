@@ -27,11 +27,16 @@ class PerfumeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $query = $request->except(['itemPerPage', 'page']);
         $perfumes = Perfume::query();
-        return getItems($request, $query, $perfumes);
+        $perfumes = getItems($request, $query, $perfumes);
+        $data = collect($perfumes->items());
+        $data->each(function ($perfume) {
+            $perfume->setAttributeVisibility();
+        });
+        return returnItemsWithPagination($perfumes, $data);
     }
 
     /**
@@ -70,12 +75,17 @@ class PerfumeController extends Controller
      */
     public function show(Perfume $perfume): JsonResponse
     {
-        return returnSuccessResponse($perfume);
+        $image = $perfume->media;
+        $data = $perfume->makeVisible('product_information')
+                ->makeHidden('media')->toArray() + ['images' => $image->toArray()];
+        return returnSuccessResponse($data);
     }
 
     public function getImages(Perfume $perfume): JsonResponse
     {
-        $images = $perfume->media;
+        $images = $perfume->media->each(function ($item) {
+            $item->setAttributeVisibility();
+        });
         return returnSuccessResponse($images);
     }
 
@@ -90,6 +100,8 @@ class PerfumeController extends Controller
             } else {
                 return returnFailureResponse('Số lượng hình ảnh đã đạt đến giới hạn.', 400);
             }
+        } else {
+            return returnFailureResponse('Không tìm thấy hình ảnh nào cần tải lên.', 400);
         }
     }
 
@@ -202,10 +214,16 @@ class PerfumeController extends Controller
         }
     }
 
+    /**
+     * @throws InternalServerErrorException
+     */
     public function getPrices(Perfume $perfume): JsonResponse
     {
         try {
             $prices = $perfume->price;
+            $prices->each(function ($price) {
+                $price->setAttributeVisibility();
+            });
             return returnSuccessResponse($prices);
         } catch (Exception $exception) {
             throw new InternalServerErrorException();
@@ -221,7 +239,7 @@ class PerfumeController extends Controller
             $price = $perfume->price()->create($request->validated());
             return returnSuccessResponse($price, 201);
         } catch (Exception $exception) {
-            //throw new InternalServerErrorException();
+            throw new InternalServerErrorException();
         }
     }
 
@@ -237,6 +255,10 @@ class PerfumeController extends Controller
             throw new InternalServerErrorException();
         }
     }
+
+    /**
+     * @throws InternalServerErrorException
+     */
     public function deletePrice(Perfume $perfume, PerfumePrice $perfumePrice): JsonResponse
     {
         try {
@@ -264,8 +286,9 @@ class PerfumeController extends Controller
         try {
             $perfume->update($request->validated());
             return response()->json([], 204);
-        } catch (Exception $exception) {}
-        throw new InternalServerErrorException();
+        } catch (Exception $exception) {
+            throw new InternalServerErrorException();
+        }
     }
 
     /**

@@ -36,7 +36,7 @@
               v-model="item.capacity"
               :items="capacityLabel"
               transfer="uppercase"
-              :rules="[requiredValidator]"
+              :rules="[requiredValidator, uniqueValidator(item.capacity, capacityCheck, ind)]"
               :readonly="currentUpdate != item.id"
             ></app-combobox-field
           ></v-col>
@@ -166,13 +166,10 @@ export default {
   setup() {
     useHead({
       title: "Giá nước hoa",
-      meta: [
-        {
-          name: "",
-          content: "",
-        },
-      ],
     });
+    definePageMeta({
+      middleware: ["admin"]
+    })
     const route = useRoute();
     const currentPrices = ref<Price[]>([]);
     const initialPrices = ref<Price[]>([]);

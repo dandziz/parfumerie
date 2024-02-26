@@ -1,4 +1,4 @@
-import policy from "~/configs/policy";
+import policy from "./index";
 import type { Policy } from "~/types";
 
 function getAuth(name: string, parentObject: Policy, route: string) {

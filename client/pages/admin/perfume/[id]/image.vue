@@ -109,6 +109,9 @@ import { VueDraggableNext } from "vue-draggable-next";
 import { ImageType } from "@/enums";
 export default {
   setup() {
+    definePageMeta({
+      middleware: ["admin"]
+    })
     const route = useRoute();
     const perfumeId = route.params.id as string;
     const { $axios } = useNuxtApp();

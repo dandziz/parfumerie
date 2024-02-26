@@ -264,7 +264,7 @@ class Editor extends ClassicEditor {
                 'toggleImageCaption',
                 'imageStyle:inline',
                 'imageStyle:block',
-                'imageStyle:side'
+                'imageStyle:side',
             ]
         },
         table: {

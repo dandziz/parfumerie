@@ -21,7 +21,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(HomeController::class)->group(function() {
     Route::get('brands', 'getAllBrands');
-    Route::get('get-image', 'getImage');
+    Route::get('perfumes', 'getAllPerfumes');
+    Route::get('perfume/{slug}', 'getPerfumeBySlug');
 });
 
 Route::controller(AuthController::class)->group(function() {

@@ -2,14 +2,16 @@ const userAuth = ["user", "auth"];
 
 export const userPolicy = {
   customer: [
-    userAuth,
+    [userAuth],
     {
       order: [
-        userAuth,
+        [userAuth],
         {
-          id: [userAuth],
+          id: [[userAuth]],
         },
       ],
+      address: [[userAuth],],
+      'change-password': [[userAuth],]
     },
   ],
 };

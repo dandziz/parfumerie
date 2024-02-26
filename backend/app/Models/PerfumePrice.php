@@ -14,12 +14,19 @@ class PerfumePrice extends Model
     protected $table = 'perfume_price';
 
     protected $fillable = ['perfume_id', 'capacity', 'import_price', 'price', 'quantity'];
+    protected $hidden = ['deleted_at', 'perfume_id', 'import_price',
+        'created_at', 'updated_at', 'deleted_at'];
     protected $casts = [
         'quantity' => 'boolean',
     ];
 
     public function perfume(): BelongsTo {
         return $this->belongsTo(Perfume::class);
+    }
+
+    public function setAttributeVisibility(): void
+    {
+        $this->makeVisible(array_merge($this->hidden, $this->appends));
     }
 
     protected static function boot(): void

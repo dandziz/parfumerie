@@ -58,6 +58,9 @@ export default {
         },
       ],
     });
+    definePageMeta({
+      middleware: ["customer"]
+    })
     return {
       confirmedValidator,
       requiredValidator,

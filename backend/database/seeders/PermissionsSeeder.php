@@ -26,6 +26,7 @@ class PermissionsSeeder extends Seeder
         //Permissions
         $auth = Permission::create(['name' => 'auth', 'guard_name' => 'web']);
         $user->givePermissionTo($auth);
+        $admin->givePermissionTo($auth);
 
         $adminUser = User::factory()->create([
             'name' => 'Local Admin',
@@ -37,6 +38,7 @@ class PermissionsSeeder extends Seeder
         ]);
 
         $adminUser->assignRole($admin);
+        $adminUser->givePermissionTo($auth);
 
         $manageUser = User::factory()->create([
             'name' => 'Local Manager',
