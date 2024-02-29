@@ -1,0 +1,65 @@
+@import '../abstracts/_mixins.scss';
+
+.padding-10 {
+  padding: 10px;
+}
+.padding-top-10 {
+  padding-top: 10px;
+}
+.padding-bottom-10 {
+  padding-bottom: 10px;
+}
+.padding-right-10 {
+  padding-right: 10px;
+}
+.padding-left-10 {
+  padding-left: 10px;
+}
+.col-right {
+  margin-left: 0;
+}
+.col-left {
+  margin-left: 0;
+}
+
+@media (min-width: 992px) {
+  .col-right {
+    width: calc(25% - 10px);
+    margin-left: 10px !important;
+  }
+  .col-left {
+    width: calc(75% - 10px);
+    margin-right: 10px !important;
+  }
+}
+
+.btn-favourite {
+  height: 40px;
+  color: #9f9c9c;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  div {
+    padding: 5px;
+    border-right: 1px solid var(--border-color);
+  }
+  span {
+    padding: 5px;
+  }
+}
+
+.skeleton-custom {
+  .v-skeleton-loader__image {
+    height: 400px;
+  }
+  .v-skeleton-loader__text {
+    margin-left: 0;
+  }
+  &.margin-0 .v-skeleton-loader__text {
+    margin: 0;
+  }
+}
+
+.tab-perfume-content {
+  color: #42495b;
+}

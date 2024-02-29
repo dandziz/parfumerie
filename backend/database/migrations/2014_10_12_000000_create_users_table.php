@@ -16,10 +16,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('phone_number')->unique();
+            $table->string('phone_number')->nullable()->unique();
             $table->boolean('status')->default(Status::Inactive);
-            $table->timestamp('email_verified_at')->nullable(true);
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('social_token', 300)->nullable();
+            $table->string('provider', 50)->nullable();
             $table->string('description')->nullable();
             $table->rememberToken();
             $table->timestamps();

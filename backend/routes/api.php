@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\VerificationApiController;
 use App\Http\Controllers\Customer\AddressController;
+use App\Http\Controllers\Customer\CartController;
 use App\Http\Controllers\Customer\OrderController;
 use App\Http\Controllers\Customer\UserController;
 use App\Http\Controllers\HomeController;
@@ -27,6 +28,7 @@ Route::controller(HomeController::class)->group(function() {
 
 Route::controller(AuthController::class)->group(function() {
     Route::post('login', 'login');
+    Route::post('login/social', 'loginWithSocial');
     Route::post('logout', 'logout')->middleware(['auth:api']);
 });
 
@@ -45,6 +47,11 @@ Route::middleware(['auth:api', 'verified.api', 'active.api'])->prefix('user')->g
     });
     Route::controller(OrderController::class)->group(function () {
         Route::get('orders', 'index');
+    });
+
+    Route::controller(CartController::class)->group(function () {
+        Route::get('carts', 'index');
+        Route::post('carts', 'store');
     });
 });
 

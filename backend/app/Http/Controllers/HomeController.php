@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function getAllBrands() {
+    public function getAllBrands(): JsonResponse
+    {
         $brands = Brand::query()->select(['id', 'name'])->get();
         return response()->json([
             'status' => true,

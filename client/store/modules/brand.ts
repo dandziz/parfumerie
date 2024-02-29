@@ -1,6 +1,6 @@
 import type { Commit } from 'vuex';
 import type { Brand } from '@/models'
-import type { BRAND_STATE } from '~/types'
+import type { BRAND_STATE } from '../types'
 
 const Brand = {
   namespaced: true,

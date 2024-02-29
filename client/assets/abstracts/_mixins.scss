@@ -1,4 +1,4 @@
-@import "../vars/_variables";
+@import "../vars/_variables.scss";
 
 .swiper-button-next,
 .swiper-button-prev {
@@ -214,7 +214,7 @@
 
 /* NPprocess */
 #nprogress .bar {
-  background: $white;
+  background: #1867C0;
 }
 /* End NPprocess */
 

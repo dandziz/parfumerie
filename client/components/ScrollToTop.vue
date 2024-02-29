@@ -1,8 +1,7 @@
 <template>
-  <div>
+  <div :class="{ 'hidden' : !fab }">
     <AppButton
       v-scroll="onScroll"
-      v-show="fab"
       @click="toTop"
       class="scroll-to-top"
     >
@@ -12,7 +11,6 @@
 </template>
 
 <script lang="ts">
-import { useGoTo } from 'vuetify'
 export default {
   data() {
     return {
@@ -36,6 +34,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hidden {
+  display: none;
+}
 .scroll-to-top {
   z-index: 2100;
   height: 50px !important;
@@ -51,6 +52,5 @@ export default {
   .scroll-to-top-icon {
     transform: translateY(-2px);
   }
-  
 }
 </style>

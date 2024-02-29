@@ -182,17 +182,19 @@
           </Modal>
           <v-row class="mt-2" v-if="loading">
             <v-divider></v-divider>
-            <v-col cols="12">
+            <v-col cols="12" class="ps-0">
               <v-skeleton-loader
                 max-width="500"
                 type="text,text,text,text"
+                class="skeleton-custom"
               ></v-skeleton-loader>
             </v-col>
             <v-divider></v-divider>
-            <v-col cols="12">
+            <v-col cols="12" class="ps-0">
               <v-skeleton-loader
                 max-width="500"
                 type="text,text,text,text"
+                class="skeleton-custom"
               ></v-skeleton-loader>
             </v-col>
           </v-row>
@@ -386,6 +388,11 @@ export default {
           });
           this.dialog = false;
           this.fetch();
+          this.$store.dispatch("user/addAddress")
+          if (response.data.data.default) {
+            const newAddress = `${response.data.data.address}, ${response.data.data.ward}, ${response.data.data.district}, ${response.data.data.province}`;
+            this.$store.dispatch("user/updateDefaultAddress", newAddress)
+          }
         } catch (e) {
           this.$notify({
             title: "Thêm địa chỉ không thành công!",
@@ -403,7 +410,7 @@ export default {
       delete newData.created_at;
       delete newData.updated_at;
       delete newData.full_address;
-      this.updateForms = { ...newData };
+      this.updateForms = reactive({ ...newData });
       this.methodStatus = false;
       this.dialog = true;
       this.resetForm();
@@ -438,6 +445,10 @@ export default {
         this.dialog = false;
         this.fetch();
         this.addressStatus = false;
+        if (data.default) {
+          const newAddress = `${data.address}, ${data.ward}, ${data.district}, ${data.province}`;
+          this.$store.dispatch("user/updateDefaultAddress", newAddress)
+        }
       } catch (e) {
         this.$notify({
           title: "Cập nhật thất bại!",
@@ -454,6 +465,9 @@ export default {
           RESPONSE_DATA_SUCCESS<Address[]>
         >("user/addresses");
         this.address = response.data.data;
+        if (this.address.length == 0) {
+          this.$store.dispatch("user/updateDefaultAddress", "")
+        }
       } catch (e) {
         this.$notify({
           title: "Lấy danh sách địa chỉ thất bại!",
@@ -491,6 +505,7 @@ export default {
           title: "Xóa địa chỉ thành công!",
           type: "success",
         });
+        this.$store.dispatch("user/deleteAddress")
       } catch (e) {
         this.$notify({
           title: "Xóa địa chỉ thất bại!",

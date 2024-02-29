@@ -1,7 +1,14 @@
 <script lang="ts">
 //import { User } from "@/models"
 import * as yup from "yup";
-import type { RESPONSE_ERROR, DATA_SUCCESS, LOGIN_FIELDS } from "@types";
+import type {
+  RESPONSE_ERROR,
+  DATA_SUCCESS,
+  LOGIN_FIELDS,
+  RESPONSE_API_SUCCESS,
+  RESPONSE_DATA_SUCCESS,
+  LOGIN_SOCIAL
+} from "@types";
 import { UserRole } from "~/enums";
 import { useAbility } from "@casl/vue";
 
@@ -12,13 +19,72 @@ export default {
       password: yup.string().required().min(8),
     });
     const errors = ref<LOGIN_FIELDS>({
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     });
-    const ability = useAbility()
-    const store = useStore()
+    const ability = useAbility();
+    const store = useStore();
+    const router = useRouter();
+    const { t } = useI18n();
+    const { $axios } = useNuxtApp()
 
-    return { schema, errors, ability, store };
+    const handleOnSuccess = async (res: any) => {
+      try {
+        const response = await $axios.post<DATA_SUCCESS, LOGIN_SOCIAL>(
+          "login/social",
+          {
+            'provider': 'google',
+            'token': res.access_token
+          }
+        );
+        updateUserInformation(response)
+      } catch (e) {
+        const error = e as RESPONSE_ERROR;
+        failureNotification(t("loginFailed"), error.message);
+      }
+    };
+
+    const handleOnError = (errorResponse: any) => {
+      failureNotification(t("error"), t("loginFailed"));
+    };
+
+    const updateUserInformation = (
+      response: RESPONSE_API_SUCCESS<RESPONSE_DATA_SUCCESS<DATA_SUCCESS>>
+    ) => {
+      const data = response.data.data;
+      setToken(data.token.access_token);
+      setUserAbility(JSON.stringify(data.user_ability));
+      setUserInformation(JSON.stringify(data.user));
+      setNumberOfAddresses(JSON.stringify(data.address));
+      store.dispatch("user/setUser", data.user);
+      store.dispatch("user/setNumberOfAddresses", data.address);
+      const permissions = data.user_ability[1] as string[];
+      permissions.forEach((element) => {
+        ability.update([{ action: element, subject: data.user_ability[0] }]);
+      });
+      if (data.user_ability[0] == UserRole.USER) {
+        router.replace("/");
+      } else if (response.data.data.user_ability[0] == UserRole.MANAGER) {
+      } else {
+        router.replace("/admin");
+      }
+      successfulNotification(t("loginSuccess"), response.data?.message);
+    };
+
+    const { isReady, login } = useTokenClient({
+      onSuccess: handleOnSuccess,
+      onError: handleOnError,
+    });
+
+    return {
+      schema,
+      errors,
+      ability,
+      store,
+      isReady,
+      login,
+      updateUserInformation,
+    };
   },
   props: {},
   data() {
@@ -34,7 +100,7 @@ export default {
   },
   methods: {
     async handleSubmit(values: LOGIN_FIELDS) {
-      this.formData = values
+      this.formData = values;
       if (!this.loading) {
         try {
           this.loading = true;
@@ -42,29 +108,13 @@ export default {
             "login",
             values
           );
-          const data = response.data.data
-          setToken(data.token.access_token)
-          setUserAbility(JSON.stringify(data.user_ability))
-          setUserInformation(JSON.stringify(data.user))
-          this.store.dispatch("user/setUser", data.user)
-          const permissions = data.user_ability[1] as string[]
-          permissions.forEach(element => {
-            this.ability.update([{ action: element, subject: data.user_ability[0] }])
-          });
-          if (data.user_ability[0] == UserRole.USER) {
-            this.$router.replace('/')
-          } else if (response.data.data.user_ability[0] == UserRole.MANAGER) {
-
-          } else {
-            this.$router.replace('/admin')
-          }
-          successfulNotification(this.$t("loginSuccess"), response.data?.message)
+          this.updateUserInformation(response);
           this.isEmailNotVerified = false;
         } catch (e) {
           const error = e as RESPONSE_ERROR;
           this.isEmailNotVerified = error.status == 403;
           if (error.status != 403) {
-            failureNotification(this.$t("loginFailed"), error.message)
+            failureNotification(this.$t("loginFailed"), error.message);
             this.errors = error.error as LOGIN_FIELDS;
           }
         } finally {
@@ -72,24 +122,24 @@ export default {
         }
       }
     },
+
     async resendEmail() {
       try {
-        this.isSendingMail = true
+        this.isSendingMail = true;
         if (this.formData.email) {
-          const response = await this.$axios.post('email/resend', {
-            'email': this.formData.email
-          })
+          const response = await this.$axios.post("email/resend", {
+            email: this.formData.email,
+          });
           this.$router.replace("/resend-email");
         } else {
-          this.errors.email = this.$t('validate.required', ['Email'])
+          this.errors.email = this.$t("validate.required", ["Email"]);
         }
-      } catch(e) {
+      } catch (e) {
         const error = e as RESPONSE_ERROR;
-        failureNotification(this.$t('error'), error.message)
+        failureNotification(this.$t("error"), error.message);
       } finally {
-        this.isSendingMail = false
+        this.isSendingMail = false;
       }
-      
     },
     updateInformation() {
       this.errors = {
@@ -100,10 +150,12 @@ export default {
         this.isEmailNotVerified = false;
       }
     },
+    handleLoginWithGoogle(response: any) {
+      console.log(response);
+    },
+    handleLoginError() {},
   },
-  mounted() {
-    
-  },
+  mounted() {},
   computed: {
     breadcrumbs() {
       return [
@@ -147,6 +199,20 @@ export default {
               <p class="p-14 text-center mt-4">
                 Nếu bạn đã có tài khoản, đăng nhập tại đây.
               </p>
+              <div class="d-flex justify-content-center gap-3 mt-4 mb-3">
+                <img
+                  class="social-login"
+                  src="/login/fb-btn.svg"
+                  alt="facebook-login-button"
+                />
+                <img
+                  class="social-login"
+                  src="/login/gp-btn.svg"
+                  alt="google-login-button"
+                  :disabled="!isReady"
+                  @click="() => login()"
+                />
+              </div>
             </div>
             <div>
               <Form
@@ -176,9 +242,7 @@ export default {
                 </div>
                 <p class="p-14 mt-3 mb-0 text-red" v-show="isEmailNotVerified">
                   {{ $t("emailNotVerified") }},
-                  <a
-                    class="text-decoration-none"
-                    @click="resendEmail"
+                  <a class="text-decoration-none" @click="resendEmail"
                     >{{ $t("requestResendEmail") }}.</a
                   >
                 </p>
@@ -210,4 +274,9 @@ export default {
   </div>
 </template>
 
-<style></style>
+<style lang="scss">
+.social-login {
+  width: 129px;
+  height: 37px;
+}
+</style>

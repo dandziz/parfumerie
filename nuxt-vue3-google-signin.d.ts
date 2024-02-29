@@ -1,0 +1,1 @@
+declare module 'nuxt-vue3-google-signin';

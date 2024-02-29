@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Http\Controllers\Auth\MustVerifyApiEmail;
 use App\Http\Controllers\Auth\MustVerifyApiEmailInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -34,17 +35,18 @@ class User extends Authenticatable implements MustVerifyApiEmailInterface
      * @var array<int, string>
      */
 
-    protected $appends = ['role'];
+    protected $appends = ['role', 'default_address', 'cart'];
 
     protected $hidden = [
         'password',
-        'remember_token',
         'roles',
         'deleted_at',
         'email_verified_at',
         'updated_at',
         'created_at',
-        'status'
+        'status',
+        'social_token',
+        'provider'
     ];
 
     /**
@@ -68,8 +70,23 @@ class User extends Authenticatable implements MustVerifyApiEmailInterface
         return null;
     }
 
+    public function getDefaultAddressAttribute() {
+        $address = $this->address()->where('default', 1)->first();
+        if ($address) {
+            return $address->address .', ' . $address->ward .', ' .
+                $address->district . ', ' . $address->province;
+        } else {
+            return '';
+        }
+    }
+
     public function getRoleAttribute() {
         return $this->roles[0]->name;
+    }
+
+    public function getCartAttribute(): Collection
+    {
+        return $this->cart()->get();
     }
 
     public function orders(): HasMany {
@@ -78,5 +95,10 @@ class User extends Authenticatable implements MustVerifyApiEmailInterface
 
     public function address(): HasMany {
         return $this->hasMany(Address::class);
+    }
+
+    public function cart(): HasMany
+    {
+        return $this->hasMany(Cart::class);
     }
 }

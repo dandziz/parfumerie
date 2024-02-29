@@ -48,12 +48,12 @@
               <a class="me-4 text-white">
                 <Icon name="material-symbols:favorite" size="24" />
               </a>
-              <a class="text-white position-relative">
+              <NuxtLink to="/customer/cart" class="text-white position-relative">
                 <div class="soLuongGioHang">
                   <p class="numberOfCart p-13">0</p>
                 </div>
                 <Icon name="material-symbols:shopping-cart-rounded" size="24" />
-              </a>
+              </NuxtLink>
             </div>
           </div>
 

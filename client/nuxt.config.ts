@@ -19,6 +19,11 @@ export default {
   env: {
     BASE_URL: "https://nuxtjs.org",
   },
+  runtimeConfig: {
+    public: {
+      apiBase: process.env.API_BASE_URL
+    }
+  },
   build: {
     transpile: ["vuetify"],
   },
@@ -42,6 +47,7 @@ export default {
     "@nuxtjs/i18n",
     "nuxt-swiper",
     "nuxt3-notifications",
+    "nuxt-vue3-google-signin"
   ],
   vite: {
     vue: {
@@ -79,4 +85,7 @@ export default {
   nuxtNotifications: {
     componentName: "AppNotifications",
   },
+  googleSignIn: {
+    clientId: process.env.NUXT_PUBLIC_GOOGLE_CLIENT_ID,
+  }
 };

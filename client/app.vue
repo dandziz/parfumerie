@@ -23,6 +23,7 @@ if (route.path.startsWith("/admin")) layout.value = "admin";
 axios.get("brands").then((response: AxiosResponse<RESPONSE_API_SUCCESS<Brand>>) => {
   store.dispatch("brand/setBrands", response.data.data);
 });
+
 importUserInformation()
 watch(
   () => route.name,
@@ -51,7 +52,7 @@ router.afterEach(() => {
 </template>
 
 <style lang="scss">
-@import "~/assets/abstracts/_mixins.scss";
+@import "~/assets/styles/style.scss";
 .page-enter-active,
 .page-leave-active {
   transition: all 0.4s;

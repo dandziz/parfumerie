@@ -14,7 +14,7 @@
           <p><strong>Email: </strong>{{ user.email }}</p>
           <p><strong>Điện thoại: </strong>{{ user.phone_number }}</p>
           <p>
-            <strong>Địa chỉ: </strong>{{ user.address }}
+            <strong>Địa chỉ: </strong>{{ user.default_address }}
           </p>
         </div>
       </div>

@@ -14,6 +14,8 @@
       <swiper-slide v-if="media" v-for="item in media" :key="item.id"
         ><img :src="item.img_link"
       /></swiper-slide>
+      <swiper-slide v-else v-for="n in 5" :key="n"
+        ><v-skeleton-loader class="skeleton-custom" min-height="400" type="image"></v-skeleton-loader></swiper-slide>
     </swiper>
     <swiper
       @swiper="setThumbsSwiper"
@@ -23,10 +25,13 @@
       :modules="modules"
       :navigation="true"
       class="img-thumbnail"
+      :class="{ 'mt-3' : !media }"
     >
-      <swiper-slide v-if="media" v-for="item in media" :key="item.id"
+      <swiper-slide v-if="media" class="d-flex justify-content-center" v-for="item in media" :key="item.id"
         ><img :src="item.thumb_link"
       /></swiper-slide>
+      <swiper-slide v-else v-for="n in 5" :key="n"
+        ><v-skeleton-loader type="image"></v-skeleton-loader></swiper-slide>
     </swiper>
   </div>
 </template>

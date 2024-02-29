@@ -1,6 +1,13 @@
 <template>
   <div class="p-14">
-    <div class="form-label fw-bold">{{ $attrs.label }} <span class="text-danger" v-if="($attrs.listOfRules as string).includes('required')">*</span></div>
+    <div class="form-label fw-bold" v-if="!!$attrs.label">
+      {{ $attrs.label }}
+      <span
+        class="text-danger"
+        v-if="($attrs.listOfRules as string)?.includes('required')"
+        >*</span
+      >
+    </div>
     <Field
       :name="($attrs.name as string)"
       v-slot="{ errorMessage, field }"
@@ -8,12 +15,12 @@
     >
       <v-text-field
         v-bind="{
-          ...$attrs,
-          label: undefined,
           variant: 'outlined',
           density: 'compact',
           color: 'primary',
-          ...field
+          ...field,
+          ...$attrs,
+          label: undefined,
         }"
         :error-messages="errorMessage || ($attrs.errorCustom as string | undefined)"
         @update:modelValue="onInput"
@@ -41,7 +48,7 @@ export default defineComponent({
       this.$emit("update:modelValue", value);
     },
   },
-})
+});
 </script>
 
 <style lang="scss">

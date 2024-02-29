@@ -1,6 +1,6 @@
 <template>
   <div class="p-14">
-    <div class="form-label fw-bold">
+    <div class="form-label fw-bold" v-if="!!$attrs.label">
       {{ $attrs.label }} <span class="text-danger" v-if="$attrs.rules">*</span>
     </div>
     <v-text-field

@@ -2,7 +2,7 @@
   <div class="block-account">
     <h5 class="text-uppercase fw-normal">Trang cá nhân</h5>
     <p class="p-14-bold">
-      Xin chào, <span class="text-success fw-bold">Đào Duy Đán</span>
+      Xin chào, <span class="text-success fw-bold">{{ user.name }}</span>
     </p>
     <ul>
       <li v-for="(item, index) in items" :key="index">
@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import type { RESPONSE_DATA_SUCCESS } from '~/types'
+import { mapState } from "vuex";
 export default {
   setup() {
     const route = useRoute();
@@ -27,20 +27,22 @@ export default {
   },
   data() {
     return {
-      items: [
-        { to: "/customer", text: "Thông tin tài khoản" },
-        { to: "/customer/order", text: "Đơn hàng của bạn" },
-        { to: "/customer/change-password", text: "Đổi mật khẩu" },
-        { to: "/customer/address", text: "Sổ địa chỉ " },
-      ],
+      
     };
   },
   async mounted() {
-    try {
-      const response = await this.$axios.get<RESPONSE_DATA_SUCCESS<number>>('user/addresses/count');
-      this.items[3].text = `Sổ địa chỉ (${response.data.data})`;
-    } catch (e) {
-
+    
+  },
+  computed: {
+    ...mapState("user", ["numberOfAddresses"]),
+    ...mapState("user", ["user"]),
+    items() {
+      return [
+        { to: "/customer", text: "Thông tin tài khoản" },
+        { to: "/customer/order", text: "Đơn hàng của bạn" },
+        { to: "/customer/change-password", text: "Đổi mật khẩu" },
+        { to: "/customer/address", text: `Sổ địa chỉ (${this.numberOfAddresses})` },
+      ];
     }
   }
 };
