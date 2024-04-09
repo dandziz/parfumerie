@@ -5,7 +5,13 @@
     contained
     :model-value="modelValue"
   >
-    <slot></slot>
+    <VProgressCircular
+      indeterminate
+      color="primary"
+      :width="2"
+      :size="50"
+      class="text-success"
+    />
   </VOverlay>
 </template>
 
@@ -19,9 +25,9 @@ export default defineComponent({
   props: {
     modelValue: {
       type: Boolean,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 });
 </script>
 

@@ -5,7 +5,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from "@axios";
 import type { RESPONSE_API_SUCCESS } from "@types";
-import { type Brand } from "./models";
+import { type Brand, type Cart } from "./models";
 import type { AxiosResponse } from "axios";
 import NProgress from "nprogress";
 import { importUserInformation } from "./utils/useStore";
@@ -24,7 +24,11 @@ axios.get("brands").then((response: AxiosResponse<RESPONSE_API_SUCCESS<Brand>>) 
   store.dispatch("brand/setBrands", response.data.data);
 });
 
-importUserInformation()
+if (importUserInformation()) {
+  axios.get<RESPONSE_API_SUCCESS<Cart[]>>('user/carts').then((response) => {
+    store.dispatch("cart/setCarts", response.data.data);
+  })
+}
 watch(
   () => route.name,
   () => {

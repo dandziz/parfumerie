@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\VoucherType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,7 +20,8 @@ return new class extends Migration
             $table->integer("number_of_uses");
             $table->integer("number_of_turns_used");
             $table->integer("discount");
-            $table->unsignedBigInteger("perfume_id");
+            $table->unsignedTinyInteger("type")->default(VoucherType::Normal);
+            $table->unsignedBigInteger("perfume_id")->nullable();
             $table->foreign("perfume_id")->references("id")->on("perfumes");
             $table->timestamps();
         });

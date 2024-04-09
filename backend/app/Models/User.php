@@ -35,7 +35,7 @@ class User extends Authenticatable implements MustVerifyApiEmailInterface
      * @var array<int, string>
      */
 
-    protected $appends = ['role', 'default_address', 'cart'];
+    protected $appends = ['role', 'default_address'];
 
     protected $hidden = [
         'password',
@@ -82,11 +82,6 @@ class User extends Authenticatable implements MustVerifyApiEmailInterface
 
     public function getRoleAttribute() {
         return $this->roles[0]->name;
-    }
-
-    public function getCartAttribute(): Collection
-    {
-        return $this->cart()->get();
     }
 
     public function orders(): HasMany {

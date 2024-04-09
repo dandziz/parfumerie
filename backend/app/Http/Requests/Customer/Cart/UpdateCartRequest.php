@@ -2,16 +2,18 @@
 
 namespace App\Http\Requests\Customer\Cart;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseRequest;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Validation\Rule;
 
-class UpdateCartRequest extends FormRequest
+class UpdateCartRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,7 @@ class UpdateCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'quantity' => 'required|integer',
         ];
     }
 }

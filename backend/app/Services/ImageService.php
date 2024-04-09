@@ -3,6 +3,7 @@
 namespace App\Services;
 
 
+use App\Enums\PerfumeImage;
 use App\Traits\ImageUploadTrait;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -26,7 +27,7 @@ class ImageService {
                 'img' => $img['link'],
                 'thumb' => $this->uploadImages($perfume->name, $perfume->id, $image, $i,
                     'perfumes', 0.5, 0.5, 'thumb', $img['name'])['link'],
-                'type' => 0,
+                'type' => PerfumeImage::Default,
                 'img_sort' => $i,
             ]);
             $i++;

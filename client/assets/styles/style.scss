@@ -63,3 +63,17 @@
 .tab-perfume-content {
   color: #42495b;
 }
+
+.cart-notification-body {
+  width: 300px;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  text-align: center;
+  img {
+    max-height: 40px;
+    width: auto;
+    margin: 0px auto 25px;
+    display: block;
+  }
+}

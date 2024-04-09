@@ -18,6 +18,10 @@ return new class extends Migration
             $table->tinyInteger("quantity")->default(0);
             $table->unsignedInteger("import_price");
             $table->unsignedInteger("price");
+            $table->unsignedInteger("grams")->default(0);
+            $table->unsignedDecimal("length")->default(0);
+            $table->unsignedInteger("width")->default(0);
+            $table->unsignedInteger("height")->default(0);
             $table->unique(['perfume_id', 'capacity']);
             $table->foreign("perfume_id")->references("id")->on("perfumes");
             $table->timestamps();

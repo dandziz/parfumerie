@@ -11,6 +11,7 @@ import type {
 } from "@types";
 import { UserRole } from "~/enums";
 import { useAbility } from "@casl/vue";
+import { type Cart } from '~/models'
 
 export default {
   setup() {
@@ -62,6 +63,9 @@ export default {
       permissions.forEach((element) => {
         ability.update([{ action: element, subject: data.user_ability[0] }]);
       });
+      $axios.get<RESPONSE_API_SUCCESS<Cart[]>>('user/carts').then((response) => {
+        store.dispatch("cart/setCarts", response.data.data);
+      })
       if (data.user_ability[0] == UserRole.USER) {
         router.replace("/");
       } else if (response.data.data.user_ability[0] == UserRole.MANAGER) {
@@ -108,8 +112,12 @@ export default {
             "login",
             values
           );
-          this.updateUserInformation(response);
-          this.isEmailNotVerified = false;
+          new Promise((resolve) => {
+            resolve(this.updateUserInformation(response));
+          }).then(() => {
+            this.isEmailNotVerified = false;
+            this.loading = false;
+          })
         } catch (e) {
           const error = e as RESPONSE_ERROR;
           this.isEmailNotVerified = error.status == 403;
@@ -117,7 +125,6 @@ export default {
             failureNotification(this.$t("loginFailed"), error.message);
             this.errors = error.error as LOGIN_FIELDS;
           }
-        } finally {
           this.loading = false;
         }
       }

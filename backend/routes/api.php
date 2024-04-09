@@ -52,6 +52,8 @@ Route::middleware(['auth:api', 'verified.api', 'active.api'])->prefix('user')->g
     Route::controller(CartController::class)->group(function () {
         Route::get('carts', 'index');
         Route::post('carts', 'store');
+        Route::patch('cart/{id}', 'update');
+        Route::delete('cart/{cart}', 'destroy');
     });
 });
 

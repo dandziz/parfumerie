@@ -1,6 +1,25 @@
 <template>
   <div class="bg-white">
     <Breadcrumb :breadcrumbs="breadcrumbs" />
+    <v-dialog class="custom-modal" v-model="dialog" width="300">
+      <div class="cart-notification-body">
+        <img
+          :src="
+            statusAddCart
+              ? '/images/ticket/check.png'
+              : '/images/ticket/169779.png'
+          "
+          alt=""
+        />
+        <span class="p-14 text-white">
+          {{
+            statusAddCart
+              ? "Đã thêm vào giỏ hàng thành công"
+              : "Thêm vào giỏ hàng thất bại"
+          }}</span
+        >
+      </div>
+    </v-dialog>
     <div class="container">
       <div class="row border perfume-info mb-3">
         <div class="col-xs-12 col-lg-5 col-md-6 p-0">
@@ -22,7 +41,7 @@
             <p class="p-14-bold m-0">
               Tình trạng:
               <span class="fw-normal text-success">{{
-                status ? "Còn hàng" : "Hết hàng"
+                statusQuantity ? "Còn hàng" : "Hết hàng"
               }}</span>
             </p>
             <p class="price-information">{{ formatMoney(showPrice) }}</p>
@@ -94,13 +113,14 @@
           <ProductInformationLoading v-else></ProductInformationLoading>
           <div class="swatch pb-4">
             <p class="p-14-bold text-greyish-blue fw-bolder">Số lượng</p>
-            <app-quantity-field v-model="quantity"></app-quantity-field>
+            <app-quantity-field size="large" v-model="quantity"></app-quantity-field>
           </div>
-          <div v-if="status" class="swatch pb-1">
+          <div v-if="!perfume || statusQuantity" class="swatch pb-1">
             <v-row>
               <v-col class="pt-0" cols="12" md="6">
                 <button
                   class="btn btn-success btn-thongtin rounded-0 text-uppercase"
+                  :disabled="!perfume"
                 >
                   <span class="txt-main">Mua ngay</span>
                 </button>
@@ -108,10 +128,10 @@
               <v-col class="pt-0" cols="12" md="6">
                 <button
                   class="btn btn-success btn-thongtin rounded-0 text-uppercase"
+                  @click="handleAddPerfumeIntoCart"
+                  :disabled="!perfume"
                 >
-                  <span class="txt-main" @click="handleAddPerfumeIntoCart"
-                    >Thêm vào giỏ hàng</span
-                  >
+                  <span class="txt-main">Thêm vào giỏ hàng</span>
                 </button>
               </v-col>
             </v-row>
@@ -208,6 +228,7 @@ export default {
     const route = useRoute();
     const slug = route.params?.slug;
     const perfume = ref<Perfume>();
+    const timeoutId = ref<ReturnType<typeof setTimeout>>();
     useHead({
       title: "Nước hoa",
     });
@@ -216,6 +237,7 @@ export default {
       slug,
       perfume,
       PerfumeGenderName,
+      timeoutId,
     };
   },
   data() {
@@ -225,11 +247,13 @@ export default {
         { to: "/", name: "Nước hoa", active: true },
         { to: "/", name: "Nước hoa", active: true },
       ],
-      status: false,
+      statusQuantity: false,
       showPrice: 0,
       pricePicked: -1,
       quantity: 1,
       currentTab: 1,
+      dialog: false,
+      statusAddCart: false,
     };
   },
   components: {
@@ -255,8 +279,8 @@ export default {
         this.breadcrumbs[2].name = "Nước hoa " + this.perfume?.name;
         this.perfume.price?.forEach((price, ind) => {
           if (ind == 0) this.showPrice = price.price as number;
-          if (price.quantity && !this.status) {
-            this.status = true;
+          if (price.quantity && !this.statusQuantity) {
+            this.statusQuantity = true;
             this.showPrice = price.price as number;
             this.pricePicked = price.id as number;
           }
@@ -265,10 +289,11 @@ export default {
       } catch (e) {
         const error = e as RESPONSE_ERROR;
         console.log(error);
+        
       }
     },
     async handleAddPerfumeIntoCart() {
-      if (this.perfume && this.perfume.price && this.status) {
+      if (this.perfume && this.perfume.price && this.statusQuantity) {
         const price = this.perfume.price.filter(
           (value) => value.id == this.pricePicked
         )[0];
@@ -278,16 +303,25 @@ export default {
         );
         let cart = {
           name,
-          unit_price: price.price as number,
           quantity: this.quantity,
           perfume_id: this.perfume.id as number,
           price_id: price.id as number,
         };
         if (this.$ability.can("auth", "user")) {
           const dataCart = await addPerfumeIntoCart(cart);
-          if (dataCart) {
-            console.log(dataCart);
+          this.dialog = true;
+          if (dataCart && dataCart != "failed") {
+            this.$store.dispatch("cart/addPerfume", dataCart);
+            this.statusAddCart = true;
+          } else if (dataCart && dataCart == "failed") {
+            this.statusAddCart = false;
+          } else {
+            this.$store.dispatch("cart/addPerfume", cart);
+            this.statusAddCart = true;
           }
+          this.timeoutId = setTimeout(() => {
+            this.dialog = false;
+          }, 1200);
         } else {
           this.$router.replace("/login");
         }

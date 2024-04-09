@@ -1,0 +1,24 @@
+/**
+     * Update the specified resource in storage.
+     * @throws InternalServerErrorException
+     */
+    public function update(UpdateCartRequest $request): JsonResponse
+    {
+        try {
+            $arr = $request->get('carts');
+            $user = Auth::guard('api')->user();
+            $carts = $user->cart()->select(['id'])->get()->map(function ($item) {
+                return $item->id;
+            })->all();
+            $arr = array_filter($arr, function ($item) use ($carts) {
+                return in_array($item['id'], $carts);
+            });
+            foreach ($arr as $item) {
+                $user->cart()->where('id', $item['id'])->update(['quantity' => $item['quantity']]);
+            }
+            return returnSuccessResponse(null, 204);
+        } catch (Exception $exception) {
+            throw new InternalServerErrorException();
+        }
+
+    }

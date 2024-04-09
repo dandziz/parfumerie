@@ -11,7 +11,8 @@ export const userPolicy = {
         },
       ],
       address: [[userAuth],],
-      'change-password': [[userAuth],]
+      'change-password': [[userAuth],],
+      cart: [[userAuth],],
     },
   ],
 };

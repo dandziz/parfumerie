@@ -44,26 +44,25 @@
                 <nuxt-link to="/customer/order" class="text-black">Sổ địa chỉ</nuxt-link>
               </div>
             </div>
-            <div class="ms-3 me-5 header-myFavorites">
+            <div class="ms-3 me-5 header-myFavorites d-inline-flex">
               <a class="me-4 text-white">
                 <Icon name="material-symbols:favorite" size="24" />
               </a>
-              <NuxtLink to="/customer/cart" class="text-white position-relative">
-                <div class="soLuongGioHang">
-                  <p class="numberOfCart p-13">0</p>
-                </div>
-                <Icon name="material-symbols:shopping-cart-rounded" size="24" />
-              </NuxtLink>
+              <div class="position-relative my-cart">
+                <NuxtLink to="/customer/cart" class="text-white my-cart-icon position-relative">
+                  <Icon name="material-symbols:shopping-cart-rounded" size="24" />
+                  <span class="numberOfCart p-13">{{ $store.getters['cart/getNumberOfPerfume'] }}</span>
+                </NuxtLink>
+                <LayoutDefaultCart></LayoutDefaultCart>
+              </div>
             </div>
           </div>
 
           <div class="mobile-cart">
-            <a class="text-white position-relative">
-              <div class="soLuongGioHang">
-                <p class="numberOfCart p-13">0</p>
-              </div>
+            <NuxtLink to="/customer/cart" class="text-white position-relative">
               <Icon name="material-symbols:shopping-cart-rounded" size="24" />
-            </a>
+              <span class="numberOfCart p-13">{{ $store.getters['cart/getNumberOfPerfume'] }}</span>
+            </NuxtLink>
           </div>
 
           <!-- Sidebar -->
@@ -151,6 +150,8 @@ export default {
     ...mapState("brand", ["brands"]),
     ...mapState("user", ["user"]),
   },
+  component: {
+  },
   methods: {
     unactiveSidebar() {
       this.activeSidebar = false;
@@ -166,6 +167,7 @@ export default {
       } finally {
         logout()
         this.store.dispatch('user/logout')
+        this.store.dispatch('cart/setCarts', [])
         this.$ability.update([{action: 'read', subject: 'guest'}])
         if (this.$route.path != '/')
           this.$router.replace('/')
@@ -182,3 +184,22 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.my-cart {
+  width: 54px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .my-cart-icon {
+    line-height: 24px;
+  }
+  &:hover {
+    box-shadow: rgba(0,0,0,0.15) 0px 1px 8px;
+    border-right-width: 0 !important;
+  }
+  &:hover .my-cart-body {
+    display: block;
+  }
+}
+</style>

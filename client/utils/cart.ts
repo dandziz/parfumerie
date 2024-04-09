@@ -7,11 +7,11 @@ export function convertPerfumeName(perfume: Perfume, capacity: string): string {
   return perfume.name + ' - ' + PerfumeGenderName[perfume.gender] + ' / ' + perfume.origin + ' / ' + capacity
 }
 
-export async function addPerfumeIntoCart(value: Cart): Promise<boolean | Cart> {
+export async function addPerfumeIntoCart(value: Cart): Promise<string | Cart> {
   try {
     const response = await axios.post<Cart, Cart>('user/carts', value)
     return response.data.data
   } catch (e) {
-    return false
+    return 'failed'
   }
 }

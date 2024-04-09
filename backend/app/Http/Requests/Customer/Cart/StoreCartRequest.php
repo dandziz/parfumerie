@@ -26,17 +26,12 @@ class StoreCartRequest extends BaseRequest
         return [
             'name' => 'required|string',
             'quantity' => 'required|integer',
-            'unit_price' => 'required|integer',
             'perfume_id' => ['required',
                 Rule::exists('perfume_price')->where(function (Builder $query) {
                     return $query->where('id', $this->get('price_id'));
                 }),
             ],
-            'price_id' => ['required',
-                Rule::unique('carts')->where(function (Builder $query) {
-                return $query->where('perfume_id', $this->get('perfume_id'))
-                    ->where('user_id', $this->get('user_id'));
-            })],
+            'price_id' => ['required']
         ];
     }
 }

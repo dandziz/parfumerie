@@ -1,0 +1,7 @@
+return [
+            'carts' => 'required|array',
+            'carts.*.perfume_id' => 'required',
+            'carts.*.price_id' => 'required',
+            'carts.*.id' => 'required',
+            'carts.*.quantity' => 'required|integer',
+        ];

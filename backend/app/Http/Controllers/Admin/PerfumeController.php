@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\PerfumeImage;
 use App\Exceptions\InternalServerErrorException;
 use App\Exceptions\NotFoundApiException;
-use App\Exceptions\UnauthorizedException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Perfume\AddImagesRequest;
 use App\Http\Requests\Admin\Perfume\StorePerfumeRequest;
@@ -20,7 +20,6 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PerfumeController extends Controller
 {
@@ -89,7 +88,7 @@ class PerfumeController extends Controller
         return returnSuccessResponse($images);
     }
 
-    public function addImages(AddImagesRequest $request, Perfume $perfume)
+    public function addImages(AddImagesRequest $request, Perfume $perfume): JsonResponse
     {
         if ($request->images && count($request->images) > 0) {
             $count = $perfume->media()->count();
@@ -138,8 +137,9 @@ class PerfumeController extends Controller
             if ($media->type == 1) {
                 return returnFailureResponse('Hình ảnh hiện đã là mặc định.', 400);
             } else {
-                $perfume->media()->where('type', 1)->update(['type' => 0]);
-                $media->update(['type' => 1]);
+                $perfume->media()->where('type', PerfumeImage::Default)
+                    ->update(['type' => PerfumeImage::Normal]);
+                $media->update(['type' => PerfumeImage::Default]);
                 return returnMessageResponse('Cập nhật ảnh đại diện cho nước hoa thành công!');
             }
         }  catch (NotFoundApiException $exception) {
@@ -162,8 +162,9 @@ class PerfumeController extends Controller
             if ($media->type == 2) {
                 return returnFailureResponse('Hình ảnh hiện đã là mặc định cho ML bình thường.', 400);
             } else {
-                $perfume->media()->where('type', 2)->update(['type' => 0]);
-                $media->update(['type' => 2]);
+                $perfume->media()->where('type', 2)
+                    ->update(['type' => PerfumeImage::Default]);
+                $media->update(['type' => PerfumeImage::ML]);
                 return returnMessageResponse('Cập nhật ảnh mặc định ML cho nước hoa thành công!');
             }
         }  catch (NotFoundApiException $exception) {
@@ -186,8 +187,9 @@ class PerfumeController extends Controller
             if ($media->type == 3) {
                 return returnFailureResponse('Hình ảnh hiện đã là mặc định cho FULL BOX.', 400);
             } else {
-                $perfume->media()->where('type', 3)->update(['type' => 0]);
-                $media->update(['type' => 3]);
+                $perfume->media()->where('type', PerfumeImage::FullBox)
+                    ->update(['type' => PerfumeImage::Default]);
+                $media->update(['type' => PerfumeImage::FullBox]);
                 return returnMessageResponse('Cập nhật ảnh mặc định FULL BOX cho nước hoa thành công!');
             }
         }  catch (NotFoundApiException $exception) {
