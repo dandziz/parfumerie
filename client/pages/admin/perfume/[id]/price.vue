@@ -28,75 +28,78 @@
       </v-card>
     </v-dialog>
     <v-card-item title="Đang có">
-      <transition-group name="list">
-        <v-row class="mt-2" v-for="(item, ind) in currentPrices" :key="ind">
-          <v-col cols="4"
-            ><app-combobox-field
-              label="Dung tích"
-              v-model="item.capacity"
-              :items="capacityLabel"
-              transfer="uppercase"
-              :rules="[requiredValidator, uniqueValidator(item.capacity, capacityCheck, ind)]"
-              :readonly="currentUpdate != item.id"
-            ></app-combobox-field
-          ></v-col>
-          <v-col cols="3"
-            ><app-input-field
-              label="Giá nhập"
-              type="number"
-              v-model="item.import_price"
-              :rules="[requiredValidator, integerValidator]"
-              min="0"
-              :readonly="currentUpdate != item.id"
-            ></app-input-field
-          ></v-col>
-          <v-col cols="3"
-            ><app-input-field
-              label="Giá"
-              type="number"
-              v-model="item.price"
-              :rules="[requiredValidator, integerValidator]"
-              min="0"
-              :readonly="currentUpdate != item.id"
-            ></app-input-field
-          ></v-col>
-          <v-col cols="2" class="mx-auto my-auto"
-            ><v-switch
-              color="primary"
-              v-model:model-value="item.quantity"
-              label="Còn hàng"
-              class="hidden-details"
-              :disabled="currentUpdate != item.id"
-            ></v-switch
-          ></v-col>
-          <v-col cols="12" class="d-flex mx-auto my-auto pt-0">
-            <AppButton
-              v-if="currentUpdate != item.id"
-              bg-none
-              @click="currentUpdate = item.id as number"
-              ><Icon name="mynaui:edit-one" size="28" class="text-primary"
-            /></AppButton>
-            <AppButton v-else bg-none @click="handleUpdatePrice(item)"
-              ><Icon
-                name="material-symbols:download-done-rounded"
-                size="28"
-                class="text-primary"
-            /></AppButton>
-            <AppButton
-              v-if="currentUpdate != item.id"
-              bg-none
-              @click="handleAskDelete(item, ind)"
-              ><Icon
-                name="fluent:delete-48-regular"
-                size="28"
-                class="text-danger"
-            /></AppButton>
-            <AppButton v-else bg-none @click="handleUndo(ind)"
-              ><Icon name="jam:undo" size="28" class="text-danger"
-            /></AppButton>
-          </v-col>
-        </v-row>
-      </transition-group>
+      <!-- <transition-group name="list"> -->
+      <v-row class="mt-2" v-for="(item, ind) in currentPrices" :key="ind">
+        <v-col cols="4"
+          ><app-combobox-field
+            label="Dung tích"
+            v-model="item.capacity"
+            :items="capacityLabel"
+            transfer="uppercase"
+            :rules="[
+              requiredValidator,
+              uniqueValidator(item.capacity, capacityCheck, ind),
+            ]"
+            :readonly="currentUpdate != item.id"
+          ></app-combobox-field
+        ></v-col>
+        <v-col cols="3"
+          ><app-input-field
+            label="Giá nhập"
+            type="number"
+            v-model="item.import_price"
+            :rules="[requiredValidator, integerValidator]"
+            min="0"
+            :readonly="currentUpdate != item.id"
+          ></app-input-field
+        ></v-col>
+        <v-col cols="3"
+          ><app-input-field
+            label="Giá"
+            type="number"
+            v-model="item.price"
+            :rules="[requiredValidator, integerValidator]"
+            min="0"
+            :readonly="currentUpdate != item.id"
+          ></app-input-field
+        ></v-col>
+        <v-col cols="2" class="mx-auto my-auto"
+          ><v-switch
+            color="primary"
+            v-model:model-value="item.quantity"
+            label="Còn hàng"
+            class="hidden-details"
+            :disabled="currentUpdate != item.id"
+          ></v-switch
+        ></v-col>
+        <v-col cols="12" class="d-flex mx-auto my-auto pt-0">
+          <AppButton
+            v-if="currentUpdate != item.id"
+            bg-none
+            @click="currentUpdate = item.id as number"
+            ><Icon name="mynaui:edit-one" size="28" class="text-primary"
+          /></AppButton>
+          <AppButton v-else bg-none @click="handleUpdatePrice(item)"
+            ><Icon
+              name="material-symbols:download-done-rounded"
+              size="28"
+              class="text-primary"
+          /></AppButton>
+          <AppButton
+            v-if="currentUpdate != item.id"
+            bg-none
+            @click="handleAskDelete(item, ind)"
+            ><Icon
+              name="fluent:delete-48-regular"
+              size="28"
+              class="text-danger"
+          /></AppButton>
+          <AppButton v-else bg-none @click="handleUndo(ind)"
+            ><Icon name="jam:undo" size="28" class="text-danger"
+          /></AppButton>
+        </v-col>
+      </v-row>
+      <!-- </transition-group> -->
     </v-card-item>
     <v-divider thickness="3"></v-divider>
     <v-card-item title="Thêm mới">
@@ -157,10 +160,7 @@ import {
   integerValidator,
   uniqueValidator,
 } from "@validator";
-import type {
-  RESPONSE_DATA_SUCCESS,
-  RESPONSE_ERROR,
-} from "~/types";
+import type { RESPONSE_DATA_SUCCESS, RESPONSE_ERROR } from "~/types";
 import type { Price } from "@/models";
 export default {
   setup() {
@@ -168,8 +168,8 @@ export default {
       title: "Giá nước hoa",
     });
     definePageMeta({
-      middleware: ["admin"]
-    })
+      middleware: ["admin"],
+    });
     const route = useRoute();
     const currentPrices = ref<Price[]>([]);
     const initialPrices = ref<Price[]>([]);
@@ -316,13 +316,16 @@ export default {
           >(`admin/perfumes/${this.perfumeId}/prices`, this.capacity);
           this.currentPrices.push(response.data.data);
           this.initialPrices.push(response.data.data);
-          this.fetch()
-          this.clear()
-          successfulNotification('Thêm thành công!', 'Thêm giá nước hoa thành công.');
+          this.fetch();
+          this.clear();
+          successfulNotification(
+            "Thêm thành công!",
+            "Thêm giá nước hoa thành công."
+          );
         } catch (e) {
-          failureNotification('Lỗi!', 'Thêm giá nước hoa thất bại.');
-          const error = e as RESPONSE_ERROR
-          this.errors = error.error as typeof this.errors
+          failureNotification("Lỗi!", "Thêm giá nước hoa thất bại.");
+          const error = e as RESPONSE_ERROR;
+          this.errors = error.error as typeof this.errors;
         } finally {
           this.loading = false;
         }
@@ -330,11 +333,9 @@ export default {
     },
     clear() {
       (this.$refs?.form as HTMLFormElement)?.reset();
-      this.capacity.quantity = false
+      this.capacity.quantity = false;
     },
-    sortCapacities() {
-      
-    }
+    sortCapacities() {},
   },
   computed: {
     capacityCheck() {

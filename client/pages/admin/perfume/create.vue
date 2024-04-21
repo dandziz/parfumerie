@@ -124,65 +124,65 @@
             @click="sortCapacities"
           />
         </template>
-        <transition-group name="list">
-          <v-row class="mt-2" v-for="(item, ind) in capacities" :key="ind">
-            <v-col cols="3"
-              ><app-combobox-field
-                ref="capacity"
-                label="Dung tích"
-                v-model="item[0]"
-                :items="capacityLabel"
-                transfer="uppercase"
-                :rules="[
-                  requiredValidator,
-                  uniqueValidator(item[0], capacityCheck, ind),
-                ]"
-                @onChange="onChangeCapacity"
-              ></app-combobox-field
-            ></v-col>
-            <v-col cols="3"
-              ><app-input-field
-                label="Giá nhập"
-                type="number"
-                v-model="item[1]"
-                :rules="[requiredValidator, integerValidator]"
-                min="0"
-                @onInput="errors.prices = ''"
-              ></app-input-field
-            ></v-col>
-            <v-col cols="3"
-              ><app-input-field
-                label="Giá"
-                type="number"
-                v-model="item[2]"
-                :rules="[requiredValidator, integerValidator]"
-                min="0"
-                @onInput="errors.prices = ''"
-              ></app-input-field
-            ></v-col>
-            <v-col cols="2" lg="2" class="mx-auto my-auto"
-              ><v-switch
-                color="primary"
-                v-model:model-value="item[3]"
-                label="Còn hàng"
-                class="hidden-details"
-              ></v-switch
-            ></v-col>
-            <v-col cols="12" lg="1" class="d-flex my-auto">
-              <AppButton
-                bg-none
-                @click="handleRemoveCapacity(ind)"
-                v-if="ind < capacities.length - 1"
-                ><img src="/icons/mynaui--minus-square.svg" alt=""
-              /></AppButton>
-              <AppButton
-                bg-none
-                @click="handleAddCapacity"
-                v-if="ind == capacities.length - 1"
-                ><img src="/icons/mynaui--plus-square.svg" alt="" /></AppButton
-            ></v-col>
-          </v-row>
-        </transition-group>
+        <!-- <transition-group name="list"> -->
+        <v-row class="mt-2" v-for="(item, ind) in capacities" :key="ind">
+          <v-col cols="3"
+            ><app-combobox-field
+              ref="capacity"
+              label="Dung tích"
+              v-model="item[0]"
+              :items="capacityLabel"
+              transfer="uppercase"
+              :rules="[
+                requiredValidator,
+                uniqueValidator(item[0], capacityCheck, ind),
+              ]"
+              @onChange="onChangeCapacity"
+            ></app-combobox-field
+          ></v-col>
+          <v-col cols="3"
+            ><app-input-field
+              label="Giá nhập"
+              type="number"
+              v-model="item[1]"
+              :rules="[requiredValidator, integerValidator]"
+              min="0"
+              @onInput="errors.prices = ''"
+            ></app-input-field
+          ></v-col>
+          <v-col cols="3"
+            ><app-input-field
+              label="Giá"
+              type="number"
+              v-model="item[2]"
+              :rules="[requiredValidator, integerValidator]"
+              min="0"
+              @onInput="errors.prices = ''"
+            ></app-input-field
+          ></v-col>
+          <v-col cols="2" lg="2" class="mx-auto my-auto"
+            ><v-switch
+              color="primary"
+              v-model:model-value="item[3]"
+              label="Còn hàng"
+              class="hidden-details"
+            ></v-switch
+          ></v-col>
+          <v-col cols="12" lg="1" class="d-flex my-auto">
+            <AppButton
+              bg-none
+              @click="handleRemoveCapacity(ind)"
+              v-if="ind < capacities.length - 1"
+              ><img src="/icons/mynaui--minus-square.svg" alt=""
+            /></AppButton>
+            <AppButton
+              bg-none
+              @click="handleAddCapacity"
+              v-if="ind == capacities.length - 1"
+              ><img src="/icons/mynaui--plus-square.svg" alt="" /></AppButton
+          ></v-col>
+        </v-row>
+        <!-- </transition-group> -->
         <v-messages
           active
           :messages="errors.prices"
@@ -229,8 +229,8 @@ export default {
       title: "Thêm nước hoa",
     });
     definePageMeta({
-      middleware: ["admin"]
-    })
+      middleware: ["admin"],
+    });
     return {
       brands,
       suppliers,
@@ -411,15 +411,17 @@ export default {
       this.capacities.splice(index, 1);
     },
     sortCapacities() {
-      this.capacities.sort((a: Array<string|boolean>, b: Array<string|boolean>): number => {
-        const aValue = parseInt(a[2] as string);
-        const bValue = parseInt(b[2] as string);
-        return aValue - bValue;
-      });
+      this.capacities.sort(
+        (a: Array<string | boolean>, b: Array<string | boolean>): number => {
+          const aValue = parseInt(a[2] as string);
+          const bValue = parseInt(b[2] as string);
+          return aValue - bValue;
+        }
+      );
     },
     onChangeCapacity() {
-      this.errors.prices = '';
-    }
+      this.errors.prices = "";
+    },
   },
   computed: {
     capacityCheck() {
