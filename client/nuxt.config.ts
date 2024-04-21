@@ -28,9 +28,9 @@ export default {
     transpile: ["vuetify"],
   },
   plugins: [],
-  app: {
+  /*app: {
     pageTransition: { name: "page", mode: "in-out" },
-  },
+  },*/
   modules: [
     (
       _options: any,
