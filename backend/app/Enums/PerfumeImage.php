@@ -15,5 +15,5 @@ final class PerfumeImage extends Enum
     const Normal = 0;
     const Default = 1;
     const ML = 2;
-    const FullBox = 2;
+    const FullBox = 3;
 }

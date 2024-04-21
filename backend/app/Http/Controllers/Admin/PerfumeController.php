@@ -162,8 +162,8 @@ class PerfumeController extends Controller
             if ($media->type == 2) {
                 return returnFailureResponse('Hình ảnh hiện đã là mặc định cho ML bình thường.', 400);
             } else {
-                $perfume->media()->where('type', 2)
-                    ->update(['type' => PerfumeImage::Default]);
+                $perfume->media()->where('type', PerfumeImage::ML)
+                    ->update(['type' => PerfumeImage::Normal]);
                 $media->update(['type' => PerfumeImage::ML]);
                 return returnMessageResponse('Cập nhật ảnh mặc định ML cho nước hoa thành công!');
             }
@@ -188,7 +188,7 @@ class PerfumeController extends Controller
                 return returnFailureResponse('Hình ảnh hiện đã là mặc định cho FULL BOX.', 400);
             } else {
                 $perfume->media()->where('type', PerfumeImage::FullBox)
-                    ->update(['type' => PerfumeImage::Default]);
+                    ->update(['type' => PerfumeImage::Normal]);
                 $media->update(['type' => PerfumeImage::FullBox]);
                 return returnMessageResponse('Cập nhật ảnh mặc định FULL BOX cho nước hoa thành công!');
             }
