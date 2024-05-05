@@ -9,7 +9,7 @@
     @update:model-value="handleDrawerUpdate"
     @update:rail="handleUpdateRail"
   >
-    <NuxtLink to="/" class="p-2 d-flex justify-content-center pt-5 mt-1">
+    <NuxtLink to="/admin" class="p-2 d-flex justify-content-center pt-5 mt-1">
       <img
         :class="{ 'sidebar-logo': !rail, 'sidebar-logo__mini': rail }"
         src="/images/sidebar/logo.png"
