@@ -5,4 +5,8 @@ php artisan passport:client --personal
 a make:middleware CheckAdmin
 php artisan lang:publish
 
+alias a=php artisan
 alias ac=php artisan make:controller $*
+
+php artisan key:generate
+php artisan passport:keys
