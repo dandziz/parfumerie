@@ -30,40 +30,40 @@
               >
                 <v-row class="form-wrapper">
                   <v-col sm="6" cols="12">
-                    <app-text-field
+                    <app-input-field
                       label="Họ tên"
-                      icon="mdi:user-outline"
                       v-model="modelName"
+                      :rules="[requiredValidator]"
+                      icon="mdi:user-outline"
                       name="name"
-                      listOfRules="required"
-                    ></app-text-field>
+                    ></app-input-field>
                   </v-col>
                   <v-col sm="6" cols="12">
-                    <app-text-field
+                    <app-input-field
                       label="Số điện thoại"
                       icon="prime:phone"
                       v-model="modelPhoneNumber"
+                      :rules="[requiredValidator]"
                       name="phone_number"
-                      listOfRules="required|phoneNumber"
-                    ></app-text-field>
+                    ></app-input-field>
                   </v-col>
                   <v-col sm="6" cols="12">
-                    <app-text-field
+                    <app-input-field
                       label="Công ty"
                       icon="mdi:company"
                       v-model="modelCompany"
+                      :rules="[requiredValidator]"
                       name="company"
-                      listOfRules="required"
-                    ></app-text-field>
+                    ></app-input-field>
                   </v-col>
                   <v-col sm="6" cols="12">
-                    <app-text-field
+                    <app-input-field
                       label="Địa chỉ"
                       icon="mdi:address-marker-outline"
                       v-model="modelAddress"
                       name="address"
-                      listOfRules="required"
-                    ></app-text-field>
+                      :rules="[requiredValidator]"
+                    ></app-input-field>
                   </v-col>
                   <v-col sm="4" cols="12">
                     <app-select-field
@@ -102,15 +102,15 @@
                     >
                     </app-select-field>
                   </v-col>
-                  <v-col cols="12"
-                    ><app-text-field
+                  <v-col cols="12">
+                    <app-input-field
                       label="Mã Zip"
                       icon="tabler:zip"
                       v-model="modelZipCode"
                       name="zip_code"
-                      listOfRules="required"
-                    ></app-text-field
-                  ></v-col>
+                      :rules="[requiredValidator]"
+                    ></app-input-field>
+                  </v-col>
                   <v-col cols="12">
                     <app-checkbox-field
                       v-model="modelDefault"
@@ -254,6 +254,7 @@ import {
   getDistrictById,
   getWardById,
 } from "@/core";
+import { requiredValidator } from "@validator";
 import type { TreeType, District } from "@/core";
 import type { Address } from "~/models";
 import type { RESPONSE_DATA_SUCCESS } from "~/types";
@@ -273,8 +274,8 @@ export default {
       ],
     });
     definePageMeta({
-      middleware: ["customer"]
-    })
+      middleware: ["customer"],
+    });
     const address = ref<Address[]>([]);
     const initialForms = {
       name: "",
@@ -298,6 +299,7 @@ export default {
       address,
       initialForms,
       forms,
+      requiredValidator,
     };
   },
   data() {
@@ -388,10 +390,10 @@ export default {
           });
           this.dialog = false;
           this.fetch();
-          this.$store.dispatch("user/addAddress")
+          this.$store.dispatch("user/addAddress");
           if (response.data.data.default) {
             const newAddress = `${response.data.data.address}, ${response.data.data.ward}, ${response.data.data.district}, ${response.data.data.province}`;
-            this.$store.dispatch("user/updateDefaultAddress", newAddress)
+            this.$store.dispatch("user/updateDefaultAddress", newAddress);
           }
         } catch (e) {
           this.$notify({
@@ -447,7 +449,7 @@ export default {
         this.addressStatus = false;
         if (data.default) {
           const newAddress = `${data.address}, ${data.ward}, ${data.district}, ${data.province}`;
-          this.$store.dispatch("user/updateDefaultAddress", newAddress)
+          this.$store.dispatch("user/updateDefaultAddress", newAddress);
         }
       } catch (e) {
         this.$notify({
@@ -466,7 +468,7 @@ export default {
         >("user/addresses");
         this.address = response.data.data;
         if (this.address.length == 0) {
-          this.$store.dispatch("user/updateDefaultAddress", "")
+          this.$store.dispatch("user/updateDefaultAddress", "");
         }
       } catch (e) {
         this.$notify({
@@ -497,7 +499,9 @@ export default {
     async onDelete() {
       try {
         this.deleteLoading = true;
-        const response = await this.$axios.delete(`user/address/${this.selectedAddressId}`);
+        const response = await this.$axios.delete(
+          `user/address/${this.selectedAddressId}`
+        );
         this.selectedAddressId = -1;
         this.deleteDialog = false;
         this.fetch();
@@ -505,7 +509,7 @@ export default {
           title: "Xóa địa chỉ thành công!",
           type: "success",
         });
-        this.$store.dispatch("user/deleteAddress")
+        this.$store.dispatch("user/deleteAddress");
       } catch (e) {
         this.$notify({
           title: "Xóa địa chỉ thất bại!",
@@ -514,7 +518,7 @@ export default {
       } finally {
         this.deleteLoading = false;
       }
-    }
+    },
   },
   computed: {
     modelName: {
