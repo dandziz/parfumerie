@@ -75,7 +75,7 @@ class PerfumeController extends Controller
     public function show(Perfume $perfume): JsonResponse
     {
         $image = $perfume->media;
-        $data = $perfume->makeVisible('product_information')
+        $data = $perfume->makeVisible(['product_information', 'brand_id', 'supplier_id', 'status'])
                 ->makeHidden('media')->toArray() + ['images' => $image->toArray()];
         return returnSuccessResponse($data);
     }
