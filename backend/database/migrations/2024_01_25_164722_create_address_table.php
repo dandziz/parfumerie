@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('province', 50);
             $table->string('district', 50);
             $table->string('ward', 50);
-            $table->unsignedInteger('province_id');
-            $table->unsignedInteger('district_id');
-            $table->unsignedInteger('ward_id');
+            $table->unsignedInteger('province_id')->nullable();
+            $table->unsignedInteger('district_id')->nullable();
+            $table->unsignedInteger('ward_id')->nullable();
             $table->string('zip_code', 10);
             $table->tinyInteger('default');
             $table->unsignedBigInteger('user_id');
