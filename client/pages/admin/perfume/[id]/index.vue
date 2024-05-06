@@ -155,8 +155,9 @@ import { defineComponent } from "vue";
 export default defineComponent({
   setup() {
     definePageMeta({
-      middleware: ["admin"],
-    });
+      layout: 'admin',
+      middleware: ["admin"]
+    })
     useHead({
       title: "Cập nhật |",
     });

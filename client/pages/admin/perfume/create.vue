@@ -229,8 +229,9 @@ export default {
       title: "Thêm nước hoa",
     });
     definePageMeta({
-      middleware: ["admin"],
-    });
+      layout: 'admin',
+      middleware: ["admin"]
+    })
     return {
       brands,
       suppliers,

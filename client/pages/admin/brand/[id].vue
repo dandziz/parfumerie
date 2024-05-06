@@ -8,6 +8,7 @@
 export default {
   setup () {
     definePageMeta({
+      layout: 'admin',
       middleware: ["admin"]
     })
     return {}

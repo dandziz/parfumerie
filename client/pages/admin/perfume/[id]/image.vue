@@ -110,6 +110,7 @@ import { ImageType } from "@/enums";
 export default {
   setup() {
     definePageMeta({
+      layout: 'admin',
       middleware: ["admin"]
     })
     const route = useRoute();

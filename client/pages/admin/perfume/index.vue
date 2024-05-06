@@ -208,6 +208,7 @@ export default {
       title: "Danh sách nước hoa",
     });
     definePageMeta({
+      layout: 'admin',
       middleware: ["admin"]
     })
     return {

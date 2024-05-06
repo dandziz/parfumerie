@@ -168,8 +168,9 @@ export default {
       title: "Giá nước hoa",
     });
     definePageMeta({
-      middleware: ["admin"],
-    });
+      layout: 'admin',
+      middleware: ["admin"]
+    })
     const route = useRoute();
     const currentPrices = ref<Price[]>([]);
     const initialPrices = ref<Price[]>([]);
