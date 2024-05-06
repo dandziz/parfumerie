@@ -14,11 +14,8 @@ import { useAbility } from "@casl/vue";
 
 const store = useStore();
 
-let layout = ref<MaybeRef>("admin");
-layout.value = "default";
 const route = useRoute();
 const router = useRouter();
-if (route.path.startsWith("/admin")) layout.value = "admin";
 
 axios.get("brands").then((response: AxiosResponse<RESPONSE_API_SUCCESS<Brand>>) => {
   store.dispatch("brand/setBrands", response.data.data);
@@ -29,13 +26,6 @@ if (importUserInformation()) {
     store.dispatch("cart/setCarts", response.data.data);
   })
 }
-watch(
-  () => route.name,
-  () => {
-    if (route.path.startsWith("/admin")) layout.value = "admin";
-    else layout.value = "default";
-  }
-);
 router.beforeResolve((to, from, next) => {
   if (to.name) {
     NProgress.start();
@@ -49,7 +39,7 @@ router.afterEach(() => {
 
 <template>
   <NuxtLoadingIndicator />
-  <NuxtLayout :name="layout">
+  <NuxtLayout>
     <NuxtPage page-key="static" />
   </NuxtLayout>
   <Notification />
