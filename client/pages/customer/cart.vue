@@ -80,7 +80,7 @@
               >
             </div>
             <div class="col-md-12">
-              <button class="btn btn-success w-100">MUA NGAY</button>
+              <NuxtLink class="btn btn-success w-100" to="/checkout">MUA NGAY</NuxtLink>
             </div>
             <div class="col-md-12 mt-2">
               <NuxtLink class="btn btn-continue-shopping" to="/">
